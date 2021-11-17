@@ -1,13 +1,19 @@
-package beans;
+package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+import java.util.Collection;
+
+@Entity @Table(name = "optional_product")
 public class OptionalProduct {
     private Long optionalProductId;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private int monthlyFee_euro;
+
+    @ManyToMany(mappedBy = "optionalProducts")
+    private Collection<ServicePackage> servicePackages;
 
     public void setOptionalProductId(Long optionalProductId) {
         this.optionalProductId = optionalProductId;
