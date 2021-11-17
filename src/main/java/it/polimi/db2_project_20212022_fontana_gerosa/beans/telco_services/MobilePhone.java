@@ -1,4 +1,4 @@
-package it.polimi.db2_project_20212022_fontana_gerosa.beans.services;
+package it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

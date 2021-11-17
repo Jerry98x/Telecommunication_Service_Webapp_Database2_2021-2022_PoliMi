@@ -1,6 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.services.Service;
+import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.Service;
 import jakarta.persistence.*;
 
 import java.util.Collection;

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity @Table(name = "user")
+@NamedQuery(name = "User.checkCredentials", query = "SELECT u from User u where u.username = ?1 and u.email = ?2 and u.password = ?3")
 public class User {
     private Long userId;
     @Column(unique = true, nullable = false)
