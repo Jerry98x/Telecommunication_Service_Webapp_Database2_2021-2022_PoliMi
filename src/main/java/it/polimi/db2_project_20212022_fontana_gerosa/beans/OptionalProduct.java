@@ -15,6 +15,10 @@ public class OptionalProduct {
     @ManyToMany(mappedBy = "optionalProducts")
     private Collection<ServicePackage> servicePackages;
 
+    @ManyToOne
+    @JoinColumn(name = "optionalProductId")
+    private Employee creatorEmployee;
+
     public void setOptionalProductId(Long optionalProductId) {
         this.optionalProductId = optionalProductId;
     }

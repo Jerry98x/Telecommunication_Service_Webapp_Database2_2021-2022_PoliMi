@@ -23,6 +23,10 @@ public class ServicePackage {
     @ManyToMany
     private Collection<OptionalProduct> optionalProducts;
 
+    @ManyToOne
+    @JoinColumn(name = "servicePackageId")
+    private Employee creatorEmployee;
+
     public void setServicePackageId(Long servicePackageId) {
         this.servicePackageId = servicePackageId;
     }
