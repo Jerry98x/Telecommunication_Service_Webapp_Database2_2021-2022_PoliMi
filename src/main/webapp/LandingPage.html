@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Telco</title>
-    <script src="scripts/landingManagement.js" defer></script>
-    <script src="scripts/utils.js"></script>
+    <script src="landingManagement.js" defer></script>
+    <script src="utils.js" defer></script>
 </head>
 <body>
     <h2>Welcome to Telco Services application.</h2>
 
+    <p id="errorMessage"></p>
 
-    <input id="LoginPageButton" type="button" value="Login">
-    <input id="SignUpPageButton" type="button" value="Sign up">
-<!--    <div>-->
-<!--        <p>-->
-<!--            <button id="loginPageButton" class="buttonLP">Sign in</button>-->
-<!--        </p>-->
-<!--        <p>-->
-<!--            <button id="registerPageButton" class="buttonLP">Sign up</button>-->
-<!--        </p>-->
-<!--    </div>-->
+    <form action="#">
+        Username <input type="text" name="username" required> <br>
+        Password <input type="password" name="password" required> <br>
+        <input id="submitLogin" type="submit" value="Login">
+    </form>
+    <form action="#">
+        Email <input type="text" name="email" required><br>
+        Repeat email <input type="text" name="repeat_email" required><br>
+        Username <input type="text" name="username" required> <br>
+        Password <input type="password" name="password" required> <br>
+        <input id="submitSignUp" type="submit" value="Sign Up">
+    </form>
 
 </body>
 </html>

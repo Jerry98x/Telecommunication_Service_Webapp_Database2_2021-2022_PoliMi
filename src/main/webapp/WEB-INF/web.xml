@@ -14,21 +14,12 @@
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>password</param-value>
+        <param-value>mysql</param-value>
     </context-param>
     <context-param>
         <param-name>dbDriver</param-name>
         <param-value>com.mysql.cj.jdbc.Driver</param-value>
     </context-param>
-
-    <filter>
-        <filter-name>LandingRedirect</filter-name>
-        <filter-class>it.polimi.db2_project_20212022_fontana_gerosa.filters.LandingRedirect</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LandingRedirect</filter-name>
-        <url-pattern>/WEB-INF/LoginPage.html</url-pattern>
-    </filter-mapping>
 
     <welcome-file-list>
         <welcome-file>LandingPage.html</welcome-file>
