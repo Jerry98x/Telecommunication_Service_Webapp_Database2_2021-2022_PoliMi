@@ -65,4 +65,9 @@
         }
     });
 
+    document.getElementById("continueAsGuest").addEventListener('click', (e) => {
+        window.location.href = "HomePage.html";
+    });
+
+
 })();
