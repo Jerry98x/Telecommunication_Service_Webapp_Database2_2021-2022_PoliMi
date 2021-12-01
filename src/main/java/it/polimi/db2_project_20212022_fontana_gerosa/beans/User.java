@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity @Table(name = "user")
-@NamedQuery(name = "User.checkCredentials", query = "SELECT u from User u where u.username = ?1 and u.email = ?2 and u.password = ?3")
+@NamedQuery(name = "User.checkCredentials", query = "SELECT u from User u where u.email = ?1 and u.password = ?2")
+@NamedQuery(name = "User.findByEmail", query = "SELECT u from User u where  u.email = ?1")
+@NamedQuery(name = "User.findByUsername", query = "SELECT u from User u where  u.username = ?1")
 public class User {
     private Long userId;
     @Column(unique = true, nullable = false)
@@ -21,6 +23,15 @@ public class User {
 
     @OneToOne(mappedBy = "insolventUser")
     private Alert alert;
+
+    public User(){
+    }
+
+    public User(String email, String username, String password){
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 
     public void setUserId(Long userId) {
         this.userId = userId;

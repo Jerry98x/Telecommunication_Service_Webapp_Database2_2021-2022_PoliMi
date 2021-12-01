@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity @Table(name = "service")
-abstract public class Service {
+abstract public class TelcoService {
     private Long serviceId;
 
     @ManyToMany(mappedBy = "services")

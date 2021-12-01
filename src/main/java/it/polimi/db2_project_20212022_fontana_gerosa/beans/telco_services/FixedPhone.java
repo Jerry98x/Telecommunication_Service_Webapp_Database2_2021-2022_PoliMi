@@ -4,5 +4,5 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity @Table(name = "fixed_phone")
-public class FixedPhone extends Service{
+public class FixedPhone extends TelcoService {
 }
