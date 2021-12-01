@@ -1,6 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.Service;
+import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -18,7 +18,7 @@ public class ServicePackage {
     private Collection<Order> orders;
 
     @ManyToMany
-    private Collection<Service> services;
+    private Collection<TelcoService> services;
 
     @ManyToMany
     private Collection<OptionalProduct> optionalProducts;

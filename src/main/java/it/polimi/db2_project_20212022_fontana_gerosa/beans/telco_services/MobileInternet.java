@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity @Table(name = "mobile_internet")
-public class MobileInternet extends Service{
+public class MobileInternet extends TelcoService {
     @Column(nullable = false)
     private int GBs;
     private int extraGBFee_euro;
