@@ -14,7 +14,7 @@
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>mysql</param-value>
+        <param-value>password</param-value>
     </context-param>
     <context-param>
         <param-name>dbDriver</param-name>
