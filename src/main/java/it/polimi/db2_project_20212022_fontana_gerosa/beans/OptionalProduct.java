@@ -19,6 +19,9 @@ public class OptionalProduct {
     @JoinColumn(name = "optionalProductId")
     private Employee creatorEmployee;
 
+    @ManyToMany
+    private Collection<Order> orders;
+
     public void setOptionalProductId(Long optionalProductId) {
         this.optionalProductId = optionalProductId;
     }

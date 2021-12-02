@@ -21,7 +21,7 @@ public class ServicePackage {
     private Collection<TelcoService> services;
 
     @ManyToMany
-    private Collection<OptionalProduct> optionalProducts;
+    private Collection<OptionalProduct> availableOptionalProducts;
 
     @ManyToOne
     @JoinColumn(name = "servicePackageId")
