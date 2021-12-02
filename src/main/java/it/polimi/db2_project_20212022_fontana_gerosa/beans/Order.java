@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 
 @Entity @Table(name = "order")
 public class Order {
@@ -28,6 +29,9 @@ public class Order {
 
     @OneToOne(mappedBy = "lastRejectedOrder")
     private Alert optionalAlert;
+
+    @ManyToMany
+    private Collection<OptionalProduct> chosenOptionalProducts;
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
