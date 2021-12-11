@@ -13,6 +13,7 @@
 
     <script src="landingManagement.js" defer></script>
     <script src="utils.js" defer></script>
+    <link rel="stylesheet" href=my_style.css>
 </head>
 <body>
     <br>
@@ -27,7 +28,8 @@
         <div class="row my-custom-row justify-content-around align-items-center">
             <div class="col-sm-4">
                 <h4>Sign in to Telco</h4>
-                <form>
+
+                <form class="border border-3">
                     <div class="form-group-login">
                         <label for="login_email"></label>
                         <input type="email" class="form-control" id="login_email" placeholder="Email" required>
@@ -36,19 +38,20 @@
                         <label for="login_password"></label>
                         <input type="password" class="form-control" id="login_password" placeholder="Password" required>
                     </div>
-<!--                    <div class="form-group-login">-->
-<!--                        <input id="submitLogin" type="submit" value="Login">-->
-<!--                    </div>-->
+                                        <!--                    <div class="form-group-login">-->
+                                        <!--                        <input id="submitLogin" type="submit" value="Login">-->
+                                        <!--                    </div>-->
                     <br>
                     <div class="d-grid">
-                        <button class="btn btn-primary btn-md" type="button"><b>Login</b></button>
+                        <button id="submitLogin" class="btn btn-primary btn-md" type="button"><b>Login</b></button>
                     </div>
                 </form>
             </div>
 
             <div class="col-sm-4">
                 <h4>Create an account</h4>
-                <form>
+
+                <form class="border border-3">
                     <div class="form-group-signup">
                         <label for="signup_username"></label>
                         <input type="text" class="form-control" id="signup_username" placeholder="Username" required>
@@ -70,7 +73,7 @@
 <!--                        <input id="submitSignup" type="submit" value="Sign up">-->
 <!--                    </div>-->
                     <div class="d-grid">
-                        <button class="btn btn-primary btn-md" type="submit"><b>Sign up</b></button>
+                        <button id="submitSignUp" class="btn btn-primary btn-md" type="submit"><b>Sign up</b></button>
                     </div>
                 </form>
             </div>
@@ -82,9 +85,8 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-4">
 <!--                <input id="continueAsGuest" type="button" value="Continue as guest">-->
-<!--                <button class="btn btn-secondary btn-lg btn-block w-100" type="button">Continue as guest</button>-->
                 <div class="d-grid">
-                    <button class="btn btn-secondary btn-lg" type="button"><b>Continue as guest</b></button>
+                    <button id="continueAsGuest" class="btn btn-secondary btn-lg" type="button"><b>Continue as guest</b></button>
                 </div>
             </div>
             <div class="col-sm-7"></div>
