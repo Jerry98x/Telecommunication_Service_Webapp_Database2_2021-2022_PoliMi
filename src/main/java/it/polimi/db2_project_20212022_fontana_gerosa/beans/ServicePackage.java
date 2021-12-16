@@ -7,6 +7,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "service_package")
+@NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT sp from ServicePackage sp")
 public class ServicePackage {
 
     @Id
