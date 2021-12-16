@@ -6,9 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 
-@Entity @Table(name = "order")
+@Entity
+@Table(name = "order")
 public class Order {
-    private Long orderId;
+    @Id
+    private int orderId;
     @Column(nullable = false)
     private LocalDate dateOfConfirmation;
     @Column(nullable = false)
@@ -33,12 +35,84 @@ public class Order {
     @ManyToMany
     private Collection<OptionalProduct> chosenOptionalProducts;
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
-    @Id
-    public Long getOrderId() {
+
+    public int getOrderId() {
         return orderId;
+    }
+
+    public LocalDate getDateOfConfirmation() {
+        return dateOfConfirmation;
+    }
+
+    public void setDateOfConfirmation(LocalDate dateOfConfirmation) {
+        this.dateOfConfirmation = dateOfConfirmation;
+    }
+
+    public LocalTime getHourOfConfirmation() {
+        return hourOfConfirmation;
+    }
+
+    public void setHourOfConfirmation(LocalTime hourOfConfirmation) {
+        this.hourOfConfirmation = hourOfConfirmation;
+    }
+
+    public int getTotalCost_euro() {
+        return totalCost_euro;
+    }
+
+    public void setTotalCost_euro(int totalCost_euro) {
+        this.totalCost_euro = totalCost_euro;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ServicePackage getServicePackage() {
+        return servicePackage;
+    }
+
+    public void setServicePackage(ServicePackage servicePackage) {
+        this.servicePackage = servicePackage;
+    }
+
+    public Alert getOptionalAlert() {
+        return optionalAlert;
+    }
+
+    public void setOptionalAlert(Alert optionalAlert) {
+        this.optionalAlert = optionalAlert;
+    }
+
+    public Collection<OptionalProduct> getChosenOptionalProducts() {
+        return chosenOptionalProducts;
+    }
+
+    public void setChosenOptionalProducts(Collection<OptionalProduct> chosenOptionalProducts) {
+        this.chosenOptionalProducts = chosenOptionalProducts;
     }
 }

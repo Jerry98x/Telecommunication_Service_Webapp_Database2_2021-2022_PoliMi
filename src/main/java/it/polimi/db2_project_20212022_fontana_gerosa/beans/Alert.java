@@ -2,9 +2,11 @@ package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
 import jakarta.persistence.*;
 
-@Entity @Table(name = "alert")
+@Entity
+@Table(name = "alert")
 public class Alert {
-    private Long alertId;
+    @Id
+    private int alertId;
     @OneToOne
     @Column(nullable = false)
     private User insolventUser;
@@ -12,12 +14,27 @@ public class Alert {
     @Column(nullable = false)
     private Order lastRejectedOrder;
 
-    public void setAlertId(Long alertId) {
+    public void setAlertId(int alertId) {
         this.alertId = alertId;
     }
 
-    @Id
-    public Long getAlertId() {
+    public int getAlertId() {
         return alertId;
+    }
+
+    public User getInsolventUser() {
+        return insolventUser;
+    }
+
+    public void setInsolventUser(User insolventUser) {
+        this.insolventUser = insolventUser;
+    }
+
+    public Order getLastRejectedOrder() {
+        return lastRejectedOrder;
+    }
+
+    public void setLastRejectedOrder(Order lastRejectedOrder) {
+        this.lastRejectedOrder = lastRejectedOrder;
     }
 }
