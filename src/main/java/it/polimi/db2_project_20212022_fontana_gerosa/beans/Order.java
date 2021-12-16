@@ -33,6 +33,9 @@ public class Order {
     private Alert optionalAlert;
 
     @ManyToMany
+    @JoinTable(name="order-optional_product",
+            joinColumns = @JoinColumn(name = "orderId", referencedColumnName = "orderId"),
+            inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> chosenOptionalProducts;
 
     public void setOrderId(int orderId) {
