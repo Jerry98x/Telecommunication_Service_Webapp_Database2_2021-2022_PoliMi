@@ -21,7 +21,7 @@ public class OptionalProduct {
     @JoinColumn(name = "optionalProductId")
     private Employee creatorEmployee;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "chosenOptionalProducts")
     private Collection<Order> orders;
 
     public void setOptionalProductId(int optionalProductId) {
