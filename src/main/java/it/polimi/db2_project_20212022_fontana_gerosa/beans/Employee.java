@@ -2,29 +2,39 @@ package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.util.Collection;
-
-@Entity @Table(name = "employee")
+@Entity
+@Table(name = "employee")
 public class Employee {
-    private Long employeeId;
+
+    @Id
+    private int employeeId;
     private String email;
     private String password;
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
 
-    @OneToMany (mappedBy = "creatorEmployee")
-    private Collection<OptionalProduct> createdOptionalProducts;
 
-    @OneToMany (mappedBy = "creatorEmployee")
-    private Collection<ServicePackage> createdServicePackages;
-
-    @Id
-    public Long getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

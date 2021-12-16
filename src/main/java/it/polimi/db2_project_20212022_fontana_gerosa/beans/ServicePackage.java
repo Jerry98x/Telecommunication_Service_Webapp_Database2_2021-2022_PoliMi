@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 
-@Entity @Table(name = "service_package")
+@Entity
+@Table(name = "service_package")
 public class ServicePackage {
-    private Long servicePackageId;
+
+    @Id
+    private int servicePackageId;
+    @Column
     private String name;
-    @Column(nullable = false)
-    private int monthsOfValidity;
-    @Column(nullable = false)
-    private int monthlyFee_euro;
 
     @OneToMany(mappedBy = "servicePackage")
     private Collection<Order> orders;
@@ -23,16 +23,43 @@ public class ServicePackage {
     @ManyToMany
     private Collection<OptionalProduct> availableOptionalProducts;
 
-    @ManyToOne
-    @JoinColumn(name = "servicePackageId")
-    private Employee creatorEmployee;
-
-    public void setServicePackageId(Long servicePackageId) {
+    public void setServicePackageId(int servicePackageId) {
         this.servicePackageId = servicePackageId;
     }
 
-    @Id
-    public Long getServicePackageId() {
+    public int getServicePackageId() {
         return servicePackageId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Collection<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Collection<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Collection<TelcoService> getServices() {
+        return services;
+    }
+
+    public void setServices(Collection<TelcoService> services) {
+        this.services = services;
+    }
+
+    public Collection<OptionalProduct> getAvailableOptionalProducts() {
+        return availableOptionalProducts;
+    }
+
+    public void setAvailableOptionalProducts(Collection<OptionalProduct> availableOptionalProducts) {
+        this.availableOptionalProducts = availableOptionalProducts;
     }
 }

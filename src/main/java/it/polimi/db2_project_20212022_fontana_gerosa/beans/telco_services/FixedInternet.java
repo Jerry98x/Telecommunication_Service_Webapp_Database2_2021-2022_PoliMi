@@ -4,9 +4,26 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-@Entity @Table(name = "fixed_internet")
+@Entity
+@Table(name = "fixed_internet")
 public class FixedInternet extends TelcoService {
     @Column(nullable = false)
     private int GBs;
     private int extraGBFee_euro;
+
+    public int getGBs() {
+        return GBs;
+    }
+
+    public void setGBs(int GBs) {
+        this.GBs = GBs;
+    }
+
+    public int getExtraGBFee_euro() {
+        return extraGBFee_euro;
+    }
+
+    public void setExtraGBFee_euro(int extraGBFee_euro) {
+        this.extraGBFee_euro = extraGBFee_euro;
+    }
 }

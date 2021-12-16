@@ -5,19 +5,28 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 
-@Entity @Table(name = "service")
+@Entity
+@Table(name = "service")
 abstract public class TelcoService {
-    private Long serviceId;
+    @Id
+    private int serviceId;
 
     @ManyToMany(mappedBy = "services")
     private Collection<ServicePackage> servicePackages;
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
     }
 
-    @Id
-    public Long getServiceId() {
+    public int getServiceId() {
         return serviceId;
+    }
+
+    public Collection<ServicePackage> getServicePackages() {
+        return servicePackages;
+    }
+
+    public void setServicePackages(Collection<ServicePackage> servicePackages) {
+        this.servicePackages = servicePackages;
     }
 }
