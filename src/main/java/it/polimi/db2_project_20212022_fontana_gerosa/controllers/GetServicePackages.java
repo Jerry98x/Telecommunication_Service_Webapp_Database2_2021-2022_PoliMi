@@ -1,5 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
+import it.polimi.db2_project_20212022_fontana_gerosa.HomePageContent;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
@@ -36,10 +37,11 @@ public class GetServicePackages extends HttpServlet {
             return;
         }
 
-        // Redirect to the Home page and add missions to the parameters
+        // Redirect to the Home page and add servicePackages to the parameters
 
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(servicePackages);
+        HomePageContent hpc = new HomePageContent(user.getUsername(), user.getInsolvent(), servicePackages);
+        String json = gson.toJson(hpc);
 
 
         response.setContentType("application/json");
