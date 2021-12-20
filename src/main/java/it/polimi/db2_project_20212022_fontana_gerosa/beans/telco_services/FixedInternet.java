@@ -30,7 +30,7 @@ public class FixedInternet extends TelcoService {
 
     @Override
     public String getDescription() {
-        String description = "";
+        String description = "You get " + GBs + " GBs on your home connection";
         return description;
     }
 }

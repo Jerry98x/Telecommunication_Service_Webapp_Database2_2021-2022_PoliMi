@@ -49,6 +49,7 @@ public class MobilePhone extends TelcoService {
 
     @Override
     public String getDescription() {
-
+        String description = "You get " + minutes + " minutes and " + SMSs + " SMSs on your mobile device";
+        return description;
     }
 }

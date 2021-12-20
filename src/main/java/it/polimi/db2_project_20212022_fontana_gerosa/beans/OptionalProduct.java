@@ -17,10 +17,6 @@ public class OptionalProduct {
     @ManyToMany(mappedBy = "availableOptionalProducts")
     private Collection<ServicePackage> servicePackages;
 
-    @ManyToOne
-    @JoinColumn(name = "optionalProductId")
-    private Employee creatorEmployee;
-
     @ManyToMany(mappedBy = "chosenOptionalProducts")
     private Collection<Order> orders;
 
@@ -55,14 +51,6 @@ public class OptionalProduct {
 
     public void setServicePackages(Collection<ServicePackage> servicePackages) {
         this.servicePackages = servicePackages;
-    }
-
-    public Employee getCreatorEmployee() {
-        return creatorEmployee;
-    }
-
-    public void setCreatorEmployee(Employee creatorEmployee) {
-        this.creatorEmployee = creatorEmployee;
     }
 
     public Collection<Order> getOrders() {
