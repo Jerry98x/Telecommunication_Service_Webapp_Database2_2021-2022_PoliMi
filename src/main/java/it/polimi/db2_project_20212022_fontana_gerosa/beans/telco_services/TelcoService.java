@@ -29,4 +29,6 @@ abstract public class TelcoService {
     public void setServicePackages(Collection<ServicePackage> servicePackages) {
         this.servicePackages = servicePackages;
     }
+
+    public abstract String getDescription();
 }

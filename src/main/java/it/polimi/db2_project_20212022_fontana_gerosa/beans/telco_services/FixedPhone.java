@@ -6,4 +6,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "fixed_phone")
 public class FixedPhone extends TelcoService {
+
+    @Override
+    public String getDescription() {
+
+    }
 }

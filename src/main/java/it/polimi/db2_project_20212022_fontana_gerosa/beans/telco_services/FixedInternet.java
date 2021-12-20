@@ -26,4 +26,11 @@ public class FixedInternet extends TelcoService {
     public void setExtraGBFee_euro(int extraGBFee_euro) {
         this.extraGBFee_euro = extraGBFee_euro;
     }
+
+
+    @Override
+    public String getDescription() {
+        String description = "";
+        return description;
+    }
 }

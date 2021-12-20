@@ -45,4 +45,10 @@ public class MobilePhone extends TelcoService {
     public void setExtraSMSFee_euro(int extraSMSFee_euro) {
         this.extraSMSFee_euro = extraSMSFee_euro;
     }
+
+
+    @Override
+    public String getDescription() {
+
+    }
 }
