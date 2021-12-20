@@ -1,5 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -8,6 +9,9 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "order")
+//TODO check problems with booleans
+@NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = false")
+@NamedQuery(name = "Order.getPendingOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.pending = true")
 public class Order {
     @Id
     private int orderId;
@@ -19,7 +23,10 @@ public class Order {
     private int totalCost_euro;
     @Column(nullable = false)
     private LocalDate startDate;
+    @Column(nullable = false)
     private Boolean valid;
+    @Column(nullable = false)
+    private Boolean pending;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -79,13 +86,22 @@ public class Order {
         this.startDate = startDate;
     }
 
-    public Boolean getValid() {
+    public Boolean isValid() {
         return valid;
     }
 
     public void setValid(Boolean valid) {
         this.valid = valid;
     }
+
+    public Boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(Boolean pending) {
+        this.pending = pending;
+    }
+
 
     public User getUser() {
         return user;

@@ -4,7 +4,7 @@
 
 (function () {
     window.addEventListener("load", () => {
-        makeCall("GET", "GetServicePackages", null,
+        makeCall("GET", "GuestHomePageLoading", null,
             function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {
                     var message = req.responseText;

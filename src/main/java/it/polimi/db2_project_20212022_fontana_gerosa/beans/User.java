@@ -20,6 +20,7 @@ public class User {
     @Column(nullable = false)
     private String password;
     private Boolean insolvent = false;
+    private Boolean pending = false;
 
     @OneToMany(mappedBy = "user")
     private Collection<Order> orders;
@@ -68,9 +69,18 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getInsolvent() {
+    public Boolean isInsolvent() {
         return insolvent;
     }
+
+    public Boolean hasPending() {
+        return pending;
+    }
+
+    public void setPending(Boolean pending) {
+        this.pending = pending;
+    }
+
 
     public void setInsolvent(Boolean insolvent) {
         this.insolvent = insolvent;
