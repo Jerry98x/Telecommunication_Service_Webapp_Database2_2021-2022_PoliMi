@@ -31,7 +31,7 @@ public class LoggedHomePageLoading extends HttpServlet {
         List<Order> pendingOrders = new ArrayList<>();
         ServicePackageService servicePackageService = new ServicePackageService();
         List<ServicePackage> servicePackages = new ArrayList<>();
-        if(user.isInsolvent()) {
+/*        if(user.isInsolvent()) {
             try {
                 rejectedOrders = orderService.getRejectedOrders(user);
             } catch (PersistenceException e) {
@@ -49,7 +49,7 @@ public class LoggedHomePageLoading extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Not possible to recover pending orders");
             return;
-        }
+        }*/
 
         try {
             servicePackages = servicePackageService.getAllServicePackages();
@@ -64,7 +64,7 @@ public class LoggedHomePageLoading extends HttpServlet {
 
         Gson gson = new GsonBuilder().create();
 
-        HomePageContent hpc = new HomePageContent(user.getUsername(), user.isInsolvent(), rejectedOrders, pendingOrders, servicePackages);
+        HomePageContent hpc = new HomePageContent(user.getUsername(), user.isInsolvent(), servicePackages);
         String json = gson.toJson(hpc);
 
 
