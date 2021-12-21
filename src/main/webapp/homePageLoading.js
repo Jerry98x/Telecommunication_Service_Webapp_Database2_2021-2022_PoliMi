@@ -1,6 +1,21 @@
 /**
  *
  */
+function makeCall(method, url, formElement, cback, reset = true) {
+    var req = new XMLHttpRequest(); // visible by closure
+    req.onreadystatechange = function() {
+        cback(req)
+    }; // closure
+    req.open(method, url);
+    if (formElement == null) {
+        req.send();
+    } else {
+        req.send(new FormData(formElement));
+    }
+    if (formElement !== null && reset === true) {
+        formElement.reset();
+    }
+}
 
 (function () {
     window.addEventListener("load", () => {
@@ -15,7 +30,7 @@
                             // hpc.servicePackages.forEach(showSP(servicePakages))
 
                             hpc.servicePackages.forEach(showSP)
-                            showSP(hpc.servicePackages);
+                            //showSP(hpc.servicePackages);
                             break;
                         case 400: // bad request
                             document.getElementById("errormessage").textContent = message;
@@ -53,8 +68,11 @@ function showSP(servicePackage){
         h5Name.textContent = servicePackage.name;
 
         var li = clone.querySelectorAll("li");
-        servicePackage.services.forEach(e => {
-            // li.textContent = e.
+        servicePackage.servicesDescriptions.forEach(e => {
+             li.textContent = e;
+        })
+        servicePackage.availableOptionalProductsNames.forEach(e => {
+            li.textContent = e;
         })
         // li.textContent = servicePackage.services
 

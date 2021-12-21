@@ -1,6 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.HomePageContent;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.HomePageContent;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;

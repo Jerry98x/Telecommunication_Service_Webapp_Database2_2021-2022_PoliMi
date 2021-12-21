@@ -7,7 +7,7 @@ import jakarta.persistence.PersistenceException;
 import java.util.List;
 
 public class UserService {
-    private EntityManager em;
+    private EntityManager em;//TODO assign (HOW??? not instantiable because it is abstract)
 
     public User checkCredentials(String email, String password) throws PersistenceException {
         List<User> matchingUsers = em.createNamedQuery("User.checkCredentials", User.class).

@@ -2,7 +2,7 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.HomePageContent;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.HomePageContent;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
