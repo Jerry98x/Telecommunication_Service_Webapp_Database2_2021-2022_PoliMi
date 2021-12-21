@@ -23,8 +23,8 @@ public class GuestHomePageLoading extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-//        HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         ServicePackageService servicePackageService = new ServicePackageService();
         List<ServicePackage> servicePackages = new ArrayList<ServicePackage>();
 
@@ -40,7 +40,7 @@ public class GuestHomePageLoading extends HttpServlet {
         // Redirect to the Home page and add servicePackages to the parameters
 
         Gson gson = new GsonBuilder().create();
-        HomePageContent hpc = new HomePageContent(servicePackages);
+        HomePageContent hpc = new HomePageContent(user.getUsername(), user.isInsolvent(), servicePackages);
         String json = gson.toJson(hpc);
 
 
