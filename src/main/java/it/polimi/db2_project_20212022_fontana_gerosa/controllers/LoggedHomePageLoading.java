@@ -27,11 +27,21 @@ public class LoggedHomePageLoading extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         OrderService orderService = new OrderService();
-        List<Order> rejectedOrders = new ArrayList<>();
         List<Order> pendingOrders = new ArrayList<>();
+        List<Order> rejectedOrders = new ArrayList<>();
         ServicePackageService servicePackageService = new ServicePackageService();
         List<ServicePackage> servicePackages = new ArrayList<>();
-/*        if(user.isInsolvent()) {
+
+        try {
+            pendingOrders = orderService.getPendingOrders(user);
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Not possible to recover pending orders");
+            return;
+        }
+
+        if(user.isInsolvent()) {
             try {
                 rejectedOrders = orderService.getRejectedOrders(user);
             } catch (PersistenceException e) {
@@ -41,15 +51,6 @@ public class LoggedHomePageLoading extends HttpServlet {
                 return;
             }
         }
-
-        try {
-            pendingOrders = orderService.getPendingOrders(user);
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover pending orders");
-            return;
-        }*/
 
         try {
             servicePackages = servicePackageService.getAllServicePackages();
@@ -64,7 +65,7 @@ public class LoggedHomePageLoading extends HttpServlet {
 
         Gson gson = new GsonBuilder().create();
 
-        HomePageContent hpc = new HomePageContent(user.getUsername(), user.isInsolvent(), servicePackages);
+        HomePageContent hpc = new HomePageContent(user, pendingOrders, rejectedOrders, servicePackages);
         String json = gson.toJson(hpc);
 
 

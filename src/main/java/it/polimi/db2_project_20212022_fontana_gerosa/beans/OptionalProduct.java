@@ -12,7 +12,7 @@ public class OptionalProduct {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private int monthlyFee_euro;
+    private float monthlyFee_euro;
 
     @ManyToMany(mappedBy = "availableOptionalProducts")
     private Collection<ServicePackage> servicePackages;
@@ -37,11 +37,11 @@ public class OptionalProduct {
         this.name = name;
     }
 
-    public int getMonthlyFee_euro() {
+    public float getMonthlyFee_euro() {
         return monthlyFee_euro;
     }
 
-    public void setMonthlyFee_euro(int monthlyFee_euro) {
+    public void setMonthlyFee_euro(float monthlyFee_euro) {
         this.monthlyFee_euro = monthlyFee_euro;
     }
 

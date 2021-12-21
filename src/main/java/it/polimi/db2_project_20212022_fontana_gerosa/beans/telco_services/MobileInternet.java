@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 public class MobileInternet extends TelcoService {
     @Column(nullable = false)
     private int GBs;
-    private int extraGBFee_euro;
+    private float extraGBFee_euro;
 
     public int getGBs() {
         return GBs;
@@ -19,11 +19,11 @@ public class MobileInternet extends TelcoService {
         this.GBs = GBs;
     }
 
-    public int getExtraGBFee_euro() {
+    public float getExtraGBFee_euro() {
         return extraGBFee_euro;
     }
 
-    public void setExtraGBFee_euro(int extraGBFee_euro) {
+    public void setExtraGBFee_euro(float extraGBFee_euro) {
         this.extraGBFee_euro = extraGBFee_euro;
     }
 

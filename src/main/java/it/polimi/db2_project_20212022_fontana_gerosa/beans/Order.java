@@ -1,6 +1,5 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ public class Order {
     @Column(nullable = false)
     private LocalTime hourOfConfirmation;
     @Column(nullable = false)
-    private int totalCost_euro;
+    private float totalCost_euro;
     @Column(nullable = false)
     private LocalDate startDate;
     @Column(nullable = false)
@@ -70,11 +69,11 @@ public class Order {
         this.hourOfConfirmation = hourOfConfirmation;
     }
 
-    public int getTotalCost_euro() {
+    public float getTotalCost_euro() {
         return totalCost_euro;
     }
 
-    public void setTotalCost_euro(int totalCost_euro) {
+    public void setTotalCost_euro(float totalCost_euro) {
         this.totalCost_euro = totalCost_euro;
     }
 

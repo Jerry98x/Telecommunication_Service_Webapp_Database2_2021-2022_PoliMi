@@ -40,7 +40,7 @@ public class GuestHomePageLoading extends HttpServlet {
         // Redirect to the Home page and add servicePackages to the parameters
 
         Gson gson = new GsonBuilder().create();
-        HomePageContent hpc = new HomePageContent(user.getUsername(), user.isInsolvent(), servicePackages);
+        HomePageContent hpc = new HomePageContent(user, servicePackages);
         String json = gson.toJson(hpc);
 
 

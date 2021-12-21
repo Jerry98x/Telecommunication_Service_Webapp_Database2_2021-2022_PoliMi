@@ -11,8 +11,8 @@ public class MobilePhone extends TelcoService {
     private int minutes;
     @Column(nullable = false)
     private int SMSs;
-    private int extraMinFee_euro;
-    private int extraSMSFee_euro;
+    private float extraMinFee_euro;
+    private float extraSMSFee_euro;
 
     public int getMinutes() {
         return minutes;
@@ -30,19 +30,19 @@ public class MobilePhone extends TelcoService {
         this.SMSs = SMSs;
     }
 
-    public int getExtraMinFee_euro() {
+    public float getExtraMinFee_euro() {
         return extraMinFee_euro;
     }
 
-    public void setExtraMinFee_euro(int extraMinFee_euro) {
+    public void setExtraMinFee_euro(float extraMinFee_euro) {
         this.extraMinFee_euro = extraMinFee_euro;
     }
 
-    public int getExtraSMSFee_euro() {
+    public float getExtraSMSFee_euro() {
         return extraSMSFee_euro;
     }
 
-    public void setExtraSMSFee_euro(int extraSMSFee_euro) {
+    public void setExtraSMSFee_euro(float extraSMSFee_euro) {
         this.extraSMSFee_euro = extraSMSFee_euro;
     }
 
