@@ -1,13 +1,17 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.services;
 
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
 import java.util.List;
 
+@Stateless
 public class UserService {
-    private EntityManager em;//TODO assign (HOW??? not instantiable because it is abstract)
+    @PersistenceContext(unitName = "TelcoApp")
+    private EntityManager em;
 
     public User checkCredentials(String email, String password) throws PersistenceException {
         List<User> matchingUsers = em.createNamedQuery("User.checkCredentials", User.class).

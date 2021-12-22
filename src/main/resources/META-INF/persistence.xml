@@ -3,7 +3,21 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-    <persistence-unit name="default">
+    <persistence-unit name="TelcoApp" transaction-type="JTA">
+        <jta-data-source>db2_project</jta-data-source>
+
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.FixedInternet</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.FixedPhone</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.MobileInternet</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.MobilePhone</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.Employee</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.OptionalProduct</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.Order</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.User</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod</class>
 
     </persistence-unit>
 </persistence>
