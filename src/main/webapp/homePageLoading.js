@@ -53,28 +53,36 @@ function showSP(servicePackage){
 
     if('content' in document.createElement('template')) {
 
-
         //Instantiating page elements for service package
+        var body = document.querySelector("body");
+
         var container = document.querySelector('#container');
         var outerTemplate = document.querySelector('#spRow');
-        var innerTemplate = document.querySelector('#type_list');
+        //var spName = document.querySelector('#sp_name');
+        //var innerTemplate = document.querySelector('#type_list');
 
         //Cloning the new service packages
-        var cloneContainer = container.content.cloneNode(true);
+        //var cloneContainer = container.content.cloneNode(true);
         var cloneOutTemp = outerTemplate.content.cloneNode(true);
-        var cloneInTemp = innerTemplate.content.cloneNode(true);
+        //var cloneSpName = spName.content.cloneNode(true);
+        //var cloneInTemp = innerTemplate.content.cloneNode(true);
 
-        var h5Name = clone.querySelector("#sp_name");
+        var h5Name = cloneOutTemp.querySelector("#sp_name");
         h5Name.textContent = servicePackage.name;
 
-        var li = clone.querySelectorAll("li");
-        servicePackage.servicesDescriptions.forEach(e => {
-             li.textContent = e;
-        })
-        servicePackage.availableOptionalProductsNames.forEach(e => {
-            li.textContent = e;
-        })
-        // li.textContent = servicePackage.services
+        var divDescription = cloneOutTemp.querySelector("#descriptionInner");
+        divDescription.textContent = servicePackage.servicesDescriptions;
+
+        body.appendChild(cloneOutTemp);
+
+
+
+        // var li = cloneInTemp.querySelectorAll("li");
+        // servicePackage.servicesDescriptions.forEach(e => {
+        //      li.textContent = e;
+        // });
+
+        //TODO: generare dinamicamente ID HTML
 
     }
 

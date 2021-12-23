@@ -19,13 +19,13 @@ public class ServicePackage {
     private Collection<Order> orders;
 
     @ManyToMany
-    @JoinTable(name="service_package-service",
+    @JoinTable(name="service_package__service",
         joinColumns = @JoinColumn(name = "servicePackageId", referencedColumnName = "servicePackageId"),
         inverseJoinColumns = @JoinColumn(name = "serviceId", referencedColumnName = "serviceId"))
     private Collection<TelcoService> services;
 
     @ManyToMany
-    @JoinTable(name="service_package-optional_product",
+    @JoinTable(name="service_package__optional_product",
             joinColumns = @JoinColumn(name = "servicePackageId", referencedColumnName = "servicePackageId"),
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> availableOptionalProducts;
