@@ -10,7 +10,6 @@ import java.util.Collection;
 @Table(name = "order")
 //TODO check problems with booleans
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = false")
-@NamedQuery(name = "Order.getPendingOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.pending = true")
 public class Order {
     @Id
     private int orderId;
