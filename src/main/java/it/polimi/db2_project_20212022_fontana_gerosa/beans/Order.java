@@ -24,8 +24,6 @@ public class Order {
     private LocalDate startDate;
     @Column(nullable = false)
     private Boolean valid;
-    @Column(nullable = false)
-    private Boolean pending;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -91,14 +89,6 @@ public class Order {
 
     public void setValid(Boolean valid) {
         this.valid = valid;
-    }
-
-    public Boolean isPending() {
-        return pending;
-    }
-
-    public void setPending(Boolean pending) {
-        this.pending = pending;
     }
 
 

@@ -19,18 +19,18 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
 (function () {
     window.addEventListener("load", () => {
-        makeCall("GET", "GuestHomePageLoading", null,
+        makeCall("GET", "HomePageLoading", null,
             function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {
                     var message = req.responseText;
                     switch (req.status) {
                         case 200:
-                            var hpc = JSON.parse(message);
+                            var sps = JSON.parse(message);
 
-                            // hpc.servicePackages.forEach(showSP(servicePakages))
+                            // sps.servicePackages.forEach(showSP(servicePakages))
 
-                            hpc.servicePackages.forEach(showSP)
-                            //showSP(hpc.servicePackages);
+                            sps.servicePackages.forEach(showSP)
+                            //showSP(sps.servicePackages);
                             break;
                         case 400: // bad request
                             document.getElementById("errormessage").textContent = message;
