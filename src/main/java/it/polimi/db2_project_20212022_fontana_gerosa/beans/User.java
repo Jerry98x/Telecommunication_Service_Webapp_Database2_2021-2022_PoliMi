@@ -36,10 +36,6 @@ public class User {
         this.password = password;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -50,14 +46,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
@@ -72,23 +60,4 @@ public class User {
         return insolvent;
     }
 
-    public void setInsolvent(Boolean insolvent) {
-        this.insolvent = insolvent;
-    }
-
-    public Collection<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
-    }
-
-    public Alert getAlert() {
-        return alert;
-    }
-
-    public void setAlert(Alert alert) {
-        this.alert = alert;
-    }
 }

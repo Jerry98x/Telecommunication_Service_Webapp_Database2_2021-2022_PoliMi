@@ -23,6 +23,8 @@ public class Order {
     private LocalDate startDate;
     @Column(nullable = false)
     private Boolean valid;
+    @Column(nullable = false)
+    private int validityPeriodId;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -41,55 +43,6 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> chosenOptionalProducts;
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public LocalDate getDateOfConfirmation() {
-        return dateOfConfirmation;
-    }
-
-    public void setDateOfConfirmation(LocalDate dateOfConfirmation) {
-        this.dateOfConfirmation = dateOfConfirmation;
-    }
-
-    public LocalTime getHourOfConfirmation() {
-        return hourOfConfirmation;
-    }
-
-    public void setHourOfConfirmation(LocalTime hourOfConfirmation) {
-        this.hourOfConfirmation = hourOfConfirmation;
-    }
-
-    public float getTotalCost_euro() {
-        return totalCost_euro;
-    }
-
-    public void setTotalCost_euro(float totalCost_euro) {
-        this.totalCost_euro = totalCost_euro;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public Boolean isValid() {
-        return valid;
-    }
-
-    public void setValid(Boolean valid) {
-        this.valid = valid;
-    }
-
 
     public User getUser() {
         return user;
@@ -107,19 +60,4 @@ public class Order {
         this.servicePackage = servicePackage;
     }
 
-    public Alert getOptionalAlert() {
-        return optionalAlert;
-    }
-
-    public void setOptionalAlert(Alert optionalAlert) {
-        this.optionalAlert = optionalAlert;
-    }
-
-    public Collection<OptionalProduct> getChosenOptionalProducts() {
-        return chosenOptionalProducts;
-    }
-
-    public void setChosenOptionalProducts(Collection<OptionalProduct> chosenOptionalProducts) {
-        this.chosenOptionalProducts = chosenOptionalProducts;
-    }
 }

@@ -14,27 +14,4 @@ public class Alert {
     @Column(nullable = false)
     private Order lastRejectedOrder;
 
-    public void setAlertId(int alertId) {
-        this.alertId = alertId;
-    }
-
-    public int getAlertId() {
-        return alertId;
-    }
-
-    public User getInsolventUser() {
-        return insolventUser;
-    }
-
-    public void setInsolventUser(User insolventUser) {
-        this.insolventUser = insolventUser;
-    }
-
-    public Order getLastRejectedOrder() {
-        return lastRejectedOrder;
-    }
-
-    public void setLastRejectedOrder(Order lastRejectedOrder) {
-        this.lastRejectedOrder = lastRejectedOrder;
-    }
 }

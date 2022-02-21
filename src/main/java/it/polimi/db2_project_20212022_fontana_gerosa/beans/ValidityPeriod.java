@@ -17,27 +17,6 @@ public class ValidityPeriod {
     @Column(nullable = false)
     private float monthlyFee_euro;
 
-    public int getValidityPeriodId() {
-        return validityPeriodId;
-    }
-
-    public void setValidityPeriodId(int validityPeriodId) {
-        this.validityPeriodId = validityPeriodId;
-    }
-
-    public int getMonthsOfValidity() {
-        return monthsOfValidity;
-    }
-
-    public void setMonthsOfValidity(int monthsOfValidity) {
-        this.monthsOfValidity = monthsOfValidity;
-    }
-
-    public float getMonthlyFee() {
-        return monthlyFee_euro;
-    }
-
-    public void setMonthlyFee(float monthlyFee) {
-        this.monthlyFee_euro = monthlyFee;
-    }
+    @ManyToMany(mappedBy = "availableValidityPeriods")
+    private Collection<ServicePackage> servicePackages;
 }

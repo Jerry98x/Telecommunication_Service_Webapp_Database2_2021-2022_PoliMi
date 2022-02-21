@@ -20,44 +20,11 @@ public class OptionalProduct {
     @ManyToMany(mappedBy = "chosenOptionalProducts")
     private Collection<Order> orders;
 
-    public void setOptionalProductId(int optionalProductId) {
-        this.optionalProductId = optionalProductId;
-    }
-
-
-    public int getOptionalProductId() {
-        return optionalProductId;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public float getMonthlyFee_euro() {
-        return monthlyFee_euro;
-    }
-
-    public void setMonthlyFee_euro(float monthlyFee_euro) {
-        this.monthlyFee_euro = monthlyFee_euro;
-    }
-
-    public Collection<ServicePackage> getServicePackages() {
-        return servicePackages;
-    }
-
-    public void setServicePackages(Collection<ServicePackage> servicePackages) {
-        this.servicePackages = servicePackages;
-    }
-
-    public Collection<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
     }
 }

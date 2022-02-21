@@ -17,21 +17,5 @@ abstract public class TelcoService {
     @ManyToMany(mappedBy = "services")
     private Collection<ServicePackage> servicePackages;
 
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
-    }
-
-    public int getServiceId() {
-        return serviceId;
-    }
-
-    public Collection<ServicePackage> getServicePackages() {
-        return servicePackages;
-    }
-
-    public void setServicePackages(Collection<ServicePackage> servicePackages) {
-        this.servicePackages = servicePackages;
-    }
-
     public abstract String getDescription();
 }

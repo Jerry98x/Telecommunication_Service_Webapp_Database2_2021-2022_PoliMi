@@ -11,22 +11,6 @@ public class FixedInternet extends TelcoService {
     private int GBs;
     private float extraGBFee_euro;
 
-    public int getGBs() {
-        return GBs;
-    }
-
-    public void setGBs(int GBs) {
-        this.GBs = GBs;
-    }
-
-    public float getExtraGBFee_euro() {
-        return extraGBFee_euro;
-    }
-
-    public void setExtraGBFee_euro(float extraGBFee_euro) {
-        this.extraGBFee_euro = extraGBFee_euro;
-    }
-
 
     @Override
     public String getDescription() {

@@ -30,9 +30,11 @@ public class ServicePackage {
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> availableOptionalProducts;
 
-    public void setServicePackageId(int servicePackageId) {
-        this.servicePackageId = servicePackageId;
-    }
+    @ManyToMany
+    @JoinTable(name = "service_package__validity_period",
+            joinColumns = @JoinColumn(name = "servicePackageId", referencedColumnName = "servicePackageId"),
+            inverseJoinColumns = @JoinColumn(name = "validityPeriodId", referencedColumnName = "validityPeriodId"))
+    private Collection<ValidityPeriod> availableValidityPeriods;
 
     public int getServicePackageId() {
         return servicePackageId;
@@ -44,14 +46,6 @@ public class ServicePackage {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Collection<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
     }
 
     public Collection<TelcoService> getServices() {
@@ -66,7 +60,4 @@ public class ServicePackage {
         return availableOptionalProducts;
     }
 
-    public void setAvailableOptionalProducts(Collection<OptionalProduct> availableOptionalProducts) {
-        this.availableOptionalProducts = availableOptionalProducts;
-    }
 }
