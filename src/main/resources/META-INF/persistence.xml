@@ -3,7 +3,7 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-    <persistence-unit name="TelcoApp" transaction-type="JTA">
+    <persistence-unit name="DB2_Project_2021-2022_Fontana_Gerosa" transaction-type="JTA">
         <jta-data-source>db2_project</jta-data-source>
 
         <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService</class>

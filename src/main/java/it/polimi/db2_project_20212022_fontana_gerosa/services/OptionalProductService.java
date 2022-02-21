@@ -6,6 +6,6 @@ import jakarta.persistence.PersistenceContext;
 
 @Stateless
 public class OptionalProductService {
-    @PersistenceContext(unitName = "TelcoApp")
+    @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 }

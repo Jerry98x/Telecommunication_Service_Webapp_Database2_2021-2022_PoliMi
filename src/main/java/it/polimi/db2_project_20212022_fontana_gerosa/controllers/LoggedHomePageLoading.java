@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Pattern;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,3 +49,4 @@ public class LoggedHomePageLoading extends HttpServlet {
         response.getWriter().write(json);
     }
 }
+

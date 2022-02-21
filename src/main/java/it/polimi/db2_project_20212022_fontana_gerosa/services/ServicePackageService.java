@@ -10,7 +10,7 @@ import java.util.List;
 
 @Stateless
 public class ServicePackageService {
-    @PersistenceContext(unitName = "TelcoApp")
+    @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
     public List<ServicePackage> getAllServicePackages(){
