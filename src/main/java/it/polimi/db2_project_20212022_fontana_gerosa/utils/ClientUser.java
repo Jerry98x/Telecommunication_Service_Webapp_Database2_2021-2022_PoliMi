@@ -1,6 +1,5 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.utils;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 

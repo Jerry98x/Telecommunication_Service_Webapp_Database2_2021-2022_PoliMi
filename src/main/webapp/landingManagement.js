@@ -13,8 +13,14 @@
                         var message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                sessionStorage.setItem('username', message);
-                                window.location.href = "HomePage.html";
+                                let user = JSON.parse(message);
+                                sessionStorage.setItem('user', user);
+                                if(sessionStorage.getItem('pendingOrder') != null) {
+                                    window.location.href = "ConfirmationPage.html";
+                                }
+                                else {
+                                    window.location.href = "HomePage.html";
+                                }
                                 break;
                             case 400: // bad request
                                 document.getElementById("errormessage").textContent = message;

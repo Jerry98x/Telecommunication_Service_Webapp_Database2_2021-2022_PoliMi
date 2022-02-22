@@ -1,7 +1,10 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientUser;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -9,7 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 
@@ -31,8 +34,8 @@ public class CheckLogin extends HttpServlet {
         // obtain and escape params
         String email = null;
         String password = null;
-        email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-        password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+        email = StringEscapeUtils.escapeJava(request.getParameter("login_email"));
+        password = StringEscapeUtils.escapeJava(request.getParameter("login_password"));
         if (email == null || password == null || email.isEmpty() || password.isEmpty() ) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Credentials must be not null");
@@ -54,12 +57,22 @@ public class CheckLogin extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("Incorrect credentials");
         } else {
-            request.getSession().setAttribute("user", user);
+            ClientUser clientUser = new ClientUser(user);
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(clientUser);
+
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().println(email);
+            response.getWriter().write(json);
         }
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        doPost(request, response);
 
     }
 
