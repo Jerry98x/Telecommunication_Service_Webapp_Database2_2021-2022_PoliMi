@@ -5,13 +5,13 @@ import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class HomePageServicePackage {
+public class ClientServicePackage {
     private int servicePackageId;
     private String name;
     private Collection<String> servicesDescriptions;
     private Collection<String> availableOptionalProductsNames;
 
-    public HomePageServicePackage(ServicePackage servicePackage){
+    public ClientServicePackage(ServicePackage servicePackage){
         this.servicePackageId = servicePackage.getServicePackageId();
         this.name = servicePackage.getName();
         this.servicesDescriptions = new ArrayList<>();
