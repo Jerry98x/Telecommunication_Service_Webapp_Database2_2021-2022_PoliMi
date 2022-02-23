@@ -6,6 +6,7 @@ import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientUser;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
+import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -25,6 +26,9 @@ import java.sql.SQLException;
 public class CheckLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
+
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services.UserService")
+    private UserService userService = new UserService();
 
     public CheckLogin() {
         super();
@@ -47,7 +51,6 @@ public class CheckLogin extends HttpServlet {
             return;
         }
         // query db to authenticate for user
-        UserService userService = new UserService();
         User user = null;
         try {
             user = userService.checkCredentials(email, password);

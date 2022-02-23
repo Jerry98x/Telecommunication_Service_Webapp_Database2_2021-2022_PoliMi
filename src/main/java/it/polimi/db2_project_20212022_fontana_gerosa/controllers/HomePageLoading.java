@@ -4,6 +4,7 @@ import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
+import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -25,6 +26,10 @@ import java.util.List;
 @MultipartConfig
 public class HomePageLoading extends HttpServlet {
 
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService")
+    private ServicePackageService servicePackageService = new ServicePackageService();
+
+
     private Connection connection = null;
 
     public void init() throws ServletException {
@@ -35,7 +40,6 @@ public class HomePageLoading extends HttpServlet {
             throws IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        ServicePackageService servicePackageService = new ServicePackageService();
         List<ServicePackage> servicePackages;
 
         try {

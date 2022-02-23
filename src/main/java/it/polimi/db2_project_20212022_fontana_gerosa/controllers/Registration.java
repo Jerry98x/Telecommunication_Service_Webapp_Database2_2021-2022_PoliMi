@@ -4,6 +4,7 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
+import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -21,6 +22,9 @@ import java.sql.SQLException;
 public class Registration {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
+
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services.UserService")
+    private UserService userService = new UserService();
 
     public Registration() { super();}
 
@@ -45,7 +49,6 @@ public class Registration {
             return;
         }
         // query db to authenticate for user
-        UserService userService = new UserService();
         User byEmail = null;
         User byUsername = null;
         try {

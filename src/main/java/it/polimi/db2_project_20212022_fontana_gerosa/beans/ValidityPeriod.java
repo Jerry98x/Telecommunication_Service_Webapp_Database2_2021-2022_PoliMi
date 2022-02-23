@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "validity_period")
+@Table(name = "validity_period", schema = "db2_project")
 public class ValidityPeriod {
     @Id
 //    @Column(name = "validity_period_id", nullable = false)
