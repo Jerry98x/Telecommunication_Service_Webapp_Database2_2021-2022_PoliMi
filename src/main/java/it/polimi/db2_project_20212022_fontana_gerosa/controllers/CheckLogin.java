@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientUser;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -16,18 +17,21 @@ import org.apache.commons.lang3.StringEscapeUtils;
 //import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @WebServlet("/CheckLogin")
 @MultipartConfig
 public class CheckLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private Connection connection = null;
 
     public CheckLogin() {
         super();
     }
 
     public void init() throws ServletException {
-        //TODO initialize persistence connection??
+        connection = ConnectionHandler.getConnection(getServletContext());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -79,8 +83,8 @@ public class CheckLogin extends HttpServlet {
 
     public void destroy() {
         try {
-            //TODO close persistence connection?
-        } catch (PersistenceException e) {
+            ConnectionHandler.closeConnection(connection);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

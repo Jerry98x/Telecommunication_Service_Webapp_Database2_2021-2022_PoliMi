@@ -3,7 +3,10 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.persistence.PersistenceException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,10 +17,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/HomePageLoading")
+@MultipartConfig
 public class HomePageLoading extends HttpServlet {
+
+    private Connection connection = null;
+
+    public void init() throws ServletException {
+        connection = ConnectionHandler.getConnection(getServletContext());
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -43,5 +55,13 @@ public class HomePageLoading extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
+    }
+
+    public void destroy() {
+        try {
+            ConnectionHandler.closeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
