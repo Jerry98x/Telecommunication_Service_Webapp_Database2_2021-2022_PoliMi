@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
+import javax.security.auth.login.CredentialException;
 import java.util.List;
 
 @Stateless
@@ -13,9 +14,17 @@ public class UserService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
-    public User checkCredentials(String email, String password) throws PersistenceException {
-        List<User> matchingUsers = em.createNamedQuery("User.checkCredentials", User.class).
-                setParameter(1, email).setParameter(2, password).getResultList();
+    public User checkCredentials(String email, String password) throws PersistenceException, CredentialException {
+        List<User> matchingUsers = null;
+        try {
+            matchingUsers = em.createNamedQuery("User.checkCredentials", User.class).
+                    setParameter(1, email).setParameter(2, password).getResultList();
+        } catch (PersistenceException e){
+            throw new CredentialException("Could not verify credentials");
+        }
+        if(matchingUsers.isEmpty()){
+            return null;
+        }
         return matchingUsers.get(0);
     }
 

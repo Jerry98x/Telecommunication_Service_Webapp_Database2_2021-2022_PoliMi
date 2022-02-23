@@ -23,7 +23,7 @@ public class Registration {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services.UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
     private UserService userService = new UserService();
 
     public Registration() { super();}

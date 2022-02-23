@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 //import org.apache.commons.text.StringEscapeUtils;
 
+import javax.security.auth.login.CredentialException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ public class CheckLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services.UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
     private UserService userService = new UserService();
 
     public CheckLogin() {
@@ -58,6 +59,9 @@ public class CheckLogin extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Internal server error, retry later");
             return;
+        } catch (CredentialException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         // If the user exists, add info to the session and go to home page, otherwise
         // return an error status code and message

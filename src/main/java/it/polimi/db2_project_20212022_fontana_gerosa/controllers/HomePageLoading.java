@@ -26,7 +26,7 @@ import java.util.List;
 @MultipartConfig
 public class HomePageLoading extends HttpServlet {
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
 
