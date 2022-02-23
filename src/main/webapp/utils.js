@@ -13,7 +13,7 @@
 	    } else {
 	      req.send(new FormData(formElement));
 	    }
-	    if (formElement !== null && reset === true) {
-	      formElement.reset();
-	    }
+	    // if (formElement !== null && reset === true) {
+	    //   formElement.reset();
+	    // }
 	  }
