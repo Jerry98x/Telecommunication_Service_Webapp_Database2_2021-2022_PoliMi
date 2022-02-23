@@ -14,8 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringEscapeUtils;
 //import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.security.auth.login.CredentialException;
 import java.io.IOException;
@@ -39,6 +39,7 @@ public class CheckLogin extends HttpServlet {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // obtain and escape params
@@ -81,6 +82,7 @@ public class CheckLogin extends HttpServlet {
 
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

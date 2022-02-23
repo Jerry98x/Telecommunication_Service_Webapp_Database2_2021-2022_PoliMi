@@ -36,6 +36,7 @@ public class HomePageLoading extends HttpServlet {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         HttpSession session = request.getSession();

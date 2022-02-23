@@ -9,8 +9,10 @@ import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+//import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.sql.SQLException;
 
 @WebServlet("/Registration")
 @MultipartConfig
-public class Registration {
+public class Registration extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
@@ -29,9 +31,10 @@ public class Registration {
     public Registration() { super();}
 
     public void init() throws ServletException {
-        //connection = ConnectionHandler.getConnection(getServletContext());
+        connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // obtain and escape params
