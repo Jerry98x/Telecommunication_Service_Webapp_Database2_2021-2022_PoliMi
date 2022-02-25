@@ -8,12 +8,14 @@ import java.util.Collection;
 @Entity
 @Table(name = "validity_period", schema = "db2_project")
 public class ValidityPeriod {
+
     @Id
-//    @Column(name = "validity_period_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int validityPeriodId;
 
     @Column(name = "monthsOfValidity", nullable = false)
     private int monthsOfValidity;
+
     @Column(name = "monthlyFee(€)", nullable = false)
     private float monthlyFee_euro;
 

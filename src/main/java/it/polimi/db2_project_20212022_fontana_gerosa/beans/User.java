@@ -1,6 +1,7 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.Collection;
 
@@ -12,13 +13,19 @@ import java.util.Collection;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+
     @Column(name = "username", unique = true, nullable = false)
     private String username;
+
     @Column(name = "email", unique = true, nullable = false)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "{invalid.email}")
     private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
+
     @Column(name = "insolvent")
     private int insolvent = 0;
 

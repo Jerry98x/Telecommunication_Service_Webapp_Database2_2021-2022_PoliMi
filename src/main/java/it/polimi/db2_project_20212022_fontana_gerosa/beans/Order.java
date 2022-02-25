@@ -12,16 +12,26 @@ import java.util.Collection;
 //TODO check problems with booleans
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = 0")
 public class Order {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
+
     @Column(name = "date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dateOfConfirmation;
+
     @Column(name = "hour", nullable = false)
+    @Temporal(TemporalType.TIME)
     private Time hourOfConfirmation;
+
     @Column(name = "totalCost(€)", nullable = false)
     private float totalCost_euro;
+
     @Column(name = "startDate", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date startDate;
+
     @Column(name = "valid", nullable = false)
     private int valid;
 

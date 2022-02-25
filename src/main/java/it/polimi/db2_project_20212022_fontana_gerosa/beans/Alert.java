@@ -5,8 +5,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "alert", schema = "db2_project")
 public class Alert {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int alertId;
+
     /*
     @OneToOne
     @Column(name = "userId", nullable = false)

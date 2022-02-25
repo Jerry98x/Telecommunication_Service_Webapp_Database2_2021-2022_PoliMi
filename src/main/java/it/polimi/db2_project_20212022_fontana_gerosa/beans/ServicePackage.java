@@ -11,7 +11,9 @@ import java.util.Collection;
 public class ServicePackage {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int servicePackageId;
+
     @Column(name = "name")
     private String name;
 

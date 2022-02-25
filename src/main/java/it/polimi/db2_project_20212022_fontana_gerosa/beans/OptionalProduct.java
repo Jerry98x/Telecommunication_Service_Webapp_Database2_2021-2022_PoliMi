@@ -10,10 +10,14 @@ import java.util.Collection;
         query = "SELECT o FROM OptionalProduct o, ServicePackage sp, ServicePackage.availableOptionalProducts spo WHERE " +
                 "o.optionalProductId = spo.optionalProductId AND sp.servicePackageId = ?1")
 public class OptionalProduct {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int optionalProductId;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "monthlyFee(€)", nullable = false)
     private float monthlyFee_euro;
 
