@@ -8,7 +8,7 @@ import java.util.Collection;
 public class ClientUser {
     private int userId;
     private String username;
-    private Boolean insolvent;
+    private int insolvent;
     private Collection<Order> rejectedOrders;
 
     public ClientUser(User user) {

@@ -13,19 +13,22 @@ public class User {
 
     @Id
     private int userId;
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
-    private Boolean insolvent = false;
+    @Column(name = "insolvent")
+    private int insolvent = 0;
 
     @OneToMany(mappedBy = "user")
     private Collection<Order> orders;
-
+/*
     @OneToOne(mappedBy = "insolventUser")
     private Alert alert;
+
+*/
 
     public User(){
     }
@@ -56,7 +59,7 @@ public class User {
         this.password = password;
     }
 
-    public Boolean isInsolvent() {
+    public int isInsolvent() {
         return insolvent;
     }
 

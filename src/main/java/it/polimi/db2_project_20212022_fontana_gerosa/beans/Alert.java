@@ -7,11 +7,14 @@ import jakarta.persistence.*;
 public class Alert {
     @Id
     private int alertId;
+    /*
     @OneToOne
-    @Column(nullable = false)
+    @Column(name = "userId", nullable = false)
     private User insolventUser;
     @OneToOne
-    @Column(nullable = false)
+    @Column(name = "lastRejectedOrderId", nullable = false)
     private Order lastRejectedOrder;
+
+     */
 
 }

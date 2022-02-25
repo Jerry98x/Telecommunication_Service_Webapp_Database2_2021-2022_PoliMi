@@ -7,11 +7,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "mobile_phone", schema = "db2_project")
 public class MobilePhone extends TelcoService {
-    @Column(nullable = false)
+    @Column(name = "minutes", nullable = false)
     private int minutes;
-    @Column(nullable = false)
+    @Column(name = "SMSs", nullable = false)
     private int SMSs;
+    @Column(name = "extraMinFee(€)")
     private float extraMinFee_euro;
+    @Column(name = "extraSMSFee(€)")
     private float extraSMSFee_euro;
 
 

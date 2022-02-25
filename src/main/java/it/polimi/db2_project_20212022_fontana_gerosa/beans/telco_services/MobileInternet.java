@@ -7,8 +7,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "mobile_internet", schema = "db2_project")
 public class MobileInternet extends TelcoService {
-    @Column(nullable = false)
+    @Column(name = "GBs", nullable = false)
     private int GBs;
+    @Column(name = "extraGBFee(€)")
     private float extraGBFee_euro;
 
 

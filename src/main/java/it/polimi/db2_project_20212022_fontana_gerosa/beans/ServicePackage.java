@@ -12,7 +12,7 @@ public class ServicePackage {
 
     @Id
     private int servicePackageId;
-    @Column
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "servicePackage")

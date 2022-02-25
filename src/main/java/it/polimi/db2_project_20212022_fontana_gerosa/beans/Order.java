@@ -2,29 +2,32 @@ package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Collection;
+
 
 @Entity
 @Table(name = "order", schema = "db2_project")
 //TODO check problems with booleans
-@NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = false")
+@NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = 0")
 public class Order {
     @Id
     private int orderId;
-    @Column(nullable = false)
-    private LocalDate dateOfConfirmation;
-    @Column(nullable = false)
-    private LocalTime hourOfConfirmation;
-    @Column(nullable = false)
+    @Column(name = "date", nullable = false)
+    private Date dateOfConfirmation;
+    @Column(name = "hour", nullable = false)
+    private Time hourOfConfirmation;
+    @Column(name = "totalCost(€)", nullable = false)
     private float totalCost_euro;
-    @Column(nullable = false)
-    private LocalDate startDate;
-    @Column(nullable = false)
-    private Boolean valid;
-    @Column(nullable = false)
-    private int validityPeriodId;
+    @Column(name = "startDate", nullable = false)
+    private Date startDate;
+    @Column(name = "valid", nullable = false)
+    private int valid;
+
+    @ManyToOne
+    @JoinColumn(name = "validityPeriodId")
+    private ValidityPeriod validityPeriod;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -33,9 +36,11 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "servicePackageId")
     private ServicePackage servicePackage;
-
+/*
     @OneToOne(mappedBy = "lastRejectedOrder")
     private Alert optionalAlert;
+
+ */
 
     @ManyToMany
     @JoinTable(name="order__optional_product",

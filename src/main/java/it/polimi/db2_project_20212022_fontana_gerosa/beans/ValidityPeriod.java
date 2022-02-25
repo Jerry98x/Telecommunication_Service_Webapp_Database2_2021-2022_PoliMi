@@ -12,11 +12,14 @@ public class ValidityPeriod {
 //    @Column(name = "validity_period_id", nullable = false)
     private int validityPeriodId;
 
-    @Column(nullable = false)
+    @Column(name = "monthsOfValidity", nullable = false)
     private int monthsOfValidity;
-    @Column(nullable = false)
+    @Column(name = "monthlyFee(€)", nullable = false)
     private float monthlyFee_euro;
 
     @ManyToMany(mappedBy = "availableValidityPeriods")
     private Collection<ServicePackage> servicePackages;
+
+    @OneToMany(mappedBy = "validityPeriod")
+    private Collection<Order> orders;
 }

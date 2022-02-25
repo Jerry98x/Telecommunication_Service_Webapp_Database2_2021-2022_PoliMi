@@ -9,9 +9,9 @@ import java.util.Collection;
 public class OptionalProduct {
     @Id
     private int optionalProductId;
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(name = "monthlyFee", nullable = false)
     private float monthlyFee_euro;
 
     @ManyToMany(mappedBy = "availableOptionalProducts")
