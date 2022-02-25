@@ -5,6 +5,7 @@
 .idea/**
 out/**
 out/
+*.jar
 
 # Mac
 .DS_Store
