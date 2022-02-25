@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "fixed_phone")
+@Table(name = "fixed_phone", schema = "db2_project")
 public class FixedPhone extends TelcoService {
 
     @Override

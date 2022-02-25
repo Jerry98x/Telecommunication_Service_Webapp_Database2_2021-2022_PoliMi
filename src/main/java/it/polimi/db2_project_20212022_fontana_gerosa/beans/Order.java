@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order", schema = "db2_project")
 //TODO check problems with booleans
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = false")
 public class Order {

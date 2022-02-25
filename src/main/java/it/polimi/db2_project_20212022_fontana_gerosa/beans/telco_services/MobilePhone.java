@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "mobile_phone")
+@Table(name = "mobile_phone", schema = "db2_project")
 public class MobilePhone extends TelcoService {
     @Column(nullable = false)
     private int minutes;

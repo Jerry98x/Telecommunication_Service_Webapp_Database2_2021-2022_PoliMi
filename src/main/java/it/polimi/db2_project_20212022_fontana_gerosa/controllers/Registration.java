@@ -4,12 +4,15 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
+import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+//import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
@@ -18,16 +21,20 @@ import java.sql.SQLException;
 
 @WebServlet("/Registration")
 @MultipartConfig
-public class Registration {
+public class Registration extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
+
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
+    private UserService userService = new UserService();
 
     public Registration() { super();}
 
     public void init() throws ServletException {
-        //connection = ConnectionHandler.getConnection(getServletContext());
+        connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // obtain and escape params
@@ -45,7 +52,6 @@ public class Registration {
             return;
         }
         // query db to authenticate for user
-        UserService userService = new UserService();
         User byEmail = null;
         User byUsername = null;
         try {

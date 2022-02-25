@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "service")
+@Table(name = "service", schema = "db2_project")
 @NamedQuery(name = "TelcoService.getServicesByPackageId",
         query = "SELECT s FROM TelcoService s, ServicePackage sp, ServicePackage.services sps WHERE " +
                 "s.serviceId = sps.serviceId AND sp.servicePackageId = ?1")
