@@ -1,8 +1,8 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -12,7 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +19,8 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @WebServlet("/HomePageLoading")
@@ -39,23 +40,20 @@ public class HomePageLoading extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        List<ServicePackage> servicePackages;
+        List<ClientServicePackage> clientServicePackages;
 
         try {
-            servicePackages = servicePackageService.getAllServicePackages();
+            clientServicePackages = servicePackageService.getAllClientServicePackages();
         } catch (PersistenceException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover missions");
+            response.getWriter().println("Not possible to recover service packages");
             return;
         }
 
         // Redirect to the Home page and add servicePackages to the parameters
-
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(servicePackages);
+        String json = gson.toJson(clientServicePackages);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

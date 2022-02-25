@@ -5,6 +5,7 @@ import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoS
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 
 import java.util.List;
 
@@ -13,9 +14,15 @@ public class TelcoServiceService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
-    public List<TelcoService> getServices(ServicePackage servicePackage) {
-
-        return em.createNamedQuery("TelcoService.getServicesByPackageId", TelcoService.class).getResultList();
+    public List<TelcoService> getServicesByPackage(ServicePackage servicePackage) {
+        List<TelcoService> telcoServices = null;
+        try{
+            telcoServices = em.createNamedQuery("TelcoService.getServicesByPackageId", TelcoService.class).
+                    setParameter(1,servicePackage.getServicePackageId()).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("couldn't retrieve services of a package");
+        }
+        return telcoServices;
     }
 }
 

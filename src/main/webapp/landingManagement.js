@@ -14,7 +14,10 @@
                         switch (req.status) {
                             case 200:
                                 let user = JSON.parse(message);
-                                sessionStorage.setItem('user', user);
+                                sessionStorage.setItem('logged_user', user);
+                                if(user.isInsolvent == 1){
+                                    sessionStorage.setItem('rejectedOrders', user.rejectedOrders);
+                                }
                                 if(sessionStorage.getItem('pendingOrder') != null) {
                                     window.location.href = "ConfirmationPage.html";
                                 }

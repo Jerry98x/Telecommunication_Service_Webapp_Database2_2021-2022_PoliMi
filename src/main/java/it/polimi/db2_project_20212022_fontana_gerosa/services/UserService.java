@@ -14,8 +14,8 @@ public class UserService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
-    public User checkCredentials(String email, String password) throws PersistenceException, CredentialException {
-        List<User> matchingUsers = null;
+    public User checkCredentials(String email, String password) throws CredentialException {
+        List<User> matchingUsers;
         try {
             matchingUsers = em.createNamedQuery("User.checkCredentials", User.class).
                     setParameter(1, email).setParameter(2, password).getResultList();

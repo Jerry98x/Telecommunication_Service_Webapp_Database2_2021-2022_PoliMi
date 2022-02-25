@@ -25,12 +25,21 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     var message = req.responseText;
                     switch (req.status) {
                         case 200:
-                            var sps = JSON.parse(message);
+                            if(sessionStorage.getItem('logged_user') != null){
+                                //show user info
+                                if(sessionStorage.getItem('rejectedOrders') != null){
+                                    //show rejected orders
+                                }
+                            }
+                            let sps = JSON.parse(message);
 
-                            // sps.servicePackages.forEach(showSP(servicePakages))
+                            var anchor = document.createDocumentFragment();
+                            let title = document.createElement("div");
+                            title.innerHTML = "Available Service Packages";
+                            anchor.appendChild(title);
+                            sps.forEach(showServicePackage);
 
-                            sps.servicePackages.forEach(showSP)
-                            //showSP(sps.servicePackages);
+                            document.getElementById("main").appendChild(anchor);
                             break;
                         case 400: // bad request
                             document.getElementById("errormessage").textContent = message;
@@ -49,42 +58,76 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
 })();
 
-function showSP(servicePackage){
+function showServiceDescription(serviceDescription){
+    let service = document.createElement("div");
+    service.innerHTML = serviceDescription;
+    services.appendChild(service);
+}
 
-    if('content' in document.createElement('template')) {
+function showOptionalProducts(optionalProductName){
+    let optionalProduct = document.createElement("div");
+    optionalProduct.innerHTML = optionalProductName;
+    availableOptionalProducts.appendChild(optionalProduct);
+}
 
-        //Instantiating page elements for service package
-        var body = document.querySelector("body");
+function showServicePackage(servicePackage) {
+    let servicePackageDiv = document.createElement("div");
+    servicePackageDiv.id = "service_package";// + servicePackage.id;
+    let packageName = document.createElement("a");
+    packageName.innerHTML = "sp.name";//servicePackage.name;
+    packageName.href = "BuyServicePackagePage.hmtl";
+    var services = document.createElement("div");
+    servicePackage.servicesDescriptions.forEach(showServiceDescription);
 
-        var container = document.querySelector('#container');
-        var outerTemplate = document.querySelector('#spRow');
-        //var spName = document.querySelector('#sp_name');
-        //var innerTemplate = document.querySelector('#type_list');
-
-        //Cloning the new service packages
-        //var cloneContainer = container.content.cloneNode(true);
-        var cloneOutTemp = outerTemplate.content.cloneNode(true);
-        //var cloneSpName = spName.content.cloneNode(true);
-        //var cloneInTemp = innerTemplate.content.cloneNode(true);
-
-        var h5Name = cloneOutTemp.querySelector("#sp_name");
-        h5Name.textContent = servicePackage.name;
-
-        var divDescription = cloneOutTemp.querySelector("#descriptionInner");
-        divDescription.textContent = servicePackage.servicesDescriptions;
-
-        body.appendChild(cloneOutTemp);
+    var availableOptionalProducts = document.createElement("div");
+    servicePackage.availableOptionalProductsNames.forEach(showOptionalProducts);
 
 
+    servicePackageDiv.appendChild(packageName);
+    package.appendChild(services);
+    package.appendChild(availableOptionalProducts);
 
-        // var li = cloneInTemp.querySelectorAll("li");
-        // servicePackage.servicesDescriptions.forEach(e => {
-        //      li.textContent = e;
-        // });
+    anchor.appendChild(servicePackageDiv);
 
-        //TODO: generare dinamicamente ID HTML
 
-    }
+    /*
+    function showSP(servicePackage){
+
+        if('content' in document.createElement('template')) {
+
+            //Instantiating page elements for service package
+            var body = document.querySelector("body");
+
+            var container = document.querySelector('#container');
+            var outerTemplate = document.querySelector('#spRow');
+            //var spName = document.querySelector('#sp_name');
+            //var innerTemplate = document.querySelector('#type_list');
+
+            //Cloning the new service packages
+            //var cloneContainer = container.content.cloneNode(true);
+            var cloneOutTemp = outerTemplate.content.cloneNode(true);
+            //var cloneSpName = spName.content.cloneNode(true);
+            //var cloneInTemp = innerTemplate.content.cloneNode(true);
+
+            var h5Name = cloneOutTemp.querySelector("#sp_name");
+            h5Name.textContent = servicePackage.name;
+
+            var divDescription = cloneOutTemp.querySelector("#descriptionInner");
+            divDescription.textContent = servicePackage.servicesDescriptions;
+
+            body.appendChild(cloneOutTemp);
+
+
+
+            // var li = cloneInTemp.querySelectorAll("li");
+            // servicePackage.servicesDescriptions.forEach(e => {
+            //      li.textContent = e;
+            // });
+
+            //TODO: generare dinamicamente ID HTML
+
+        }
+        */
 
 
     // var elem, i, row, destcell, datecell, linkcell, anchor;
@@ -115,5 +158,5 @@ function showSP(servicePackage){
     //     row.appendChild(linkcell);
     //     self.listcontainerbody.appendChild(row);
     // });
-    this.listcontainer.style.visibility = "visible";
+    //this.listcontainer.style.visibility = "visible";
 }
