@@ -31,6 +31,12 @@ public class ServicePackageService {
         } catch (PersistenceException e){
             throw new PersistenceException("couldn't retrieve packages");
         }
+        if(servicePackages != null){
+            clientServicePackages = new ArrayList<>();
+            List<ClientServicePackage> finalClientServicePackages = clientServicePackages;
+            servicePackages.forEach(servicePackage -> finalClientServicePackages.add(new ClientServicePackage(servicePackage)));
+        }
+        /*
         if(servicePackages != null) {
             for(ServicePackage servicePackage : servicePackages){
                 Collection<TelcoService> telcoServices = null;
@@ -43,6 +49,8 @@ public class ServicePackageService {
                 }
             }
         }
+
+         */
 
         return clientServicePackages;
     }

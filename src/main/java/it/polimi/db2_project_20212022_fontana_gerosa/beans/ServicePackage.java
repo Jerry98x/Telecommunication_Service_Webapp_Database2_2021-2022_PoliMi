@@ -18,13 +18,13 @@ public class ServicePackage {
     @OneToMany(mappedBy = "servicePackage")
     private Collection<Order> orders;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="service_package__service",
         joinColumns = @JoinColumn(name = "servicePackageId", referencedColumnName = "servicePackageId"),
         inverseJoinColumns = @JoinColumn(name = "serviceId", referencedColumnName = "serviceId"))
     private Collection<TelcoService> services;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="service_package__optional_product",
             joinColumns = @JoinColumn(name = "servicePackageId", referencedColumnName = "servicePackageId"),
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
