@@ -37,7 +37,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             let title = document.createElement("div");
                             title.innerHTML = "Available Service Packages";
                             anchor.appendChild(title);
-                            sps.forEach(showServicePackage);
+                            sps.forEach(sp => showServicePackage(sp, anchor));
 
                             document.getElementById("main").appendChild(anchor);
                             break;
@@ -58,34 +58,22 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
 })();
 
-function showServiceDescription(serviceDescription){
-    let service = document.createElement("div");
-    service.innerHTML = serviceDescription;
-    services.appendChild(service);
-}
-
-function showOptionalProducts(optionalProductName){
-    let optionalProduct = document.createElement("div");
-    optionalProduct.innerHTML = optionalProductName;
-    availableOptionalProducts.appendChild(optionalProduct);
-}
-
-function showServicePackage(servicePackage) {
+function showServicePackage(servicePackage, anchor) {
     let servicePackageDiv = document.createElement("div");
-    servicePackageDiv.id = "service_package";// + servicePackage.id;
+    servicePackageDiv.id = "service_package" + servicePackage.id;
     let packageName = document.createElement("a");
-    packageName.innerHTML = "sp.name";//servicePackage.name;
+    packageName.innerHTML = servicePackage.name;
     packageName.href = "BuyServicePackagePage.hmtl";
-    var services = document.createElement("div");
-    servicePackage.servicesDescriptions.forEach(showServiceDescription);
+    let services = document.createElement("div");
+    servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, services));
 
-    var availableOptionalProducts = document.createElement("div");
-    servicePackage.availableOptionalProductsNames.forEach(showOptionalProducts);
+    let availableOptionalProducts = document.createElement("div");
+    servicePackage.availableOptionalProductsNames.forEach(aopn => showOptionalProducts(aopn, availableOptionalProducts));
 
 
     servicePackageDiv.appendChild(packageName);
-    package.appendChild(services);
-    package.appendChild(availableOptionalProducts);
+    servicePackageDiv.appendChild(services);
+    servicePackageDiv.appendChild(availableOptionalProducts);
 
     anchor.appendChild(servicePackageDiv);
 
@@ -159,4 +147,17 @@ function showServicePackage(servicePackage) {
     //     self.listcontainerbody.appendChild(row);
     // });
     //this.listcontainer.style.visibility = "visible";
+}
+
+
+function showServiceDescription(serviceDescription, services){
+    let service = document.createElement("div");
+    service.innerHTML = serviceDescription;
+    services.appendChild(service);
+}
+
+function showOptionalProducts(availableOptionalProductName, availableOptionalProducts){
+    let optionalProduct = document.createElement("div");
+    optionalProduct.innerHTML = availableOptionalProductName;
+    availableOptionalProducts.appendChild(optionalProduct);
 }

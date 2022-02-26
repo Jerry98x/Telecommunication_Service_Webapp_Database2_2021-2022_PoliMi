@@ -14,7 +14,7 @@ public class OptionalProduct {
     private int optionalProductId;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "monthlyFee", nullable = false)
+    @Column(name = "monthlyFee(€)", nullable = false)
     private float monthlyFee_euro;
 
     @ManyToMany(mappedBy = "availableOptionalProducts")
