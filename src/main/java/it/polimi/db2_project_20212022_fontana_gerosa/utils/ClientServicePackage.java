@@ -16,6 +16,16 @@ public class ClientServicePackage {
     public ClientServicePackage(ServicePackage servicePackage){
         this.servicePackageId = servicePackage.getServicePackageId();
         this.name = servicePackage.getName();
+        if(servicePackage.getServices() != null){
+            this.servicesDescriptions = new ArrayList<>();
+            servicePackage.getServices().
+                    forEach(telcoService -> this.servicesDescriptions.add(telcoService.getDescription()));
+        }
+        if(servicePackage.getAvailableOptionalProducts() != null){
+            this.availableOptionalProductsNames = new ArrayList<>();
+            servicePackage.getAvailableOptionalProducts().
+                    forEach(optionalProduct -> this.availableOptionalProductsNames.add(optionalProduct.getName()));
+        }
     }
 
     public ClientServicePackage(ServicePackage servicePackage, Collection<TelcoService> availableServices, Collection<OptionalProduct> availableOptionalProduct){
