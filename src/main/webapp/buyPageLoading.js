@@ -32,7 +32,26 @@ function showOptionalProduct(optionalProduct, anchor){
 
 (function () {
     window.addEventListener("load", () => {
-        makeCall("GET", "BuyPageLoading", null,
+
+        let sptb = sessionStorage.getItem('servicePackageToBuy');
+
+        var anchor = document.createDocumentFragment();
+        let title = document.createElement("div");
+        title.innerHTML = sptb.name;
+        anchor.appendChild(title);
+        sptb.servicesDescriptions.forEach(service => showService(service, anchor));
+        sptb.availableOptionalProducts.forEach(product => showOptionalProduct(product, anchor));
+        //TODO show validity periods
+
+        document.getElementById("main").appendChild(anchor);
+        /*
+        let form = document.createElement("form");
+        form.name = "spToBuyForm";
+        let input = document.createElement("input");
+        input.name = "spIdToBuy"
+        input.value = sessionStorage.getItem('servicePackageIdToBuy');
+        form.appendChild(input);
+        makeCall("POST", "BuyPageLoading", form,
             function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {
                     var message = req.responseText;
@@ -44,8 +63,9 @@ function showOptionalProduct(optionalProduct, anchor){
                             let title = document.createElement("div");
                             title.innerHTML = sptb.name;
                             anchor.appendChild(title);
-                            sptb.services.forEach(service => showService(service, anchor));
-                            sptb.products.forEach(product => showOptionalProduct(product, anchor));
+                            sptb.servicesDescriptions.forEach(service => showService(service, anchor));
+                            sptb.availableOptionalProducts.forEach(product => showOptionalProduct(product, anchor));
+                            //TODO show validity periods
 
                             document.getElementById("main").appendChild(anchor);
                             break;
@@ -64,4 +84,8 @@ function showOptionalProduct(optionalProduct, anchor){
         );
     });
 
+         */
+    });
+
 })();
+

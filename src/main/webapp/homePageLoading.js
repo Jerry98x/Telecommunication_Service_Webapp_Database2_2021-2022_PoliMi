@@ -58,37 +58,60 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
 })();
 
-function servicePackageRedirect(servicePackage){
-    makeCall("POST", "BuyPageLoading", servicePackage.id,
-        function (req) {
-            if (req.readyState === XMLHttpRequest.DONE) {
-                var message = req.responseText;
-                switch (req.status) {
-                    case 200:
-                        let sp = JSON.parse(message);
-                        sessionStorage.setItem('servicePackageToBuy', sp);
-                        break;
-                    case 400: // bad request
-                        document.getElementById("errormessage").textContent = message;
-                        break;
-                    case 401: // unauthorized
-                        document.getElementById("errormessage").textContent = message;
-                        break;
-                    case 500: // server error
-                        document.getElementById("errormessage").textContent = message;
-                        break;
+
+
+function servicePackageRedirect(spId){
+    //sessionStorage.setItem('servicePackageIdToBuy', servicePackage.id);
+        let form = document.createElement("form");
+        form.name = "spToBuyForm";
+        let input = document.createElement("input");
+        input.name = "spIdToBuy"
+        input.value = spId;
+        form.appendChild(input);
+        makeCall("POST", "BuyPageLoading", form,
+            function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    var message = req.responseText;
+                    switch (req.status) {
+                        case 200:
+                            let sptb = JSON.parse(message);
+                            sessionStorage.setItem('servicePackageToBuy',sptb);
+
+                            /*
+                            var anchor = document.createDocumentFragment();
+                            let title = document.createElement("div");
+                            title.innerHTML = sptb.name;
+                            anchor.appendChild(title);
+                            sptb.services.forEach(service => showService(service, anchor));
+                            sptb.products.forEach(product => showOptionalProduct(product, anchor));
+
+                            document.getElementById("main").appendChild(anchor);
+                            */
+
+                            break;
+                        case 400: // bad request
+                            document.getElementById("errormessage").textContent = message;
+                            break;
+                        case 401: // unauthorized
+                            document.getElementById("errormessage").textContent = message;
+                            break;
+                        case 500: // server error
+                            document.getElementById("errormessage").textContent = message;
+                            break;
+                    }
                 }
             }
-        });
+        );
 }
 
 function showServicePackage(servicePackage, anchor) {
     let servicePackageDiv = document.createElement("div");
-    servicePackageDiv.id = servicePackage.id;
+    //servicePackageDiv.id = servicePackage.id;
     let packageName = document.createElement("a");
+    packageName.id = servicePackage.servicePackageId;
     packageName.innerHTML = servicePackage.name;
-    packageName.href = "BuyServicePackagePage.hmtl";
-    packageName.addEventListener("click", servicePackageRedirect(servicePackage));
+    packageName.href = "BuyPage.html";
+    packageName.addEventListener("click", servicePackageRedirect(packageName.id));
     let servicesDiv = document.createElement("div");
     servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, servicesDiv));
 
@@ -101,77 +124,7 @@ function showServicePackage(servicePackage, anchor) {
     servicePackageDiv.appendChild(availableOptionalProductsDiv);
 
     anchor.appendChild(servicePackageDiv);
-
-
-    /*
-    function showSP(servicePackage){
-
-        if('content' in document.createElement('template')) {
-
-            //Instantiating page elements for service package
-            var body = document.querySelector("body");
-
-            var container = document.querySelector('#container');
-            var outerTemplate = document.querySelector('#spRow');
-            //var spName = document.querySelector('#sp_name');
-            //var innerTemplate = document.querySelector('#type_list');
-
-            //Cloning the new service packages
-            //var cloneContainer = container.content.cloneNode(true);
-            var cloneOutTemp = outerTemplate.content.cloneNode(true);
-            //var cloneSpName = spName.content.cloneNode(true);
-            //var cloneInTemp = innerTemplate.content.cloneNode(true);
-
-            var h5Name = cloneOutTemp.querySelector("#sp_name");
-            h5Name.textContent = servicePackage.name;
-
-            var divDescription = cloneOutTemp.querySelector("#descriptionInner");
-            divDescription.textContent = servicePackage.servicesDescriptions;
-
-            body.appendChild(cloneOutTemp);
-
-
-
-            // var li = cloneInTemp.querySelectorAll("li");
-            // servicePackage.servicesDescriptions.forEach(e => {
-            //      li.textContent = e;
-            // });
-
-            //TODO: generare dinamicamente ID HTML
-
-        }
-        */
-
-
-    // var elem, i, row, destcell, datecell, linkcell, anchor;
-    // var list, listobj;
-    // this.getElementById("id_spBody").innerHTML = ""; // empty the table body
-    // // build updated list
-    // var self = this;
-    // servicePackages.forEach(function(sp) { // self visible here, not this
-    //     row = document.createElement("tr");
-    //     destcell = document.createElement("td");
-    //     destcell.textContent = mission.destination;
-    //     row.appendChild(destcell);
-    //     datecell = document.createElement("td");
-    //     datecell.textContent = mission.startDate;
-    //     row.appendChild(datecell);
-    //     linkcell = document.createElement("td");
-    //     anchor = document.createElement("a");
-    //     linkcell.appendChild(anchor);
-    //     linkText = document.createTextNode("Show");
-    //     anchor.appendChild(linkText);
-    //     //anchor.missionid = mission.id; // make list item clickable
-    //     anchor.setAttribute('missionid', mission.id); // set a custom HTML attribute
-    //     anchor.addEventListener("click", (e) => {
-    //         // dependency via module parameter
-    //         missionDetails.show(e.target.getAttribute("missionid")); // the list must know the details container
-    //     }, false);
-    //     anchor.href = "#";
-    //     row.appendChild(linkcell);
-    //     self.listcontainerbody.appendChild(row);
-    // });
-    //this.listcontainer.style.visibility = "visible";
+    //content moved into txt file
 }
 
 

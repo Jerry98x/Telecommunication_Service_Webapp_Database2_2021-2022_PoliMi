@@ -8,6 +8,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "service_package", schema = "db2_project")
 @NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT sp from ServicePackage sp")
+@NamedQuery(name = "ServicePackage.getServicePackageById", query = "SELECT sp from ServicePackage sp where sp.servicePackageId = ?1")
 public class ServicePackage {
 
     @Id

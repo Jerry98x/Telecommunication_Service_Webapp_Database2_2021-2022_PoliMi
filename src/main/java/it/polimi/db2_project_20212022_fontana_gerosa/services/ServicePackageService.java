@@ -54,4 +54,15 @@ public class ServicePackageService {
 
         return clientServicePackages;
     }
+
+    public ServicePackage getServicePackageById(int id){
+        List<ServicePackage> servicePackages;
+        try{
+            servicePackages = em.createNamedQuery("ServicePackage.getServicePackageById", ServicePackage.class).
+                    setParameter(1, id).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("couldn't retrieve matching package");
+        }
+        return servicePackages.get(0);
+    }
 }
