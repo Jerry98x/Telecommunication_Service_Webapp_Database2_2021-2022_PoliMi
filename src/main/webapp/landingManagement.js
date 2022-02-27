@@ -53,8 +53,11 @@
                         var message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                sessionStorage.setItem('username', message);
-                                window.location.href = "LandingPage.html";
+                                let welcome_message = JSON.parse(message);
+                                let alert = document.getElementById("registration_alert");
+                                alert.classList.add("alert alert-success");
+                                alert.append(welcome_message);
+                                //window.location.href = "LandingPage.html";
                                 break;
                             case 400: // bad request
                                 document.getElementById("errormessage").textContent = message;

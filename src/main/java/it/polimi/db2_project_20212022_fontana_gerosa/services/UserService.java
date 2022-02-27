@@ -28,16 +28,17 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
-    public User findUserByEmail(String email){
+    public List<User> findUserByEmail(String email){
         List<User> matchingUsers = em.createNamedQuery("User.findByEmail", User.class).
                 setParameter(1, email).getResultList();
-        return matchingUsers.get(0);
+        //return matchingUsers.get(0);
+        return matchingUsers;
     }
 
-    public User findUserByUsername(String username){
+    public List<User> findUserByUsername(String username){
         List<User> matchingUsers = em.createNamedQuery("User.findByUsername", User.class).
                 setParameter(1, username).getResultList();
-        return matchingUsers.get(0);
+        return matchingUsers;
     }
 
     public User registerUser(String email, String username, String password){

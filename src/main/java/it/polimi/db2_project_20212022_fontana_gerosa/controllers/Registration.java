@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/Registration")
 @MultipartConfig
@@ -42,18 +43,18 @@ public class Registration extends HttpServlet {
         String username = null;
         String password = null;
         String repeatedPassword = null;
-        email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-        username = StringEscapeUtils.escapeJava(request.getParameter("username"));
-        password = StringEscapeUtils.escapeJava(request.getParameter("password"));
-        repeatedPassword = StringEscapeUtils.escapeJava(request.getParameter("repeated_password"));
-        if (email == null || username == null || password == null || email.isEmpty() || username.isEmpty() || password.isEmpty() ) {
+        username = StringEscapeUtils.escapeJava(request.getParameter("signup_username"));
+        email = StringEscapeUtils.escapeJava(request.getParameter("signup_email"));
+        password = StringEscapeUtils.escapeJava(request.getParameter("signup_password"));
+        repeatedPassword = StringEscapeUtils.escapeJava(request.getParameter("signup_repeated_password"));
+        if (email == null || username == null || password == null || repeatedPassword == null || email.isEmpty() || username.isEmpty() || password.isEmpty() || repeatedPassword.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Credentials must be not null");
             return;
         }
-        // query db to authenticate for user
-        User byEmail = null;
-        User byUsername = null;
+        // query db to check existing user
+        List<User> byEmail = null;
+        List<User> byUsername = null;
         try {
             byEmail = userService.findUserByEmail(email);
             byUsername = userService.findUserByUsername(username);
@@ -62,21 +63,20 @@ public class Registration extends HttpServlet {
             response.getWriter().println("Internal server error, retry later");
             return;
         }
-        // If the user exists, add info to the session and go to home page, otherwise
+        // If the user doesn't exist
         // return an error status code and message
-        if (byEmail == null && byUsername == null && password.equals(repeatedPassword)) {
+        if (byEmail.isEmpty() && byUsername.isEmpty() && password.equals(repeatedPassword)) {
             User userToRegister = userService.registerUser(email, username, password);
-            request.getSession().setAttribute("user", userToRegister);
             response.setStatus(HttpServletResponse.SC_OK);
 
             //TODO purpose??
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().println(email);
-        } else if (byEmail != null) {
+            response.getWriter().println("Welcome, " + userToRegister.getUsername() + "!\nPlease, login.");
+        } else if (!byEmail.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             response.getWriter().println("Email already in use");
-        } else if (byUsername != null) {
+        } else if (!byUsername.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             response.getWriter().println("Username already in use");
         } else {
