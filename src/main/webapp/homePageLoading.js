@@ -33,7 +33,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             }
                             let sps = JSON.parse(message);
 
-                            var anchor = document.createDocumentFragment();
+                            let anchor = document.createDocumentFragment();
                             let title = document.createElement("div");
                             title.innerHTML = "Available Service Packages";
                             anchor.appendChild(title);
@@ -58,22 +58,47 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
 })();
 
+function servicePackageRedirect(servicePackage){
+    makeCall("POST", "BuyPageLoading", servicePackage.id,
+        function (req) {
+            if (req.readyState === XMLHttpRequest.DONE) {
+                var message = req.responseText;
+                switch (req.status) {
+                    case 200:
+                        let sp = JSON.parse(message);
+                        sessionStorage.setItem('servicePackageToBuy', sp);
+                        break;
+                    case 400: // bad request
+                        document.getElementById("errormessage").textContent = message;
+                        break;
+                    case 401: // unauthorized
+                        document.getElementById("errormessage").textContent = message;
+                        break;
+                    case 500: // server error
+                        document.getElementById("errormessage").textContent = message;
+                        break;
+                }
+            }
+        });
+}
+
 function showServicePackage(servicePackage, anchor) {
     let servicePackageDiv = document.createElement("div");
-    servicePackageDiv.id = "service_package" + servicePackage.id;
+    servicePackageDiv.id = servicePackage.id;
     let packageName = document.createElement("a");
     packageName.innerHTML = servicePackage.name;
     packageName.href = "BuyServicePackagePage.hmtl";
-    let services = document.createElement("div");
-    servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, services));
+    packageName.addEventListener("click", servicePackageRedirect(servicePackage));
+    let servicesDiv = document.createElement("div");
+    servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, servicesDiv));
 
-    let availableOptionalProducts = document.createElement("div");
-    servicePackage.availableOptionalProductsNames.forEach(aopn => showOptionalProducts(aopn, availableOptionalProducts));
+    let availableOptionalProductsDiv = document.createElement("div");
+    servicePackage.availableOptionalProducts.forEach(aop => showOptionalProductDescription(aop, availableOptionalProductsDiv));
 
 
     servicePackageDiv.appendChild(packageName);
-    servicePackageDiv.appendChild(services);
-    servicePackageDiv.appendChild(availableOptionalProducts);
+    servicePackageDiv.appendChild(servicesDiv);
+    servicePackageDiv.appendChild(availableOptionalProductsDiv);
 
     anchor.appendChild(servicePackageDiv);
 
@@ -150,14 +175,14 @@ function showServicePackage(servicePackage, anchor) {
 }
 
 
-function showServiceDescription(serviceDescription, services){
+function showServiceDescription(serviceDescription, servicesDiv){
     let service = document.createElement("div");
     service.innerHTML = serviceDescription;
-    services.appendChild(service);
+    servicesDiv.appendChild(service);
 }
 
-function showOptionalProducts(availableOptionalProductName, availableOptionalProducts){
+function showOptionalProductDescription(availableOptionalProduct, availableOptionalProductsDiv){
     let optionalProduct = document.createElement("div");
-    optionalProduct.innerHTML = availableOptionalProductName;
-    availableOptionalProducts.appendChild(optionalProduct);
+    optionalProduct.innerHTML = availableOptionalProduct.name;
+    availableOptionalProductsDiv.appendChild(optionalProduct);
 }

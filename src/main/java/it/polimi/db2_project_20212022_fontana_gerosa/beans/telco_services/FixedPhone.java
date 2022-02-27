@@ -11,7 +11,11 @@ public class FixedPhone extends TelcoService {
 
     @Override
     public String getDescription() {
-        String description = "You get unlimited calls from home";
+        String description = "You get unlimited calls from home.";
         return description;
+    }
+
+    public String getFullDescription(){
+        return getDescription();
     }
 }

@@ -17,7 +17,13 @@ public class MobileInternet extends TelcoService {
 
     @Override
     public String getDescription() {
-        String description = "You get " + GBs + " GBs on your mobile device connection";
+        String description = "You get " + GBs + " GBs on your mobile device connection.";
+        return description;
+    }
+
+    public String getFullDescription(){
+        String description = "You get " + GBs + " GBs on your mobile device connection.\n" +
+                "Each additional GB will cost " + extraGBFee_euro + "€.";
         return description;
     }
 }

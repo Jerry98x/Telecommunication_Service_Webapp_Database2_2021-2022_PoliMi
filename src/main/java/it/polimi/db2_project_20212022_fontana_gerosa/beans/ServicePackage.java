@@ -32,7 +32,7 @@ public class ServicePackage {
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> availableOptionalProducts;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "service_package__validity_period",
             joinColumns = @JoinColumn(name = "servicePackageId", referencedColumnName = "servicePackageId"),
             inverseJoinColumns = @JoinColumn(name = "validityPeriodId", referencedColumnName = "validityPeriodId"))
@@ -62,4 +62,7 @@ public class ServicePackage {
         return availableOptionalProducts;
     }
 
+    public Collection<ValidityPeriod> getAvailableValidityPeriods() {
+        return availableValidityPeriods;
+    }
 }

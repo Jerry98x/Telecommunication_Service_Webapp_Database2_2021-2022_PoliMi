@@ -24,4 +24,16 @@ public class ValidityPeriod {
 
     @OneToMany(mappedBy = "validityPeriod")
     private Collection<Order> orders;
+
+    public int getValidityPeriodId() {
+        return validityPeriodId;
+    }
+
+    public int getMonthsOfValidity() {
+        return monthsOfValidity;
+    }
+
+    public float getMonthlyFee_euro() {
+        return monthlyFee_euro;
+    }
 }

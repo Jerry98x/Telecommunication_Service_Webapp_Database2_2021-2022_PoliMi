@@ -8,13 +8,13 @@ import java.util.Collection;
 public class ClientUser {
     private int userId;
     private String username;
-    private int insolvent;
-    private Collection<Order> rejectedOrders;
+    private Boolean insolvent;
+    private Collection<ClientOrder> rejectedOrders;
 
     public ClientUser(User user) {
         this.userId = user.getUserId();
         this.username = user.getUsername();
-        this.insolvent = user.isInsolvent();
+        this.insolvent = user.isInsolvent() == 1;
     }
 
 

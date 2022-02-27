@@ -19,11 +19,11 @@ public class Order {
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date dateOfConfirmation;
+    private Date confirmationDate;
 
     @Column(name = "hour", nullable = false)
     @Temporal(TemporalType.TIME)
-    private Time hourOfConfirmation;
+    private Time confirmationHour;
 
     @Column(name = "totalCost(€)", nullable = false)
     private float totalCost_euro;
@@ -73,6 +73,37 @@ public class Order {
 
     public void setServicePackage(ServicePackage servicePackage) {
         this.servicePackage = servicePackage;
+    }
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public Date getConfirmationDate() {
+        return confirmationDate;
+    }
+
+    public Time getConfirmationHour() {
+        return confirmationHour;
+    }
+
+    public float getTotalCost_euro() {
+        return totalCost_euro;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public int getValid() {
+        return valid;
+    }
+
+    public ValidityPeriod getValidityPeriod() {
+        return validityPeriod;
+    }
+
+    public Collection<OptionalProduct> getChosenOptionalProducts() {
+        return chosenOptionalProducts;
     }
 
 }

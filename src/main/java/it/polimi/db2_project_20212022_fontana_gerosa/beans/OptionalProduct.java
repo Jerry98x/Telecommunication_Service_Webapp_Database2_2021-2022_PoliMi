@@ -27,11 +27,15 @@ public class OptionalProduct {
     @ManyToMany(mappedBy = "chosenOptionalProducts")
     private Collection<Order> orders;
 
+    public int getOptionalProductId() {
+        return optionalProductId;
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public float getMonthlyFee_euro() {
+        return monthlyFee_euro;
     }
 }

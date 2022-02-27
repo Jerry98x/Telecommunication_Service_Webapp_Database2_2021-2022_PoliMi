@@ -15,7 +15,7 @@
                             case 200:
                                 let user = JSON.parse(message);
                                 sessionStorage.setItem('logged_user', user);
-                                if(user.isInsolvent == 1){
+                                if(user.isInsolvent){
                                     sessionStorage.setItem('rejectedOrders', user.rejectedOrders);
                                 }
                                 if(sessionStorage.getItem('pendingOrder') != null) {

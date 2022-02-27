@@ -11,7 +11,8 @@ public class ClientServicePackage {
     private int servicePackageId;
     private String name;
     private Collection<String> servicesDescriptions;
-    private Collection<String> availableOptionalProductsNames;
+    private Collection<ClientOptionalProduct> availableOptionalProductsDescriptions;
+    private Collection<ClientValidityPeriod> availableValidityPeriods;
 
     public ClientServicePackage(ServicePackage servicePackage){
         this.servicePackageId = servicePackage.getServicePackageId();
@@ -22,25 +23,14 @@ public class ClientServicePackage {
                     forEach(telcoService -> this.servicesDescriptions.add(telcoService.getDescription()));
         }
         if(servicePackage.getAvailableOptionalProducts() != null){
-            this.availableOptionalProductsNames = new ArrayList<>();
+            this.availableOptionalProductsDescriptions = new ArrayList<>();
             servicePackage.getAvailableOptionalProducts().
-                    forEach(optionalProduct -> this.availableOptionalProductsNames.add(optionalProduct.getName()));
+                    forEach(optionalProduct -> this.availableOptionalProductsDescriptions.add(new ClientOptionalProduct(optionalProduct)));
         }
-    }
-
-    public ClientServicePackage(ServicePackage servicePackage, Collection<TelcoService> availableServices, Collection<OptionalProduct> availableOptionalProduct){
-        ClientServicePackage clientServicePackage = new ClientServicePackage(servicePackage);
-        clientServicePackage.addAvailableServices(availableServices);
-        clientServicePackage.addAvailableOptionalProduct(availableOptionalProduct);
-    }
-
-    private void addAvailableServices(Collection<TelcoService> availableServices){
-        this.servicesDescriptions = new ArrayList<>();
-        availableServices.forEach(telcoService -> this.servicesDescriptions.add(telcoService.getDescription()));
-    }
-
-    private void addAvailableOptionalProduct(Collection<OptionalProduct> availableOptionalProducts){
-        this.availableOptionalProductsNames = new ArrayList<>();
-        availableOptionalProducts.forEach(optionalProduct -> this.availableOptionalProductsNames.add(optionalProduct.getName()));
+        if(servicePackage.getAvailableValidityPeriods() != null){
+            this.availableValidityPeriods = new ArrayList<>();
+            servicePackage.getAvailableValidityPeriods().
+                    forEach(validityPeriod -> this.availableValidityPeriods.add(new ClientValidityPeriod(validityPeriod)));
+        }
     }
 }
