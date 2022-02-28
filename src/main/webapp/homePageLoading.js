@@ -75,7 +75,7 @@ function servicePackageRedirect(spId){
                     switch (req.status) {
                         case 200:
                             let sptb = JSON.parse(message);
-                            sessionStorage.setItem('servicePackageToBuy',sptb);
+                            sessionStorage.setItem('servicePackageToBuy',JSON.stringify(sptb));
 
                             /*
                             var anchor = document.createDocumentFragment();
@@ -111,7 +111,7 @@ function showServicePackage(servicePackage, anchor) {
     packageName.id = servicePackage.servicePackageId;
     packageName.innerHTML = servicePackage.name;
     packageName.href = "BuyPage.html";
-    packageName.addEventListener("click", servicePackageRedirect(packageName.id));
+    packageName.addEventListener('click', (event) => {servicePackageRedirect(packageName.id);});
     let servicesDiv = document.createElement("div");
     servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, servicesDiv));
 

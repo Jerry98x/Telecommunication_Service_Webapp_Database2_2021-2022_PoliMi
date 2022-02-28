@@ -33,7 +33,7 @@ function showOptionalProduct(optionalProduct, anchor){
 (function () {
     window.addEventListener("load", () => {
 
-        let sptb = sessionStorage.getItem('servicePackageToBuy');
+        let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
 
         var anchor = document.createDocumentFragment();
         let title = document.createElement("div");
