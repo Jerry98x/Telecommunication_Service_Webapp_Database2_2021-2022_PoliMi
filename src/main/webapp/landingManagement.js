@@ -14,10 +14,11 @@
                         switch (req.status) {
                             case 200:
                                 let user = JSON.parse(message);
-                                sessionStorage.setItem('logged_user', JSON.stringify(user));
+                                sessionStorage.setItem('logged_user', JSON.stringify(user));//TODO single stringify of rejected orders
                                 if(user.isInsolvent){
-                                    sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));
+                                    sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));//TODO single stringify of optionalProducts
                                 }
+                                //No need of JSON.parse because just null check
                                 if(sessionStorage.getItem('pendingOrder') != null) {
                                     window.location.href = "ConfirmationPage.html";
                                 }

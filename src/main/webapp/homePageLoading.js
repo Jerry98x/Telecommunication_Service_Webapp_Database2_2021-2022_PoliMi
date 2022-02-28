@@ -25,8 +25,10 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     var message = req.responseText;
                     switch (req.status) {
                         case 200:
+                            //No need of JSON.parse because just null check
                             if(sessionStorage.getItem('logged_user') != null){
                                 //show user info
+                                //No need of JSON.parse because just null check
                                 if(sessionStorage.getItem('rejectedOrders') != null){
                                     //show rejected orders
                                 }
@@ -76,6 +78,9 @@ function servicePackageRedirect(spId){
                         case 200:
                             let sptb = JSON.parse(message);
                             sessionStorage.setItem('servicePackageToBuy',JSON.stringify(sptb));
+                            console.log(JSON.parse(sessionStorage.getItem('servicePackageToBuy')));
+                            sessionStorage.setItem('availableOptionalProducts', JSON.stringify(sptb.availableOptionalProducts));
+                            console.log(JSON.parse(sessionStorage.getItem('availableOptionalProducts')));
 
                             /*
                             var anchor = document.createDocumentFragment();

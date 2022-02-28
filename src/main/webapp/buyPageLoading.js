@@ -26,7 +26,12 @@ function showService(service, anchor){//TODO in employee app check when creating
 function showOptionalProduct(optionalProduct, anchor){
     let optionalProductDiv = document.createElement("input");
     optionalProductDiv.type = "checkbox";
-    optionalProductDiv.innerHTML = optionalProduct;
+    let optionalProductName = document.createElement("div");
+    optionalProductName.innerHTML = optionalProduct.name;
+    let optionalProductMonthlyFee = document.createElement("div");
+    optionalProductMonthlyFee.innerHTML = "It costs " + optionalProduct.monthlyFee_euro + "€/month";
+    optionalProductDiv.appendChild(optionalProductName);
+    optionalProductDiv.appendChild(optionalProductMonthlyFee);
     anchor.appendChild(optionalProductDiv);
 }
 
@@ -34,13 +39,14 @@ function showOptionalProduct(optionalProduct, anchor){
     window.addEventListener("load", () => {
 
         let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
+        let aops = JSON.parse(sessionStorage.getItem('availableOptionalProducts'));
 
         var anchor = document.createDocumentFragment();
         let title = document.createElement("div");
         title.innerHTML = sptb.name;
         anchor.appendChild(title);
         sptb.servicesDescriptions.forEach(service => showService(service, anchor));
-        sptb.availableOptionalProducts.forEach(product => showOptionalProduct(product, anchor));
+        aops.forEach(product => showOptionalProduct(product, anchor));
         //TODO show validity periods
 
         document.getElementById("main").appendChild(anchor);
