@@ -63,50 +63,38 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
 
 function servicePackageRedirect(spId){
-    //sessionStorage.setItem('servicePackageIdToBuy', servicePackage.id);
-        let form = document.createElement("form");
-        form.name = "spToBuyForm";
-        let input = document.createElement("input");
-        input.name = "spIdToBuy"
-        input.value = spId;
-        form.appendChild(input);
-        makeCall("POST", "BuyPageLoading", form,
-            function (req) {
-                if (req.readyState === XMLHttpRequest.DONE) {
-                    var message = req.responseText;
-                    switch (req.status) {
-                        case 200:
-                            let sptb = JSON.parse(message);
-                            sessionStorage.setItem('servicePackageToBuy',JSON.stringify(sptb));
-                            console.log(JSON.parse(sessionStorage.getItem('servicePackageToBuy')));
-                            sessionStorage.setItem('availableOptionalProducts', JSON.stringify(sptb.availableOptionalProducts));
-                            console.log(JSON.parse(sessionStorage.getItem('availableOptionalProducts')));
+    let form = document.createElement("form");
+    form.name = "spToBuyForm";
+    let input = document.createElement("input");
+    input.name = "spIdToBuy"
+    input.value = spId;
+    form.appendChild(input);
+    makeCall("POST", "BuyPageLoading", form,
+        async function (req) {
+            if (req.readyState === XMLHttpRequest.DONE) {
+                var message = req.responseText;
+                switch (req.status) {
+                    case 200:
+                        let sptb = JSON.parse(message);
+                        sessionStorage.setItem('servicePackageToBuy', JSON.stringify(sptb));
+                        sessionStorage.setItem('availableOptionalProducts', JSON.stringify(sptb.availableOptionalProducts));
+                        await (sessionStorage.getItem('servicePackageToBuy') != null && sessionStorage.getItem('availableOptionalProducts') != null);
+                        window.location.href = "BuyPage.html";
 
-                            /*
-                            var anchor = document.createDocumentFragment();
-                            let title = document.createElement("div");
-                            title.innerHTML = sptb.name;
-                            anchor.appendChild(title);
-                            sptb.services.forEach(service => showService(service, anchor));
-                            sptb.products.forEach(product => showOptionalProduct(product, anchor));
-
-                            document.getElementById("main").appendChild(anchor);
-                            */
-
-                            break;
-                        case 400: // bad request
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                        case 401: // unauthorized
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                        case 500: // server error
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                    }
+                        break;
+                    case 400: // bad request
+                        document.getElementById("errormessage").textContent = message;
+                        break;
+                    case 401: // unauthorized
+                        document.getElementById("errormessage").textContent = message;
+                        break;
+                    case 500: // server error
+                        document.getElementById("errormessage").textContent = message;
+                        break;
                 }
             }
-        );
+        }
+    );
 }
 
 function showServicePackage(servicePackage, anchor) {
@@ -115,8 +103,8 @@ function showServicePackage(servicePackage, anchor) {
     let packageName = document.createElement("a");
     packageName.id = servicePackage.servicePackageId;
     packageName.innerHTML = servicePackage.name;
-    packageName.href = "BuyPage.html";
-    packageName.addEventListener('click', (event) => {servicePackageRedirect(packageName.id);});
+    packageName.href = "#";
+    packageName.addEventListener('click', (event) => {event.preventDefault(); servicePackageRedirect(packageName.id);});
     let servicesDiv = document.createElement("div");
     servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, servicesDiv));
 

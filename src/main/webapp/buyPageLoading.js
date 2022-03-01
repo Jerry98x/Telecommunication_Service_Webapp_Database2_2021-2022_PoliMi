@@ -24,12 +24,14 @@ function showService(service, anchor){//TODO in employee app check when creating
 }
 
 function showOptionalProduct(optionalProduct, anchor){
-    let optionalProductDiv = document.createElement("input");
-    optionalProductDiv.type = "checkbox";
+    let optionalProductDiv = document.createElement("div");
+    let opCheckbox = document.createElement("input");
+    opCheckbox.type = "checkbox";
     let optionalProductName = document.createElement("div");
     optionalProductName.innerHTML = optionalProduct.name;
     let optionalProductMonthlyFee = document.createElement("div");
     optionalProductMonthlyFee.innerHTML = "It costs " + optionalProduct.monthlyFee_euro + "€/month";
+    optionalProductDiv.appendChild(opCheckbox);
     optionalProductDiv.appendChild(optionalProductName);
     optionalProductDiv.appendChild(optionalProductMonthlyFee);
     anchor.appendChild(optionalProductDiv);
@@ -50,47 +52,7 @@ function showOptionalProduct(optionalProduct, anchor){
         //TODO show validity periods
 
         document.getElementById("main").appendChild(anchor);
-        /*
-        let form = document.createElement("form");
-        form.name = "spToBuyForm";
-        let input = document.createElement("input");
-        input.name = "spIdToBuy"
-        input.value = sessionStorage.getItem('servicePackageIdToBuy');
-        form.appendChild(input);
-        makeCall("POST", "BuyPageLoading", form,
-            function (req) {
-                if (req.readyState === XMLHttpRequest.DONE) {
-                    var message = req.responseText;
-                    switch (req.status) {
-                        case 200:
-                            let sptb = sessionStorage.getItem('servicePackageToBuy');
 
-                            var anchor = document.createDocumentFragment();
-                            let title = document.createElement("div");
-                            title.innerHTML = sptb.name;
-                            anchor.appendChild(title);
-                            sptb.servicesDescriptions.forEach(service => showService(service, anchor));
-                            sptb.availableOptionalProducts.forEach(product => showOptionalProduct(product, anchor));
-                            //TODO show validity periods
-
-                            document.getElementById("main").appendChild(anchor);
-                            break;
-                        case 400: // bad request
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                        case 401: // unauthorized
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                        case 500: // server error
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                    }
-                }
-            }
-        );
-    });
-
-         */
     });
 
 })();
