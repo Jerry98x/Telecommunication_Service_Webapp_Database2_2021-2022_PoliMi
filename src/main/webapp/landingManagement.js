@@ -3,7 +3,7 @@
  */
 
 (function() { // avoid variables ending up in the global scope
-
+    //sessionStorage.setItem('logged_user', null);
     document.getElementById("submitLogin").addEventListener('click', (e) => {
         var form = e.target.closest("form");
         if (form.checkValidity()) {
