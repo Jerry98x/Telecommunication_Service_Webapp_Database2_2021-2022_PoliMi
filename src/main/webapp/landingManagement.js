@@ -25,14 +25,8 @@
                                     window.location.href = "HomePage.html";
                                 }
                                 break;
-                            case 400: // bad request
-                                document.getElementById("errormessage").textContent = message;
-                                break;
-                            case 401: // unauthorized
-                                document.getElementById("errormessage").textContent = message;
-                                break;
-                            case 500: // server error
-                                document.getElementById("errormessage").textContent = message;
+                            default:
+                                alertCleaning(message);
                                 break;
                         }
                     }
@@ -50,25 +44,8 @@
             makeCall("POST", "Registration", e.target.closest("form"),
                 function(req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
-                        var message = req.responseText;
-                        switch (req.status) {
-                            case 200:
-                                let welcome_message = JSON.parse(message);
-                                let alert = document.getElementById("registration_alert");
-                                alert.classList.add("alert alert-success");
-                                alert.append(welcome_message);
-                                //window.location.href = "LandingPage.html";
-                                break;
-                            case 400: // bad request
-                                document.getElementById("errormessage").textContent = message;
-                                break;
-                            case 401: // unauthorized
-                                document.getElementById("errormessage").textContent = message;
-                                break;
-                            case 500: // server error
-                                document.getElementById("errormessage").textContent = message;
-                                break;
-                        }
+                        let message = req.responseText;
+                        alertCleaning(message);
                     }
                 }
             );
@@ -81,3 +58,21 @@
         window.location.href = "HomePage.html";
     });
 })();
+
+function alertCleaning(message) {
+    let alert = document.getElementById("registration_alert");
+    alert.innerHTML = "";
+
+    if(alert.classList.contains("alert-success")) {
+        alert.classList.remove("alert-success");
+        alert.classList.add("alert-danger");
+    }
+    else if(alert.classList.contains("alert-danger")) {
+        alert.classList.remove("alert-danger");
+        alert.classList.add("alert-success");
+    }
+
+    let msg = document.createTextNode(message);
+    alert.appendChild(msg);
+    alert.style.visibility = "visible";
+}
