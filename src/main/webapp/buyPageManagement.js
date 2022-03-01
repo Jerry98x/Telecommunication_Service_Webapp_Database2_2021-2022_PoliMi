@@ -53,19 +53,11 @@ function showValidityPeriod(validityPeriod, anchor){
     anchor.appendChild(vpDiv);
 }
 
-/*
-//TODO move
-function notLoggedRedirect(event, id){
-    event.preventDefault();
-    sessionStorage.setItem('pendingOrder',id);
-    window.location.href = "LandingPage.html";
-}
 
- */
 
 function confirmRedirect(event){
     event.preventDefault();
-    //window.location.href = "ConfirmationPage.html";
+    window.location.href = "ConfirmationPage.html";
 }
 
 (function () {
@@ -74,22 +66,6 @@ function confirmRedirect(event){
         let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
         let aops = JSON.parse(sessionStorage.getItem('availableOptionalProducts'));
         let avps = JSON.parse(sessionStorage.getItem('availableValidityPeriods'));
-
-
-        /*
-        //TODO move
-        if(sessionStorage.getItem('logged_user') == null){
-            let loginBtn = document.createElement("button");
-            loginBtn.innerHTML = "Login";
-            loginBtn.addEventListener('click',(event) => notLoggedRedirect(event, sptb.servicePackageId));
-            anchor.appendChild(loginBtn);
-            let signUpBtn = document.createElement("button");
-            signUpBtn.innerHTML = "Sign up";
-            signUpBtn.addEventListener('click', (event) => notLoggedRedirect(event, sptb.servicePackageId));
-            anchor.appendChild(signUpBtn);
-        }
-
-         */
 
         let title = document.createElement("div");
         title.innerHTML = "You chose the package: " + sptb.name;
@@ -102,25 +78,6 @@ function confirmRedirect(event){
         confirmBtn.addEventListener('click', (event) => confirmRedirect(event));
         confirmBtn.innerHTML = "Confirm";
         anchor.appendChild(confirmBtn);
-
-        /*
-        //TODO move
-        let successBuyBtn = document.createElement("button");
-        successBuyBtn.innerHTML = "Success Buy";
-        //TODO create valid order and redirect to homePage
-        let failBuyBtn = document.createElement("button");
-        failBuyBtn.innerHTML = "Fail Buy";
-        //TODO create invalid order and redirect to homePage
-
-        //TODO check logged
-        //TODO reset sptb,aops,avps relative sessionStorage vars
-
-        anchor.appendChild(successBuyBtn);
-        anchor.appendChild(failBuyBtn);
-
-
-         */
-
 
         document.getElementById("main").appendChild(anchor);
 
