@@ -14,9 +14,9 @@
                         switch (req.status) {
                             case 200:
                                 let user = JSON.parse(message);
-                                sessionStorage.setItem('loggedUser', JSON.stringify(user));//TODO single stringify of rejected orders
+                                sessionStorage.setItem('loggedUser', JSON.stringify(user));
                                 if(user.isInsolvent){
-                                    sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));//TODO single stringify of optionalProducts
+                                    sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));
                                 }
                                 //No need of JSON.parse because just null check
                                 if(sessionStorage.getItem('pendingOrder') != null) {
