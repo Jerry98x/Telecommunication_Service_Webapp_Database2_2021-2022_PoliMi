@@ -25,21 +25,22 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     var message = req.responseText;
                     switch (req.status) {
                         case 200:
-                            //No need of JSON.parse because just null check
-                            if(sessionStorage.getItem('loggedUser') != null){
-                                //show user info
-                                //No need of JSON.parse because just null check
-                                if(sessionStorage.getItem('rejectedOrders') != null){
-                                    //show rejected orders
-                                }
-                            }
                             let sps = JSON.parse(message);
 
                             let anchor = document.createDocumentFragment();
-                            let title = document.createElement("div");
-                            title.innerHTML = "Available Service Packages";
-                            anchor.appendChild(title);
                             sps.forEach(sp => showServicePackage(sp, anchor));
+                            if(sessionStorage.getItem('loggedUser') != null){
+                                let user = JSON.parse(sessionStorage.getItem('loggedUser'));
+                                let userInfo = document.createElement("h6");
+                                userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
+                                anchor.appendChild(userInfo);
+                                if(sessionStorage.getItem('rejectedOrders') != null){
+                                    let roText = document.createElement("h6");
+                                    roText.innerHTML = "Rejected orders";
+                                    anchor.appendChild(roText)
+                                    JSON.parse(sessionStorage.getItem('rejectedOrders')).forEach(ro => showRejectedOrder(ro, anchor));
+                                }
+                            }
 
                             document.getElementById("main").appendChild(anchor);
                             break;
@@ -83,9 +84,7 @@ function servicePackageRedirect(event, spId){
                         await (sessionStorage.getItem('servicePackageToBuy') != null &&
                             sessionStorage.getItem('availableOptionalProducts') != null &&
                             sessionStorage.getItem('availableValidityPeriods') != null);
-                        console.log("hey");
                         window.location.href = "BuyPage.html";
-                        console.log("oi");
 
                         break;
                     case 400: // bad request
@@ -110,17 +109,20 @@ function showServicePackage(servicePackage, anchor) {
     spName.innerHTML = servicePackage.name;
     spName.href = "#";
     spName.addEventListener('click', (event) => servicePackageRedirect(event, spName.id));
+    spDiv.appendChild(spName);
+
     let servicesDiv = document.createElement("div");
     servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, servicesDiv));
-
-    let availableOptionalProductsDiv = document.createElement("div");
-    servicePackage.availableOptionalProducts.forEach(aop => showOptionalProductDescription(aop, availableOptionalProductsDiv));
-
-
-    spDiv.appendChild(spName);
     spDiv.appendChild(servicesDiv);
-    spDiv.appendChild(availableOptionalProductsDiv);
 
+    if(servicePackage.availableOptionalProducts != null && servicePackage.availableOptionalProducts[0] != null) {
+        let availableOptionalProductsDiv = document.createElement("div");
+        let opText = document.createElement("h5");
+        opText.innerHTML = "Available optional products";
+        availableOptionalProductsDiv.appendChild(opText);
+        servicePackage.availableOptionalProducts.forEach(aop => showOptionalProductDescription(aop, availableOptionalProductsDiv));
+        spDiv.appendChild(availableOptionalProductsDiv);
+    }
     anchor.appendChild(spDiv);
     //content moved into txt file
 }
@@ -136,4 +138,17 @@ function showOptionalProductDescription(availableOptionalProduct, availableOptio
     let optionalProduct = document.createElement("div");
     optionalProduct.innerHTML = availableOptionalProduct.name;
     availableOptionalProductsDiv.appendChild(optionalProduct);
+}
+
+function showRejectedOrder(rejectedOrder, anchor){
+    let roLink = document.createElement("a");
+    roLink.href = "#";
+    roLink.innerHTML = "Order nr. " + rejectedOrder.orderId + " of cost " + rejectedOrder.totalCost_euro + "€/month";
+    roLink.addEventListener((event) => confirmRejectedOrder(event, rejectedOrder.orderId));
+    anchor.appendChild(roLink);
+}
+
+function confirmRejectedOrder(event, orderId){
+    event.preventDefault();
+    //TODO same as in buyPage
 }

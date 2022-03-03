@@ -8,9 +8,9 @@ import java.util.Collection;
 public class ClientServicePackage {
     private int servicePackageId;
     private String name;
-    private Collection<String> servicesDescriptions;
-    private Collection<ClientOptionalProduct> availableOptionalProducts;
-    private Collection<ClientValidityPeriod> availableValidityPeriods;
+    private Collection<String> servicesDescriptions = null;
+    private Collection<ClientOptionalProduct> availableOptionalProducts = null;
+    private Collection<ClientValidityPeriod> availableValidityPeriods = null;
 
     public ClientServicePackage(ServicePackage servicePackage){
         this.servicePackageId = servicePackage.getServicePackageId();

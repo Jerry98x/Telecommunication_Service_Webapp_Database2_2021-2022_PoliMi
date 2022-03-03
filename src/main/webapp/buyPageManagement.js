@@ -111,7 +111,7 @@ function confirmRedirect(event, chosenOptionalProducts, chosenValidityPeriod){
     event.preventDefault();
     sessionStorage.setItem('chosenOptionalProducts', JSON.stringify(chosenOptionalProducts));
     sessionStorage.setItem('chosenValidityPeriod', JSON.stringify(chosenValidityPeriod));
-    sessionStorage.setItem('totalCost', document.getElementById("totalCost").innerHTML);
+    sessionStorage.setItem('totalCost', parseFloat(document.getElementById("totalCost").innerHTML));
     window.location.href = "ConfirmationPage.html";
 }
 

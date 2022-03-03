@@ -56,8 +56,9 @@
     });
 
     document.getElementById("continueAsGuest").addEventListener('click', (e) => {
+        sessionStorage.removeItem('loggedUser');
+        sessionStorage.removeItem('rejectedOrders');
         window.location.href = "HomePage.html";
-        //TODO clean
     });
 })();
 

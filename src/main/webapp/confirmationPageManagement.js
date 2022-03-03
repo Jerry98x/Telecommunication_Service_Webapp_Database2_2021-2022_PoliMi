@@ -15,7 +15,7 @@ function paymentRedirect(event, isSuccessful){
         } else {
 
         }
-        sessionStorage.setItem('pendingOrder', null);
+        sessionStorage.removeItem('pendingOrder');
         //TODO reset sptb,aops,avps relative sessionStorage vars
     } else {
         document.getElementById('errormessage').textContent = "You need to login before making a purchase";
