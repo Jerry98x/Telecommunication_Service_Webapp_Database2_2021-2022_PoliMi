@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Buy Service Package</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <script src="buyPageManagement.js" defer></script>
     <script src="utils.js" defer></script>
 </head>
 <body>
-<div id="main">
-    <div id="sp_name"></div>
-    <div id="services"></div>
-    <div id="products"></div>
+<div class="form-group" id="buyForm">
+    <p id="packageName"></p>
+    <div id="servicesDiv">Offered services</div>
+    <div id="optionalProductsDiv">Available optional products</div>
+    <div id="validityPeriodsDiv">Available validity periods</div>
+    <ul class="list-inline">
+        <li>Total cost: </li>
+        <li id="totalCost"></li>
+        <li>€/month</li>
+    </ul>
+    <button type="submit" class="btn btn-default" id="confirmBtn">Confirm</button>
 </div>
-<div id="errormessage"></div>
 </body>
 </html>

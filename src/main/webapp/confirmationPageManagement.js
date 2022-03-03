@@ -9,7 +9,7 @@ function notLoggedRedirect(event, id){
 
 function paymentRedirect(event, isSuccessful){
     event.preventDefault();
-    if(sessionStorage.getItem('logged_user') != null) {
+    if(sessionStorage.getItem('loggedUser') != null) {
         if (isSuccessful) {
 
         } else {
@@ -32,7 +32,7 @@ function paymentRedirect(event, isSuccessful){
         let avps = JSON.parse(sessionStorage.getItem('availableValidityPeriods'));
 
 
-        if(sessionStorage.getItem('logged_user') == null){
+        if(sessionStorage.getItem('loggedUser') == null){
             let landingDiv = document.createElement("div");
 
             let loginBtn = document.createElement("button");

@@ -17,71 +17,101 @@ function makeCall(method, url, formElement, cback, reset = true) {
     }
 }
 
-function showService(service, anchor){//TODO in employee app check when creating service that unlimited true iff min!=0/null
-    let sDiv = document.createElement("div");
-    sDiv.innerHTML = service;
-    anchor.appendChild(sDiv);
-}
-
-function showOptionalProduct(optionalProduct, anchor){
-    let opDiv = document.createElement("div");
-    let opCheckbox = document.createElement("input");
-    opCheckbox.id = optionalProduct.optionalProductId;
-    opCheckbox.type = "checkbox";
-    let opName = document.createElement("div");
-    opName.innerHTML = optionalProduct.name;
-    let opMonthlyFee = document.createElement("div");
-    opMonthlyFee.innerHTML = "It costs " + optionalProduct.monthlyFee_euro + "€/month";
-    opDiv.appendChild(opCheckbox);
-    opDiv.appendChild(opName);
-    opDiv.appendChild(opMonthlyFee);
-    anchor.appendChild(opDiv);
-}
-
-function showValidityPeriod(validityPeriod, anchor){
-    let vpDiv = document.createElement("div");
-    let vpCheckbox = document.createElement("input");
-    vpCheckbox.id = validityPeriod.validityPeriodId;
-    vpCheckbox.type = "checkbox";
-    let vpMonthsOfValidity = document.createElement("div");
-    vpMonthsOfValidity.innerHTML = "Months of validity: " + validityPeriod.monthsOfValidity;
-    let vpMonthlyFee = document.createElement("div");
-    vpMonthlyFee.innerHTML = "It costs " + validityPeriod.monthlyFee_euro + "€/month";
-    vpDiv.appendChild(vpCheckbox);
-    vpDiv.appendChild(vpMonthsOfValidity);
-    vpDiv.appendChild(vpMonthlyFee);
-    anchor.appendChild(vpDiv);
-}
-
-
-
-function confirmRedirect(event){
-    event.preventDefault();
-    window.location.href = "ConfirmationPage.html";
-}
-
 (function () {
     window.addEventListener("load", () => {
-        var anchor = document.createDocumentFragment();
+        document.getElementById("totalCost").innerHTML = "0";
         let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
         let aops = JSON.parse(sessionStorage.getItem('availableOptionalProducts'));
         let avps = JSON.parse(sessionStorage.getItem('availableValidityPeriods'));
 
-        let title = document.createElement("div");
-        title.innerHTML = "You chose the package: " + sptb.name;
-        anchor.appendChild(title);
-        sptb.servicesDescriptions.forEach(service => showService(service, anchor));
-        aops.forEach(product => showOptionalProduct(product, anchor));
-        avps.forEach(vp => showValidityPeriod(vp, anchor));
+        document.getElementById("packageName").innerHTML = "You chose the package: " + sptb.name;
+        sptb.servicesDescriptions.forEach(service => showService(service));
+        let chosenOptionalProducts = []
+        aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
+        let vpName = "validityPeriods";
+        let chosenValidityPeriod = [];
+        avps.forEach(vp => showValidityPeriod(vp, vpName, chosenValidityPeriod));
 
-        let confirmBtn = document.createElement("button");
-        confirmBtn.addEventListener('click', (event) => confirmRedirect(event));
-        confirmBtn.innerHTML = "Confirm";
-        anchor.appendChild(confirmBtn);
-
-        document.getElementById("main").appendChild(anchor);
+        document.getElementById("confirmBtn").addEventListener('click',
+            (event) => confirmRedirect(event, chosenOptionalProducts, chosenValidityPeriod));
 
     });
 
 })();
+
+
+function showService(service){
+    let serviceP = document.createElement("p");
+    serviceP.innerHTML = service;
+    document.getElementById("servicesDiv").appendChild(serviceP);
+}
+
+
+function showOptionalProduct(optionalProduct, chosenOptionalProducts){
+    let singleProductDiv = document.createElement("div");
+    singleProductDiv.class = "checkbox";
+    let opCheckbox = document.createElement("input");
+    opCheckbox.type = "checkbox";
+    opCheckbox.addEventListener('change',
+        (event) => updateProductChoices(event, opCheckbox.checked, optionalProduct, chosenOptionalProducts));
+    let opLabel = document.createElement("label");
+    opLabel.innerHTML = optionalProduct.name + ": " + optionalProduct.monthlyFee_euro + "€/month";
+    opLabel.appendChild(opCheckbox);
+    singleProductDiv.appendChild(opLabel);
+    document.getElementById("optionalProductsDiv").appendChild(singleProductDiv);
+}
+
+function updateProductChoices(event, checked, optionalProduct, chosenOptionalProducts){
+    event.preventDefault();
+    if(checked){
+        chosenOptionalProducts[optionalProduct.optionalProductId] = optionalProduct;
+    } else {
+        chosenOptionalProducts[optionalProduct.optionalProductId] = null;
+    }
+    updateTotalCost(checked, optionalProduct.monthlyFee_euro);
+}
+
+function showValidityPeriod(validityPeriod, vpName, chosenValidityPeriod){
+    let singleProductDiv = document.createElement("div");
+    singleProductDiv.class = "checkbox";
+    let vpRadioBtn = document.createElement("input");
+    vpRadioBtn.type = "radio";
+    vpRadioBtn.name = vpName;
+    vpRadioBtn.addEventListener('change',
+        (event) => updatePeriodChoice(event, validityPeriod, chosenValidityPeriod));
+    let vpLabel = document.createElement("label");
+    vpLabel.innerHTML = validityPeriod.monthsOfValidity + " months at " + validityPeriod.monthlyFee_euro + "€/month";
+    vpLabel.appendChild(vpRadioBtn);
+    singleProductDiv.appendChild(vpLabel);
+    document.getElementById("validityPeriodsDiv").appendChild(singleProductDiv);
+}
+
+function updatePeriodChoice(event, validityPeriod, chosenValidityPeriod){
+    event.preventDefault();
+    let oldFee
+    if(chosenValidityPeriod[0] != null) {
+        oldFee = chosenValidityPeriod[0].monthlyFee_euro;
+    } else {
+        oldFee = 0;
+    }
+    chosenValidityPeriod[0] = validityPeriod;
+    updateTotalCost(true, validityPeriod.monthlyFee_euro - oldFee);
+}
+
+function updateTotalCost(adding, quantity){
+    let totCost = document.getElementById("totalCost");
+    if(adding){
+        totCost.innerHTML = parseFloat(totCost.innerHTML) + quantity;
+    } else {
+        totCost.innerHTML = parseFloat(totCost.innerHTML) - quantity;
+    }
+}
+
+function confirmRedirect(event, chosenOptionalProducts, chosenValidityPeriod){
+    event.preventDefault();
+    sessionStorage.setItem('chosenOptionalProducts', JSON.stringify(chosenOptionalProducts));
+    sessionStorage.setItem('chosenValidityPeriod', JSON.stringify(chosenValidityPeriod));
+    sessionStorage.setItem('totalCost', document.getElementById("totalCost").innerHTML);
+    window.location.href = "ConfirmationPage.html";
+}
 

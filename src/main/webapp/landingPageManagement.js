@@ -14,7 +14,7 @@
                         switch (req.status) {
                             case 200:
                                 let user = JSON.parse(message);
-                                sessionStorage.setItem('logged_user', JSON.stringify(user));//TODO single stringify of rejected orders
+                                sessionStorage.setItem('loggedUser', JSON.stringify(user));//TODO single stringify of rejected orders
                                 if(user.isInsolvent){
                                     sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));//TODO single stringify of optionalProducts
                                 }
@@ -57,6 +57,7 @@
 
     document.getElementById("continueAsGuest").addEventListener('click', (e) => {
         window.location.href = "HomePage.html";
+        //TODO clean
     });
 })();
 

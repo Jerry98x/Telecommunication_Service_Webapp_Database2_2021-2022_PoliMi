@@ -26,7 +26,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     switch (req.status) {
                         case 200:
                             //No need of JSON.parse because just null check
-                            if(sessionStorage.getItem('logged_user') != null){
+                            if(sessionStorage.getItem('loggedUser') != null){
                                 //show user info
                                 //No need of JSON.parse because just null check
                                 if(sessionStorage.getItem('rejectedOrders') != null){
