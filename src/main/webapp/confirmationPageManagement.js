@@ -9,13 +9,11 @@ function notLoggedRedirect(event, id){
 
 function paymentRedirect(event, isSuccessful) {
     event.preventDefault();
-    if (isSuccessful) {
-
-    } else {
-
-    }
+    //TODO post call passing an order
+    //needed: orderId=null, dates(TBD), totalCost, valid=isSuccessful, userId, sptb.servicePackageId, cops(forEach new ClientOptProd), cvp.validityPeriodId
     sessionStorage.removeItem('pendingOrder');
-    //TODO reset sptb,aops,avps relative sessionStorage vars
+    //TODO reset sptb,aops,avps,cops,cvp,totalCost relative sessionStorage vars
+    //window.location.href = "LandingPage.html";
 }
 
 (function () {

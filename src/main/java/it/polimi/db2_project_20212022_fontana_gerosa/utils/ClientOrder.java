@@ -11,6 +11,7 @@ import java.util.Collection;
 
 public class ClientOrder {
     private int orderId;
+    //TODO maybe single param parsing for date?
     /*
     private LocalDate confirmationDate;
     private LocalTime confirmationHour;
