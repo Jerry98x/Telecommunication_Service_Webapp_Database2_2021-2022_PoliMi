@@ -33,7 +33,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                                 let user = JSON.parse(sessionStorage.getItem('loggedUser'));
                                 let userInfo = document.createElement("h6");
                                 userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
-                                anchor.appendChild(userInfo);
+                                document.getElementById("user_login").appendChild(userInfo);
                                 if(sessionStorage.getItem('rejectedOrders') != null){
                                     let roText = document.createElement("h6");
                                     roText.innerHTML = "Rejected orders";
@@ -42,7 +42,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                                 }
                             }
 
-                            document.getElementById("main").appendChild(anchor);
+                            document.getElementById("sp_column").appendChild(anchor);
                             break;
                         case 400: // bad request
                             document.getElementById("errormessage").textContent = message;
@@ -118,12 +118,14 @@ function showServicePackage(servicePackage, anchor) {
     if(servicePackage.availableOptionalProducts != null && servicePackage.availableOptionalProducts[0] != null) {
         let availableOptionalProductsDiv = document.createElement("div");
         let opText = document.createElement("h5");
-        opText.innerHTML = "Available optional products";
+        opText.innerHTML = "<br>Available optional products";
         availableOptionalProductsDiv.appendChild(opText);
         servicePackage.availableOptionalProducts.forEach(aop => showOptionalProductDescription(aop, availableOptionalProductsDiv));
         spDiv.appendChild(availableOptionalProductsDiv);
     }
     anchor.appendChild(spDiv);
+    anchor.appendChild(document.createElement("br"));
+    anchor.appendChild(document.createElement("br"));
     //content moved into txt file
 }
 
