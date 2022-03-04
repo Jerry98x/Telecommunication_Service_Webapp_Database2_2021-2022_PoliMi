@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Confirmation and Payment</title>
-    <script src="landingPageManagement.js" defer></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <script src="confirmationPageManagement.js" defer></script>
     <script src="utils.js" defer></script>
 </head>
 <body>
-<div id="main"></div>
+<div class="d-grid">
+    <button id="loginBtn" type="button" hidden><b>Login</b></button>
+</div><div class="d-grid">
+    <button id="signUpBtn" type="button" hidden><b>Sign up</b></button>
+</div>
+<div class="form-group" id="main">
+    <p id="packageName"></p>
+    <div id="servicesDiv">Offered services</div>
+    <div id="optionalProductsDiv" hidden>Chosen optional products</div>
+    <div id="validityPeriodDiv">Chosen validity period</div>
+    <ul class="list-inline">
+        <li>Total cost: </li>
+        <li id="totalCost"></li>
+        <li>€/month</li>
+    </ul>
+    <div class="d-grid">
+        <button id="successfulPaymentBtn" class="btn btn-primary btn-md" type="button"><b>Successful payment</b></button>
+    </div>
+    <div class="d-grid">
+        <button id="failingPaymentBtn" class="btn btn-primary btn-md" type="button"><b>Failing payment</b></button>
+    </div>
+</div>
 <div id="errormessage"></div>
 </body>
 </html>

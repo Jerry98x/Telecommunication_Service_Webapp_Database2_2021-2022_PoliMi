@@ -88,6 +88,8 @@ function showValidityPeriod(validityPeriod, vpName, chosenValidityPeriod){
 
 function updatePeriodChoice(event, validityPeriod, chosenValidityPeriod){
     event.preventDefault();
+    document.getElementById("errormessage").innerHTML = "";
+    document.getElementById("confirmBtn").disabled = false;
     let oldFee
     if(chosenValidityPeriod[0] != null) {
         oldFee = chosenValidityPeriod[0].monthlyFee_euro;
@@ -109,9 +111,13 @@ function updateTotalCost(adding, quantity){
 
 function confirmRedirect(event, chosenOptionalProducts, chosenValidityPeriod){
     event.preventDefault();
-    sessionStorage.setItem('chosenOptionalProducts', JSON.stringify(chosenOptionalProducts));
-    sessionStorage.setItem('chosenValidityPeriod', JSON.stringify(chosenValidityPeriod));
-    sessionStorage.setItem('totalCost', parseFloat(document.getElementById("totalCost").innerHTML));
-    window.location.href = "ConfirmationPage.html";
+    if(chosenValidityPeriod[0] != null){
+        sessionStorage.setItem('chosenOptionalProducts', JSON.stringify(chosenOptionalProducts));
+        sessionStorage.setItem('chosenValidityPeriod', JSON.stringify(chosenValidityPeriod));
+        sessionStorage.setItem('totalCost', parseFloat(document.getElementById("totalCost").innerHTML));
+        window.location.href = "ConfirmationPage.html";
+    } else {
+        document.getElementById("errormessage").innerHTML = "You have to choose validity period";
+    }
 }
 

@@ -7,69 +7,68 @@ function notLoggedRedirect(event, id){
     window.location.href = "LandingPage.html";
 }
 
-function paymentRedirect(event, isSuccessful){
+function paymentRedirect(event, isSuccessful) {
     event.preventDefault();
-    if(sessionStorage.getItem('loggedUser') != null) {
-        if (isSuccessful) {
+    if (isSuccessful) {
 
-        } else {
-
-        }
-        sessionStorage.removeItem('pendingOrder');
-        //TODO reset sptb,aops,avps relative sessionStorage vars
     } else {
-        document.getElementById('errormessage').textContent = "You need to login before making a purchase";
-        return;
+
     }
+    sessionStorage.removeItem('pendingOrder');
+    //TODO reset sptb,aops,avps relative sessionStorage vars
 }
 
 (function () {
     window.addEventListener("load", () => {
-        var anchor = document.createDocumentFragment();
-
         let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
-        let aops = JSON.parse(sessionStorage.getItem('availableOptionalProducts'));
-        let avps = JSON.parse(sessionStorage.getItem('availableValidityPeriods'));
-
+        let cops = JSON.parse(sessionStorage.getItem('chosenOptionalProducts'));
+        let cvp = JSON.parse(sessionStorage.getItem('chosenValidityPeriod'))[0];
+        let tot = sessionStorage.getItem("totalCost");
 
         if(sessionStorage.getItem('loggedUser') == null){
-            let landingDiv = document.createElement("div");
-
-            let loginBtn = document.createElement("button");
-            loginBtn.innerHTML = "Login";
-            loginBtn.addEventListener('click',(event) => notLoggedRedirect(event, sptb.servicePackageId));
-
-            let signUpBtn = document.createElement("button");
-            signUpBtn.innerHTML = "Sign up";
-            signUpBtn.addEventListener('click', (event) => notLoggedRedirect(event, sptb.servicePackageId));
-
-            landingDiv.appendChild(loginBtn);
-            landingDiv.appendChild(signUpBtn);
-
-            anchor.appendChild(landingDiv);
+            document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
+            //disable payment buttons
+            document.getElementById("successfulPaymentBtn").disabled = true;
+            document.getElementById("failingPaymentBtn").disabled = true;
+            //add event listener to login/signup buttons
+            document.getElementById("loginBtn").addEventListener('click',(event) => notLoggedRedirect(event, sptb.servicePackageId));
+            document.getElementById("signUpBtn").addEventListener('click', (event) => notLoggedRedirect(event, sptb.servicePackageId));
+            //show login/signup buttons
+            document.getElementById("loginBtn").hidden = false;
+            document.getElementById("signUpBtn").hidden = false;
         }
 
-        let recapDiv = document.createElement("div");
+        document.getElementById("packageName").innerHTML = sptb.name;
+        sptb.servicesDescriptions.forEach(sd => showServiceDescription(sd));
+        if(cops != null && cops.length > 0){
+            document.getElementById("optionalProductsDiv").hidden = false;
+            cops.forEach(cop => showOptionalProduct(cop));
+        }
+        document.getElementById("validityPeriodDiv").innerHTML = cvp.monthsOfValidity + " months at " + cvp.monthlyFee_euro + "€/month";
+        document.getElementById("totalCost").innerHTML = tot;
 
-        let paymentDiv = document.createElement("div");
 
-        let successBuyBtn = document.createElement("button");
-        successBuyBtn.innerHTML = "Success Buy";
+
         //TODO create valid order and redirect to homePage
-        successBuyBtn.addEventListener('click', (event) => paymentRedirect(event, true));
-        let failBuyBtn = document.createElement("button");
-        failBuyBtn.innerHTML = "Fail Buy";
+        document.getElementById("successfulPaymentBtn").addEventListener('click', (event) => paymentRedirect(event, true));
         //TODO create invalid order and redirect to homePage
-        failBuyBtn.addEventListener('click', (event) => paymentRedirect(event, false));
-
-
-        paymentDiv.appendChild(successBuyBtn);
-        paymentDiv.appendChild(failBuyBtn);
-
-        anchor.appendChild(paymentDiv);
-
-        document.getElementById("main").appendChild(anchor);
-
+        document.getElementById("failingPaymentBtn").addEventListener('click', (event) => paymentRedirect(event, false));
     });
 
 })();
+
+function showServiceDescription(serviceDescription){
+    let service = document.createElement("p");
+    service.innerHTML = serviceDescription;
+    document.getElementById("servicesDiv").appendChild(service);
+}
+
+function showOptionalProduct(optionalProduct){
+    if(optionalProduct != null) {
+        let singleProductDiv = document.createElement("div");
+        let opLabel = document.createElement("label");
+        opLabel.innerHTML = optionalProduct.name + ": " + optionalProduct.monthlyFee_euro + "€/month";
+        singleProductDiv.appendChild(opLabel);
+        document.getElementById("optionalProductsDiv").appendChild(singleProductDiv);
+    }
+}
