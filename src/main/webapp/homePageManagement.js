@@ -28,6 +28,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             let sps = JSON.parse(message);
 
                             let anchor = document.createDocumentFragment();
+                            anchor.appendChild(document.createElement("br"));
                             sps.forEach(sp => showServicePackage(sp, anchor));
                             if(sessionStorage.getItem('loggedUser') != null){
                                 let user = JSON.parse(sessionStorage.getItem('loggedUser'));
@@ -104,27 +105,32 @@ function servicePackageRedirect(event, spId){
 
 function showServicePackage(servicePackage, anchor) {
     let spDiv = document.createElement("div");
+    spDiv.classList.add("border-bottom");
+    let spHeader = document.createElement("h4");
     let spName = document.createElement("a");
     spName.id = servicePackage.servicePackageId;
     spName.innerHTML = servicePackage.name;
     spName.href = "#";
     spName.addEventListener('click', (event) => servicePackageRedirect(event, spName.id));
-    spDiv.appendChild(spName);
+    spHeader.appendChild(spName);
+    spDiv.appendChild(spHeader);
 
     let servicesDiv = document.createElement("div");
     servicePackage.servicesDescriptions.forEach(sd => showServiceDescription(sd, servicesDiv));
     spDiv.appendChild(servicesDiv);
+    spDiv.appendChild(document.createElement("br"));
 
     if(servicePackage.availableOptionalProducts != null && servicePackage.availableOptionalProducts[0] != null) {
         let availableOptionalProductsDiv = document.createElement("div");
+        availableOptionalProductsDiv.classList.add("border");
         let opText = document.createElement("h5");
-        opText.innerHTML = "<br>Available optional products";
+        opText.innerHTML = "Available optional products";
         availableOptionalProductsDiv.appendChild(opText);
         servicePackage.availableOptionalProducts.forEach(aop => showOptionalProductDescription(aop, availableOptionalProductsDiv));
         spDiv.appendChild(availableOptionalProductsDiv);
     }
+    spDiv.appendChild(document.createElement("br"));
     anchor.appendChild(spDiv);
-    anchor.appendChild(document.createElement("br"));
     anchor.appendChild(document.createElement("br"));
     //content moved into txt file
 }
@@ -132,6 +138,7 @@ function showServicePackage(servicePackage, anchor) {
 
 function showServiceDescription(serviceDescription, servicesDiv){
     let service = document.createElement("div");
+    //service.classList.add("border");
     service.innerHTML = serviceDescription;
     servicesDiv.appendChild(service);
 }

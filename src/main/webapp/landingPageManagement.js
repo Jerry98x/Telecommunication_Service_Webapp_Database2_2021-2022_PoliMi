@@ -13,17 +13,24 @@
                         var message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                let user = JSON.parse(message);
-                                sessionStorage.setItem('loggedUser', JSON.stringify(user));
-                                if(user.isInsolvent){
-                                    sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));
-                                }
-                                //No need of JSON.parse because just null check
-                                if(sessionStorage.getItem('pendingOrder') != null) {
-                                    window.location.href = "ConfirmationPage.html";
+                                if(JSON.parse(message)[1] === true) {
+                                    let user = JSON.parse(message)[0];
+                                    sessionStorage.setItem('loggedUser', JSON.stringify(user));
+                                    if(user.isInsolvent){
+                                        sessionStorage.setItem('rejectedOrders', JSON.stringify(user.rejectedOrders));
+                                    }
+                                    //No need of JSON.parse because just null check
+                                    if(sessionStorage.getItem('pendingOrder') != null) {
+                                        window.location.href = "ConfirmationPage.html";
+                                    }
+                                    else {
+                                        window.location.href = "HomePage.html";
+                                    }
                                 }
                                 else {
-                                    window.location.href = "HomePage.html";
+                                    let employee = JSON.parse(message)[0];
+                                    sessionStorage.setItem('loggedEmployee', JSON.stringify(employee));
+                                    window.location.href = "EmployeeHomePage.html";
                                 }
                                 break;
                             default:
