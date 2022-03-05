@@ -2,6 +2,8 @@
  * Landing page management
  */
 
+//TODO impedire che un utente loggato possa tornare sulla LandingPage o che comunque
+//TODO un eventuale secondo login/registrazione diano problemi
 (function() { // avoid variables ending up in the global scope
     //sessionStorage.setItem('logged_user', null);
     document.getElementById("submitLogin").addEventListener('click', (e) => {
