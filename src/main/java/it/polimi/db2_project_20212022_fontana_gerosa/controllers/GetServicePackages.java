@@ -27,7 +27,6 @@ public class GetServicePackages extends HttpServlet {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
-
     private Connection connection = null;
 
     public void init() throws ServletException {

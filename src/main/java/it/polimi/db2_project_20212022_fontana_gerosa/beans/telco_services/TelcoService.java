@@ -8,6 +8,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "service", schema = "db2_project")
 @Inheritance(strategy = InheritanceType.JOINED)
+@NamedQuery(name = "TelcoService.getAllServices", query = "SELECT s FROM TelcoService s")
 @NamedQuery(name = "TelcoService.getServicesByPackageId",
         query = "SELECT s FROM TelcoService s, ServicePackage sp, ServicePackage.services sps WHERE " +
                 "s.serviceId = sps.serviceId AND sp.servicePackageId = ?1")

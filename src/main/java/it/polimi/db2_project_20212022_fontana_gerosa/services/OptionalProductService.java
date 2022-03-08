@@ -17,12 +17,25 @@ public class OptionalProductService {
 
     public List<OptionalProduct> getOptionalProductsByPackage(ServicePackage servicePackage){
         List<OptionalProduct> optionalProducts = null;
-        try{
+        try {
             optionalProducts = em.createNamedQuery("OptionalProduct.getOptionalProductsByPackageId", OptionalProduct.class).
                     setParameter(1,servicePackage.getServicePackageId()).getResultList();
-        } catch (PersistenceException e){
-            throw new PersistenceException("couldn't retrieve products of a package");
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve products of a package");
         }
         return optionalProducts;
+    }
+
+    public List<OptionalProduct> getAllOptionalProducts() {
+        List<OptionalProduct> allOptionalProducts = null;
+        try {
+            allOptionalProducts = em.createNamedQuery("OptionalProduct.getAllOptionalProducts", OptionalProduct.class).
+                    getResultList();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve optional products");
+        }
+        return allOptionalProducts;
     }
 }

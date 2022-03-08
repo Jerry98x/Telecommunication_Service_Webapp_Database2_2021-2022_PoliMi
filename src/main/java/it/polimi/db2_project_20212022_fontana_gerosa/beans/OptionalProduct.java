@@ -2,10 +2,12 @@ package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
 import jakarta.persistence.*;
 
+import javax.swing.text.html.Option;
 import java.util.Collection;
 
 @Entity
 @Table(name = "optional_product", schema = "db2_project")
+@NamedQuery(name = "OptionalProduct.getAllOptionalProducts", query = "SELECT o FROM OptionalProduct o")
 @NamedQuery(name = "OptionalProduct.getOptionalProductsByPackageId",
         query = "SELECT o FROM OptionalProduct o, ServicePackage sp, ServicePackage.availableOptionalProducts spo WHERE " +
                 "o.optionalProductId = spo.optionalProductId AND sp.servicePackageId = ?1")

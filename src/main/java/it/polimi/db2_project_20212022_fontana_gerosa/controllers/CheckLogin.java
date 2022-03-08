@@ -60,7 +60,10 @@ public class CheckLogin extends HttpServlet {
         User user = null;
         try {
             user = userService.checkCredentials(email, password);
-            request.getSession().setAttribute("userId", user.getUserId());
+            if(user != null) {
+                request.getSession().setAttribute("userId", user.getUserId());
+            }
+
         }
         catch (PersistenceException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -71,20 +74,24 @@ public class CheckLogin extends HttpServlet {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        // query db to authenticate (check employee)
         Employee employee = null;
-        if(user == null) {
-            // query db to authenticate (check employee)
-            try {
-                employee = employeeService.checkEmployeeCredentials(email, password);
+        try {
+            employee = employeeService.checkEmployeeCredentials(email, password);
+            if(employee != null) {
                 request.getSession().setAttribute("employeeId", employee.getEmployeeId());
-            } catch (PersistenceException e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Internal server error, retry later");
-                return;
-            } catch (CredentialException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
+
+        }
+        catch (PersistenceException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        catch (CredentialException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         // If the user exists, add info to the session and go to home page, otherwise

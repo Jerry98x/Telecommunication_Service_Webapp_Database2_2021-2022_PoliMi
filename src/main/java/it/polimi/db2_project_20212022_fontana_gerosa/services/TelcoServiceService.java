@@ -16,13 +16,27 @@ public class TelcoServiceService {
 
     public List<TelcoService> getServicesByPackage(ServicePackage servicePackage) {
         List<TelcoService> telcoServices = null;
-        try{
+        try {
             telcoServices = em.createNamedQuery("TelcoService.getServicesByPackageId", TelcoService.class).
                     setParameter(1,servicePackage.getServicePackageId()).getResultList();
-        } catch (PersistenceException e){
-            throw new PersistenceException("couldn't retrieve services of a package");
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve services of a package");
         }
         return telcoServices;
+    }
+
+    public List<TelcoService> getAllServices() {
+        List<TelcoService> services = null;
+
+        try {
+            services = em.createNamedQuery("TelcoService.getAllServices", TelcoService.class).getResultList();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve services");
+        }
+
+        return services;
     }
 }
 
