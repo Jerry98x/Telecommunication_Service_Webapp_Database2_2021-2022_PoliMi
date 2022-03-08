@@ -17,6 +17,60 @@ function makeCall(method, url, formElement, cback, reset = true) {
     }
 }
 
+(function (){
+    if(sessionStorage.getItem('loggedUser') != null) {
+        let user = JSON.parse(sessionStorage.getItem('loggedUser'));
+        let userInfo = document.createElement("h6");
+        userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
+        document.getElementById("user_login").appendChild(userInfo);
+
+        if(user.insolvent) {
+            //TODO create form to pass userId
+
+            window.addEventListener("load", () => {
+                makeCall("POST", "GetRejectedOrders", userIdForm,
+                    function (req) {
+                        if (req.readyState === XMLHttpRequest.DONE) {
+                            var message = req.responseText;
+                            switch (req.status) {
+                                case 200:
+                                    let rejectedOrders = JSON.parse(message);
+                                    let roText = document.createElement("h6");
+                                    roText.innerHTML = "Rejected orders";
+                                    anchor.appendChild(roText)
+                                    rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
+                                    break;
+                                default:
+                                    document.getElementById("errormessage").textContent += message;
+                                    break;
+                            }
+                        }
+                    })
+            })
+        }
+    }
+
+    window.addEventListener("load", () => {
+        makeCall("GET", "GetServicePackages", null,
+            function (req) {
+            if(req.readyState === XMLHttpRequest.DONE) {
+                var message = req.responseText;
+                switch (req.status) {
+                    case 200:
+                        let sps = JSON.parse(message);
+                        let anchor = document.createDocumentFragment();
+                        anchor.appendChild(document.createElement("br"));
+                        sps.forEach(sp => showServicePackage(sp, anchor));
+                        break;
+                    default:
+                        document.getElementById("errormessage").textContent += message;
+                        break;
+                }
+            }
+            })
+    })
+}) ();
+/*
 (function () {
     window.addEventListener("load", () => {
         makeCall("GET", "HomePageLoading", null,
@@ -61,6 +115,8 @@ function makeCall(method, url, formElement, cback, reset = true) {
     });
 
 })();
+
+ */
 
 
 

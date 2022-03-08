@@ -14,9 +14,9 @@ public class OrderService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
-    public List<Order> getRejectedOrders(User user){
+    public List<Order> getRejectedOrders(int userId){
         return em.createNamedQuery("Order.getRejectedOrders", Order.class)
-                .setParameter(1, user.getUserId()).getResultList();
+                .setParameter(1, userId).getResultList();
     }
 
 //    public Order createnewOrder(ServicePackage sp) {

@@ -20,9 +20,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/HomePageLoading")
+@WebServlet("/GetServicePackages")
 @MultipartConfig
-public class HomePageLoading extends HttpServlet {
+public class GetServicePackages extends HttpServlet {
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
