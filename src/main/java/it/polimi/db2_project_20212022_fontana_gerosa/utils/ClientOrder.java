@@ -25,8 +25,8 @@ public class ClientOrder {
     private Boolean valid;
     private int userId;
     private int servicePackageId;
-    private int validityPeriodId;
-    private Collection<ClientOptionalProduct> chosenOptionalProduct;
+    private Collection<ClientOptionalProduct> chosenOptionalProducts;
+    private ClientValidityPeriod chosenValidityPeriod;
 
     public ClientOrder(Order order){
         this.orderId = order.getOrderId();
@@ -46,11 +46,11 @@ public class ClientOrder {
         this.valid = order.getValid() == 1;
         this.userId = order.getUser().getUserId();
         this.servicePackageId = order.getServicePackage().getServicePackageId();
-        this.validityPeriodId = order.getValidityPeriod().getValidityPeriodId();
+        this.chosenValidityPeriod = new ClientValidityPeriod(order.getValidityPeriod());
         if(order.getChosenOptionalProducts() != null){
-            this.chosenOptionalProduct = new ArrayList<>();
+            this.chosenOptionalProducts = new ArrayList<>();
             order.getChosenOptionalProducts().
-                    forEach(optionalProduct -> this.chosenOptionalProduct.add(new ClientOptionalProduct(optionalProduct)));
+                    forEach(optionalProduct -> this.chosenOptionalProducts.add(new ClientOptionalProduct(optionalProduct)));
         }
 
     }

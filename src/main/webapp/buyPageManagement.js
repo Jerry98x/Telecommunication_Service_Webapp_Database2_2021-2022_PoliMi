@@ -18,26 +18,61 @@ function makeCall(method, url, formElement, cback, reset = true) {
 }
 
 (function () {
+    let sptb;
+    let aops;
+    let avps;
     window.addEventListener("load", () => {
-        document.getElementById("totalCost").innerHTML = "0";
-        let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
-        let aops = JSON.parse(sessionStorage.getItem('availableOptionalProducts'));
-        let avps = JSON.parse(sessionStorage.getItem('availableValidityPeriods'));
+        let servicePackageToBuyForm = document.createElement("form");
+        servicePackageToBuyForm.name = "spToBuyForm";
+        let input = document.createElement("input");
+        input.name = "spIdToBuy"
+        input.value = sessionStorage.getItem("servicePackageIdToBuy");
+        servicePackageToBuyForm.appendChild(input);
+        makeCall("POST", "GetServicePackageToBuy", servicePackageToBuyForm,
+            async function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    var message = req.responseText;
+                    switch (req.status) {
+                        case 200:
+                            sptb = JSON.parse(message);
+                            sessionStorage.removeItem("servicePackageIdToBuy");
+                            aops = sptb.availableOptionalProducts;
+                            avps = sptb.availableValidityPeriods;
+                            await (aops != null && avps != null);
+                            buildPage(sptb, aops, avps);
+                            break;
+                        case 400: // bad request
+                            document.getElementById("errormessage").textContent = message;
+                            break;
+                        case 401: // unauthorized
+                            document.getElementById("errormessage").textContent = message;
+                            break;
+                        case 500: // server error
+                            document.getElementById("errormessage").textContent = message;
+                            break;
+                    }
+                }
+            }
+        );
 
-        document.getElementById("packageName").innerHTML = "You chose the package: " + sptb.name;
-        sptb.servicesDescriptions.forEach(service => showService(service));
-        let chosenOptionalProducts = []
-        aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
-        let vpName = "validityPeriods";
-        let chosenValidityPeriod = [];
-        avps.forEach(vp => showValidityPeriod(vp, vpName, chosenValidityPeriod));
-
-        document.getElementById("confirmBtn").addEventListener('click',
-            (event) => confirmRedirect(event, chosenOptionalProducts, chosenValidityPeriod));
-
-    });
+    })
 
 })();
+
+function buildPage(sptb, aops, avps){
+    document.getElementById("totalCost").innerHTML = "0";
+    document.getElementById("packageName").innerHTML = "You chose the package: " + sptb.name;
+    sptb.servicesDescriptions.forEach(service => showService(service));
+    let chosenOptionalProducts = []
+    aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
+    let vpName = "validityPeriods";
+    let chosenValidityPeriod = [];
+    avps.forEach(vp => showValidityPeriod(vp, vpName, chosenValidityPeriod));
+
+    document.getElementById("confirmBtn").addEventListener("click",
+        (event) => confirmRedirect(event, sptb, chosenOptionalProducts, chosenValidityPeriod));
+
+}
 
 
 function showService(service){
@@ -52,7 +87,7 @@ function showOptionalProduct(optionalProduct, chosenOptionalProducts){
     singleProductDiv.class = "checkbox";
     let opCheckbox = document.createElement("input");
     opCheckbox.type = "checkbox";
-    opCheckbox.addEventListener('change',
+    opCheckbox.addEventListener("change",
         (event) => updateProductChoices(event, opCheckbox.checked, optionalProduct, chosenOptionalProducts));
     let opLabel = document.createElement("label");
     opLabel.innerHTML = optionalProduct.name + ": " + optionalProduct.monthlyFee_euro + "€/month";
@@ -77,7 +112,7 @@ function showValidityPeriod(validityPeriod, vpName, chosenValidityPeriod){
     let vpRadioBtn = document.createElement("input");
     vpRadioBtn.type = "radio";
     vpRadioBtn.name = vpName;
-    vpRadioBtn.addEventListener('change',
+    vpRadioBtn.addEventListener("change",
         (event) => updatePeriodChoice(event, validityPeriod, chosenValidityPeriod));
     let vpLabel = document.createElement("label");
     vpLabel.innerHTML = validityPeriod.monthsOfValidity + " months at " + validityPeriod.monthlyFee_euro + "€/month";
@@ -109,12 +144,19 @@ function updateTotalCost(adding, quantity){
     }
 }
 
-function confirmRedirect(event, chosenOptionalProducts, chosenValidityPeriod){
+function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, chosenValidityPeriod){
     event.preventDefault();
     if(chosenValidityPeriod[0] != null){
-        sessionStorage.setItem('chosenOptionalProducts', JSON.stringify(chosenOptionalProducts));
-        sessionStorage.setItem('chosenValidityPeriod', JSON.stringify(chosenValidityPeriod));
-        sessionStorage.setItem('totalCost', parseFloat(document.getElementById("totalCost").innerHTML));
+        sessionStorage.setItem("servicePackageToBuy", JSON.stringify(servicePackageToBuy));
+        let pendingOrder = {};
+        //TODO dates
+        pendingOrder.totalCost = parseFloat(document.getElementById("totalCost").innerHTML);
+        pendingOrder.valid = false; //placeholder
+        pendingOrder.userId = sessionStorage.getItem("loggedUser").userId;
+        pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
+        pendingOrder.chosenOptionalProducts = chosenOptionalProducts;
+        pendingOrder.chosenValidityPeriod = chosenValidityPeriod;
+        sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
         window.location.href = "ConfirmationPage.html";
     } else {
         document.getElementById("errormessage").innerHTML = "You have to choose validity period";

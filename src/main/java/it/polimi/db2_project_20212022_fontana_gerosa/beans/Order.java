@@ -11,6 +11,7 @@ import java.util.Collection;
 @Table(name = "order", schema = "db2_project")
 //TODO check problems with booleans
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = 0")
+@NamedQuery(name = "Order.getRejectedOrderById", query = "SELECT o FROM Order o WHERE o.orderId = ?1 AND o.valid = 0")
 public class Order {
 
     @Id

@@ -18,8 +18,8 @@ function makeCall(method, url, formElement, cback, reset = true) {
 }
 
 (function (){
-    if(sessionStorage.getItem('loggedUser') != null) {
-        let user = JSON.parse(sessionStorage.getItem('loggedUser'));
+    if(sessionStorage.getItem("loggedUser") != null) {
+        let user = JSON.parse(sessionStorage.getItem("loggedUser"));
         let userInfo = document.createElement("h6");
         userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
         document.getElementById("user_login").appendChild(userInfo);
@@ -80,50 +80,10 @@ function makeCall(method, url, formElement, cback, reset = true) {
 }) ();
 
 
-
-//TODO move logic into buy page
 function servicePackageRedirect(event, spId){
     event.preventDefault();
-    sessionStorage.setItem("servicePackageId", spId);
+    sessionStorage.setItem("servicePackageIdToBuy", spId);
     window.location.href = "BuyPage.html";
-    /*
-    let form = document.createElement("form");
-    form.name = "spToBuyForm";
-    let input = document.createElement("input");
-    input.name = "spIdToBuy"
-    input.value = spId;
-    form.appendChild(input);
-    makeCall("POST", "BuyPageLoading", form,
-        async function (req) {
-            if (req.readyState === XMLHttpRequest.DONE) {
-                var message = req.responseText;
-                switch (req.status) {
-                    case 200:
-                        let sptb = JSON.parse(message);
-                        sessionStorage.setItem('servicePackageToBuy', JSON.stringify(sptb));
-                        sessionStorage.setItem('availableOptionalProducts', JSON.stringify(sptb.availableOptionalProducts));
-                        sessionStorage.setItem('availableValidityPeriods', JSON.stringify(sptb.availableValidityPeriods));
-                        await (sessionStorage.getItem('servicePackageToBuy') != null &&
-                            sessionStorage.getItem('availableOptionalProducts') != null &&
-                            sessionStorage.getItem('availableValidityPeriods') != null);
-                        window.location.href = "BuyPage.html";
-
-                        break;
-                    case 400: // bad request
-                        document.getElementById("errormessage").textContent = message;
-                        break;
-                    case 401: // unauthorized
-                        document.getElementById("errormessage").textContent = message;
-                        break;
-                    case 500: // server error
-                        document.getElementById("errormessage").textContent = message;
-                        break;
-                }
-            }
-        }
-    );
-
-     */
 }
 
 function showServicePackage(servicePackage, anchor) {
@@ -134,7 +94,7 @@ function showServicePackage(servicePackage, anchor) {
     spName.id = servicePackage.servicePackageId;
     spName.innerHTML = servicePackage.name;
     spName.href = "#";
-    spName.addEventListener('click', (event) => servicePackageRedirect(event, spName.id));
+    spName.addEventListener("click", (event) => servicePackageRedirect(event, spName.id));
     spHeader.appendChild(spName);
     spDiv.appendChild(spHeader);
 
@@ -180,7 +140,26 @@ function showRejectedOrder(rejectedOrder, anchor){
     anchor.appendChild(roLink);
 }
 
-function confirmRejectedOrder(event, orderId){
+function confirmRejectedOrder(event, rejectedOrderId){
     event.preventDefault();
-    //TODO same as in buyPage
+    let rejectedOrderForm = document.createElement("form");
+    rejectedOrderForm.name = "roForm";
+    let input = document.createElement("input");
+    input.name = "rejectedOrderId";
+    input.value = rejectedOrderId;
+    rejectedOrderForm.appendChild(input);
+    makeCall("POST", "GetRejectedOrderToComplete", rejectedOrderForm,
+        async function (req) {
+            if (req.readyState === XMLHttpRequest.DONE) {
+                var message = req.responseText;
+                switch (req.status) {
+                    case 200:
+                        //TODO move returned rejected order values into "pendingOrder" and redirect to ConfirmationPage.html
+                        break;
+                    default:
+                        document.getElementById("errormessage").textContent = message;
+                }
+            }
+        }
+    );
 }

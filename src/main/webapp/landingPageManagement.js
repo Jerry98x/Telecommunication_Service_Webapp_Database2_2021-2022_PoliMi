@@ -5,8 +5,8 @@
 //TODO impedire che un utente loggato possa tornare sulla LandingPage o che comunque
 //TODO un eventuale secondo login/registrazione diano problemi
 (function() { // avoid variables ending up in the global scope
-    //sessionStorage.setItem('logged_user', null);
-    document.getElementById("submitLogin").addEventListener('click', (e) => {
+    //sessionStorage.setItem("logged_user", null);
+    document.getElementById("submitLogin").addEventListener("click", (e) => {
         var form = e.target.closest("form");
         if (form.checkValidity()) {
             makeCall("POST", "CheckLogin", e.target.closest("form"),
@@ -17,9 +17,9 @@
                             case 200:
                                 if(JSON.parse(message)[1] === true) {
                                     let user = JSON.parse(message)[0];
-                                    sessionStorage.setItem('loggedUser', JSON.stringify(user));
+                                    sessionStorage.setItem("loggedUser", JSON.stringify(user));
                                     //No need of JSON.parse because just null check
-                                    if(sessionStorage.getItem('pendingOrder') != null) {
+                                    if(sessionStorage.getItem("pendingOrder") != null) {
                                         window.location.href = "ConfirmationPage.html";
                                     }
                                     else {
@@ -28,7 +28,7 @@
                                 }
                                 else {
                                     let employee = JSON.parse(message)[0];
-                                    sessionStorage.setItem('loggedEmployee', JSON.stringify(employee));
+                                    sessionStorage.setItem("loggedEmployee", JSON.stringify(employee));
                                     window.location.href = "EmployeeHomePage.html";
                                 }
                                 break;
@@ -45,7 +45,7 @@
     });
 
 
-    document.getElementById("submitSignUp").addEventListener('click', (e) => {
+    document.getElementById("submitSignUp").addEventListener("click", (e) => {
         var form = e.target.closest("form");
         if (form.checkValidity()) {
             makeCall("POST", "Registration", e.target.closest("form"),
@@ -61,9 +61,9 @@
         }
     });
 
-    document.getElementById("continueAsGuest").addEventListener('click', (e) => {
-        sessionStorage.removeItem('loggedUser');
-        sessionStorage.removeItem('rejectedOrders');
+    document.getElementById("continueAsGuest").addEventListener("click", (e) => {
+        sessionStorage.removeItem("loggedUser");
+        sessionStorage.removeItem("rejectedOrders");
         window.location.href = "HomePage.html";
     });
 })();

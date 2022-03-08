@@ -1,57 +1,97 @@
 /**
  *
  */
-function notLoggedRedirect(event, id){
+function notLoggedRedirect(event){
     event.preventDefault();
-    sessionStorage.setItem('pendingOrder', id);
     window.location.href = "LandingPage.html";
 }
 
-function paymentRedirect(event, isSuccessful) {
+function sendPayment(event, isSuccessful) {
     event.preventDefault();
-    //TODO post call passing an order
-    //needed: orderId=null, dates(TBD), totalCost, valid=isSuccessful, userId, sptb.servicePackageId, cops(forEach new ClientOptProd), cvp.validityPeriodId
-    sessionStorage.removeItem('pendingOrder');
-    //TODO reset sptb,aops,avps,cops,cvp,totalCost relative sessionStorage vars
-    //window.location.href = "LandingPage.html";
+    let newOrderForm = document.getElementById("newOrderForm");
+    let newOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
+    newOrder.valid = isSuccessful;
+    //TODO dates
+    newOrderForm.appendChild(JSON.stringify(newOrder));
+    makeCall("POST", "CreateOrder", newOrderForm,
+        function (req) {
+            if (req.readyState === XMLHttpRequest.DONE) {
+                var message = req.responseText;
+                switch (req.status) {
+                    case 200:
+                        console.log(sessionStorage.getItem(JSON.parse("pendingOrder")));
+                        sessionStorage.removeItem("pendingOrder");
+                        sessionStorage.removeItem("servicePackageToBuy");
+                        window.location.href = "LandingPage.html";
+                        break;
+                    default:
+                        document.getElementById("errormessage").textContent += message;
+                        break;
+                }
+            }
+        });
 }
 
 (function () {
-    window.addEventListener("load", () => {
-        let sptb = JSON.parse(sessionStorage.getItem('servicePackageToBuy'));
-        let cops = JSON.parse(sessionStorage.getItem('chosenOptionalProducts'));
-        let cvp = JSON.parse(sessionStorage.getItem('chosenValidityPeriod'))[0];
-        let tot = sessionStorage.getItem("totalCost");
+    if(sessionStorage.getItem("rejectedOrderId") != null){
+        window.addEventListener("load", () => {
+            let rejectedIdForm = document.createElement("form");
+            rejectedIdForm.name = "rejectedIdForm";
+            let input = document.createElement("input");
+            input.name = "rejectedId"
+            input.value = sessionStorage.getItem("rejectedOrderID");
+            rejectedIdForm.appendChild(input);
+            window.addEventListener("load", () => {
+                makeCall("POST", "GetRejectedOrderToComplete", rejectedIdForm,
+                    function (req) {
+                        if (req.readyState === XMLHttpRequest.DONE) {
+                            var message = req.responseText;
+                            switch (req.status) {
+                                case 200:
+                                    //TODO show rejected order
+                                    break;
+                                default:
+                                    document.getElementById("errormessage").textContent += message;
+                                    break;
+                            }
+                        }
+                    })
+            })
+        })
+    } else {
+        window.addEventListener("load", () => {
+            let sptb = JSON.parse(sessionStorage.getItem("servicePackageToBuy"));
+            let tot = JSON.parse(sessionStorage.getItem("pendingOrder")).totalCost;
+            let cops = JSON.parse(sessionStorage.getItem("pendingOrder")).chosenOptionalProducts;
+            let cvp = JSON.parse(sessionStorage.getItem("pendingOrder")).chosenValidityPeriod;
 
-        if(sessionStorage.getItem('loggedUser') == null){
-            document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
-            //disable payment buttons
-            document.getElementById("successfulPaymentBtn").disabled = true;
-            document.getElementById("failingPaymentBtn").disabled = true;
-            //add event listener to login/signup buttons
-            document.getElementById("loginBtn").addEventListener('click',(event) => notLoggedRedirect(event, sptb.servicePackageId));
-            document.getElementById("signUpBtn").addEventListener('click', (event) => notLoggedRedirect(event, sptb.servicePackageId));
-            //show login/signup buttons
-            document.getElementById("loginBtn").hidden = false;
-            document.getElementById("signUpBtn").hidden = false;
-        }
+            if (sessionStorage.getItem("loggedUser") == null) {
+                document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
+                //disable payment buttons
+                document.getElementById("successfulPaymentBtn").disabled = true;
+                document.getElementById("failingPaymentBtn").disabled = true;
+                //add event listener to login/signup buttons
+                document.getElementById("loginBtn").addEventListener("click", (event) => notLoggedRedirect(event));
+                document.getElementById("signUpBtn").addEventListener("click", (event) => notLoggedRedirect(event));
+                //show login/signup buttons
+                document.getElementById("loginBtn").hidden = false;
+                document.getElementById("signUpBtn").hidden = false;
+            }
 
-        document.getElementById("packageName").innerHTML = sptb.name;
-        sptb.servicesDescriptions.forEach(sd => showServiceDescription(sd));
-        if(cops != null && cops.length > 0){
-            document.getElementById("optionalProductsDiv").hidden = false;
-            cops.forEach(cop => showOptionalProduct(cop));
-        }
-        document.getElementById("validityPeriodDiv").innerHTML = cvp.monthsOfValidity + " months at " + cvp.monthlyFee_euro + "€/month";
-        document.getElementById("totalCost").innerHTML = tot;
+            document.getElementById("packageName").innerHTML = sptb.name;
+            sptb.servicesDescriptions.forEach(sd => showServiceDescription(sd));
+            if (cops != null && cops.length > 0) {
+                document.getElementById("optionalProductsDiv").hidden = false;
+                cops.forEach(cop => showOptionalProduct(cop));
+            }
+            document.getElementById("validityPeriodDiv").innerHTML = cvp.monthsOfValidity + " months at " + cvp.monthlyFee_euro + "€/month";
+            document.getElementById("totalCost").innerHTML = tot;
 
 
-
-        //TODO create valid order and redirect to homePage
-        document.getElementById("successfulPaymentBtn").addEventListener('click', (event) => paymentRedirect(event, true));
-        //TODO create invalid order and redirect to homePage
-        document.getElementById("failingPaymentBtn").addEventListener('click', (event) => paymentRedirect(event, false));
-    });
+            document.getElementById("successfulPaymentBtn").addEventListener("click", (event) => sendPayment(event, true));
+            document.getElementById("failingPaymentBtn").addEventListener("click", (event) => sendPayment(event, false));
+        });
+    }
 
 })();
 

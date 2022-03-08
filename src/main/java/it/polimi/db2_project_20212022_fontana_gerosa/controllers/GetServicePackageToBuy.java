@@ -21,9 +21,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/BuyPageLoading")
+@WebServlet("/GetServicePackageToBuy")
 @MultipartConfig
-public class BuyPageLoading extends HttpServlet{
+public class GetServicePackageToBuy extends HttpServlet{
     private Connection connection = null;
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();

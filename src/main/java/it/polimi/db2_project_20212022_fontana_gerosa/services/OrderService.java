@@ -19,6 +19,11 @@ public class OrderService {
                 .setParameter(1, userId).getResultList();
     }
 
+    public Order getRejectedOrderById(int orderId){
+        return em.createNamedQuery("Order.getRejectedOrderById", Order.class)
+                .setParameter(1, orderId).getResultList().get(0);
+    }
+
 //    public Order createnewOrder(ServicePackage sp) {
 //        Order newOrder = new Order();
 //        newOrder.setServicePackage(sp.getServicePackageId());
