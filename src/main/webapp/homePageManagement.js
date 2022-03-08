@@ -24,9 +24,13 @@ function makeCall(method, url, formElement, cback, reset = true) {
         userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
         document.getElementById("user_login").appendChild(userInfo);
 
-        if(user.insolvent) {
-            //TODO create form to pass userId
-
+        if(user.insolvent) {//TODO test
+            let userIdForm = document.createElement("form");
+            userIdForm.name = "userIdForm";
+            let input = document.createElement("input");
+            input.name = "userId"
+            input.value = user.userId;
+            userIdForm.appendChild(input);
             window.addEventListener("load", () => {
                 makeCall("POST", "GetRejectedOrders", userIdForm,
                     function (req) {
@@ -34,11 +38,13 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             var message = req.responseText;
                             switch (req.status) {
                                 case 200:
+                                    let anchor = document.createDocumentFragment();
                                     let rejectedOrders = JSON.parse(message);
                                     let roText = document.createElement("h6");
                                     roText.innerHTML = "Rejected orders";
                                     anchor.appendChild(roText)
                                     rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
+                                    document.getElementById("sp_column").appendChild(anchor);
                                     break;
                                 default:
                                     document.getElementById("errormessage").textContent += message;
@@ -57,10 +63,11 @@ function makeCall(method, url, formElement, cback, reset = true) {
                 var message = req.responseText;
                 switch (req.status) {
                     case 200:
-                        let sps = JSON.parse(message);
                         let anchor = document.createDocumentFragment();
+                        let sps = JSON.parse(message);
                         anchor.appendChild(document.createElement("br"));
                         sps.forEach(sp => showServicePackage(sp, anchor));
+                        document.getElementById("sp_column").appendChild(anchor);
                         break;
                     default:
                         document.getElementById("errormessage").textContent += message;
@@ -69,59 +76,17 @@ function makeCall(method, url, formElement, cback, reset = true) {
             }
             })
     })
+
 }) ();
-/*
-(function () {
-    window.addEventListener("load", () => {
-        makeCall("GET", "HomePageLoading", null,
-            function (req) {
-                if (req.readyState === XMLHttpRequest.DONE) {
-                    var message = req.responseText;
-                    switch (req.status) {
-                        case 200:
-                            let sps = JSON.parse(message);
-
-                            let anchor = document.createDocumentFragment();
-                            anchor.appendChild(document.createElement("br"));
-                            sps.forEach(sp => showServicePackage(sp, anchor));
-                            if(sessionStorage.getItem('loggedUser') != null){
-                                let user = JSON.parse(sessionStorage.getItem('loggedUser'));
-                                let userInfo = document.createElement("h6");
-                                userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
-                                document.getElementById("user_login").appendChild(userInfo);
-                                if(sessionStorage.getItem('rejectedOrders') != null){
-                                    let roText = document.createElement("h6");
-                                    roText.innerHTML = "Rejected orders";
-                                    anchor.appendChild(roText)
-                                    JSON.parse(sessionStorage.getItem('rejectedOrders')).forEach(ro => showRejectedOrder(ro, anchor));
-                                }
-                            }
-
-                            document.getElementById("sp_column").appendChild(anchor);
-                            break;
-                        case 400: // bad request
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                        case 401: // unauthorized
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                        case 500: // server error
-                            document.getElementById("errormessage").textContent = message;
-                            break;
-                    }
-                }
-            }
-        );
-    });
-
-})();
-
- */
 
 
 
+//TODO move logic into buy page
 function servicePackageRedirect(event, spId){
     event.preventDefault();
+    sessionStorage.setItem("servicePackageId", spId);
+    window.location.href = "BuyPage.html";
+    /*
     let form = document.createElement("form");
     form.name = "spToBuyForm";
     let input = document.createElement("input");
@@ -157,6 +122,8 @@ function servicePackageRedirect(event, spId){
             }
         }
     );
+
+     */
 }
 
 function showServicePackage(servicePackage, anchor) {
