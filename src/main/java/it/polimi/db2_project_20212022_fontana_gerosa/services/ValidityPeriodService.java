@@ -16,6 +16,21 @@ public class ValidityPeriodService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
+    public ValidityPeriod getValidityPeriodById(int validityPeriodId){
+        List<ValidityPeriod> matchingValidityPeriods = null;
+        try {
+            matchingValidityPeriods = em.createNamedQuery("ValidityPeriod.getValidityPeriodById", ValidityPeriod.class).
+                    setParameter(1,validityPeriodId).getResultList();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve validity period");
+        }
+        if(matchingValidityPeriods.isEmpty()){
+            return null;
+        }
+        return matchingValidityPeriods.get(0);
+    }
+
     public List<ValidityPeriod> getAllValidityPeriods() {
         List<ValidityPeriod> validityPeriods = null;
 

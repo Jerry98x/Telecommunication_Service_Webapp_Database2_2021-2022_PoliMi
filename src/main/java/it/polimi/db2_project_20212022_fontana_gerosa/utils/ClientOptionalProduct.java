@@ -12,5 +12,4 @@ public class ClientOptionalProduct {
         this.name = optionalProduct.getName();
         this.monthlyFee_euro = optionalProduct.getMonthlyFee_euro();
     }
-
 }

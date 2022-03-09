@@ -36,33 +36,20 @@ public class ServicePackageService {
             List<ClientServicePackage> finalClientServicePackages = clientServicePackages;
             servicePackages.forEach(servicePackage -> finalClientServicePackages.add(new ClientServicePackage(servicePackage)));
         }
-        /*
-        if(servicePackages != null) {
-            for(ServicePackage servicePackage : servicePackages){
-                Collection<TelcoService> telcoServices = null;
-                telcoServices = telcoServiceService.getServicesByPackage(servicePackage);
-                Collection<OptionalProduct> optionalProducts = null;
-                optionalProducts = optionalProductService.getOptionalProductsByPackage(servicePackage);
-                if(telcoServices != null && optionalProducts != null){//TODO empty or null?
-                    clientServicePackages = new ArrayList<>();
-                    clientServicePackages.add(new ClientServicePackage(servicePackage, telcoServices, optionalProducts));
-                }
-            }
-        }
-
-         */
-
         return clientServicePackages;
     }
 
     public ServicePackage getServicePackageById(int id){
-        List<ServicePackage> servicePackages;
+        List<ServicePackage> matchingServicePackages;
         try{
-            servicePackages = em.createNamedQuery("ServicePackage.getServicePackageById", ServicePackage.class).
+            matchingServicePackages = em.createNamedQuery("ServicePackage.getServicePackageById", ServicePackage.class).
                     setParameter(1, id).getResultList();
         } catch (PersistenceException e){
             throw new PersistenceException("couldn't retrieve matching package");
         }
-        return servicePackages.get(0);
+        if (matchingServicePackages.isEmpty()) {
+            return null;
+        }
+        return matchingServicePackages.get(0);
     }
 }

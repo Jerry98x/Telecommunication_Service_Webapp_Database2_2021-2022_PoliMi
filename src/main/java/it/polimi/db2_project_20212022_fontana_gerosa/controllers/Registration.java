@@ -90,8 +90,8 @@ public class Registration extends HttpServlet {
         }
 
         // query db to check existing user
-        List<User> byEmail = null;
-        List<User> byUsername = null;
+        User byEmail = null;
+        User byUsername = null;
         try {
             byEmail = userService.findUserByEmail(email);
             byUsername = userService.findUserByUsername(username);
@@ -102,7 +102,7 @@ public class Registration extends HttpServlet {
         }
         // If the user doesn't exist
         // return an error status code and message
-        if (byEmail.isEmpty() && byUsername.isEmpty() && password.equals(repeatedPassword)) {
+        if (byEmail == null && byUsername == null && password.equals(repeatedPassword)) {
             User userToRegister = userService.registerUser(email, username, password);
             response.setStatus(HttpServletResponse.SC_OK);
 
@@ -110,10 +110,10 @@ public class Registration extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().println("Welcome, " + userToRegister.getUsername() + "!\nPlease, login.");
-        } else if (!byEmail.isEmpty()) {
+        } else if (byEmail != null) {
             response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             response.getWriter().println("Email already in use");
-        } else if (!byUsername.isEmpty()) {
+        } else if (byUsername != null) {
             response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             response.getWriter().println("Username already in use");
         } else {

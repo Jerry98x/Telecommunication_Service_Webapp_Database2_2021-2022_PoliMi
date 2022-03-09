@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 
 @Entity
 @Table(name = "order", schema = "db2_project")
-//TODO check problems with booleans
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = 0")
 @NamedQuery(name = "Order.getRejectedOrderById", query = "SELECT o FROM Order o WHERE o.orderId = ?1 AND o.valid = 0")
 public class Order {
@@ -37,21 +38,16 @@ public class Order {
     private int valid;
 
     @ManyToOne
-    @JoinColumn(name = "validityPeriodId")
-    private ValidityPeriod validityPeriod;
-
-    @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "servicePackageId")
     private ServicePackage servicePackage;
-/*
-    @OneToOne(mappedBy = "lastRejectedOrder")
-    private Alert optionalAlert;
 
- */
+    @ManyToOne
+    @JoinColumn(name = "validityPeriodId")
+    private ValidityPeriod chosenValidityPeriod;
 
     @ManyToMany
     @JoinTable(name="order__optional_product",
@@ -59,13 +55,16 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> chosenOptionalProducts;
 
+/*
+    @OneToOne(mappedBy = "lastRejectedOrder")
+    private Alert optionalAlert;
+
+ */
+
+
 
     public User getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public ServicePackage getServicePackage() {
@@ -79,32 +78,67 @@ public class Order {
         return orderId;
     }
 
-    public Date getConfirmationDate() {
-        return confirmationDate;
+    public LocalDate getConfirmationDate() {
+        return confirmationDate.toLocalDate();
     }
 
-    public Time getConfirmationHour() {
-        return confirmationHour;
+    public LocalTime getConfirmationHour() {
+        return confirmationHour.toLocalTime();
     }
 
     public float getTotalCost_euro() {
         return totalCost_euro;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public LocalDate getStartDate() {
+        return startDate.toLocalDate();
     }
 
     public int getValid() {
         return valid;
     }
 
-    public ValidityPeriod getValidityPeriod() {
-        return validityPeriod;
+    public ValidityPeriod getChosenValidityPeriod() {
+        return chosenValidityPeriod;
     }
 
     public Collection<OptionalProduct> getChosenOptionalProducts() {
         return chosenOptionalProducts;
     }
 
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setConfirmationDate(Date confirmationDate) {
+        this.confirmationDate = confirmationDate;
+    }
+
+    public void setConfirmationHour(Time confirmationHour) {
+        this.confirmationHour = confirmationHour;
+    }
+
+    public void setTotalCost_euro(float totalCost_euro) {
+        this.totalCost_euro = totalCost_euro;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setValid(int valid) {
+        this.valid = valid;
+    }
+
+    public void setChosenValidityPeriod(ValidityPeriod chosenValidityPeriod) {
+        this.chosenValidityPeriod = chosenValidityPeriod;
+    }
+
+    public void setChosenOptionalProducts(Collection<OptionalProduct> chosenOptionalProducts) {
+        this.chosenOptionalProducts = chosenOptionalProducts;
+    }
 }

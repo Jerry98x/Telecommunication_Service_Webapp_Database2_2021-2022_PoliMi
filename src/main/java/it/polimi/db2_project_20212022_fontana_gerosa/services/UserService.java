@@ -28,17 +28,45 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
-    public List<User> findUserByEmail(String email){
-        List<User> matchingUsers = em.createNamedQuery("User.findByEmail", User.class).
-                setParameter(1, email).getResultList();
-        //return matchingUsers.get(0);
-        return matchingUsers;
+    //TODO return list or list(0)? choose standard to adopt
+    public User findUserById(int userId){
+        List<User> matchingUsers = null;
+        try {
+            matchingUsers = em.createNamedQuery("User.findById", User.class).setParameter(1, userId).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve user");
+        }
+        if(matchingUsers.isEmpty()){
+            return null;
+        }
+        return matchingUsers.get(0);
     }
 
-    public List<User> findUserByUsername(String username){
-        List<User> matchingUsers = em.createNamedQuery("User.findByUsername", User.class).
-                setParameter(1, username).getResultList();
-        return matchingUsers;
+    public User findUserByEmail(String email) {
+        List<User> matchingUsers = null;
+        try {
+            matchingUsers = em.createNamedQuery("User.findByEmail", User.class).
+                    setParameter(1, email).getResultList();
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Couldn't retrieve user");
+        }
+        if(matchingUsers.isEmpty()){
+            return null;
+        }
+        return matchingUsers.get(0);    }
+
+    public User findUserByUsername(String username) {
+        List<User> matchingUsers = null;
+        try {
+            matchingUsers = em.createNamedQuery("User.findByUsername", User.class).
+                    setParameter(1, username).getResultList();
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Couldn't retrieve user");
+        }
+        if(matchingUsers.isEmpty()){
+            return null;
+        }
+        return matchingUsers.get(0);
     }
 
     public User registerUser(String email, String username, String password){

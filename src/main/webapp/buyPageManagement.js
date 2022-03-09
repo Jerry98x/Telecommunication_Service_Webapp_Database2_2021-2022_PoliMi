@@ -150,11 +150,11 @@ function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, cho
         let pendingOrder = {};
         //TODO dates
         pendingOrder.totalCost = parseFloat(document.getElementById("totalCost").innerHTML);
-        pendingOrder.valid = false; //placeholder
+        pendingOrder.valid = 0; //placeholder
         pendingOrder.userId = sessionStorage.getItem("loggedUser").userId;
         pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
-        pendingOrder.chosenOptionalProducts = chosenOptionalProducts;
         pendingOrder.chosenValidityPeriod = chosenValidityPeriod[0];
+        pendingOrder.chosenOptionalProducts = chosenOptionalProducts;
         sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
         sessionStorage.removeItem("servicePackageIdToBuy");
         window.location.href = "ConfirmationPage.html";

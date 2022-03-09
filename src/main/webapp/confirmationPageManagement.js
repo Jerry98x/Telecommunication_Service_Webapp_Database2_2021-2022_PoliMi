@@ -32,8 +32,8 @@
         window.addEventListener("load", () => {
             let sptb = JSON.parse(sessionStorage.getItem("servicePackageToBuy"));
             let tot = JSON.parse(sessionStorage.getItem("pendingOrder")).totalCost;
-            let cops = JSON.parse(sessionStorage.getItem("pendingOrder")).chosenOptionalProducts;
             let cvp = JSON.parse(sessionStorage.getItem("pendingOrder")).chosenValidityPeriod;
+            let cops = JSON.parse(sessionStorage.getItem("pendingOrder")).chosenOptionalProducts;
 
             if (sessionStorage.getItem("loggedUser") == null) {
                 document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
@@ -54,9 +54,7 @@
                 document.getElementById("optionalProductsDiv").hidden = false;
                 cops.forEach(cop => showOptionalProduct(cop));
             }
-            let mov = cvp.monthsOfValidity;
-            let mfe = cvp.monthlyFee_euro;
-            document.getElementById("validityPeriodDiv").innerHTML = mov + " months at " + mfe + "€/month";
+            document.getElementById("validityPeriodDiv").innerHTML = cvp.monthsOfValidity + " months at " + cvp.monthlyFee_euro + "€/month";
             document.getElementById("totalCost").innerHTML = tot;
 
 
@@ -92,7 +90,7 @@ function sendPayment(event, isSuccessful) {
     event.preventDefault();
     let newOrderForm = document.getElementById("newOrderForm");
     let newOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
-    newOrder.valid = isSuccessful;
+    newOrder.valid = isSuccessful ? 1 : 0;
     //TODO dates
     newOrderForm.appendChild(JSON.stringify(newOrder));
     makeCall("POST", "CreateOrder", newOrderForm,

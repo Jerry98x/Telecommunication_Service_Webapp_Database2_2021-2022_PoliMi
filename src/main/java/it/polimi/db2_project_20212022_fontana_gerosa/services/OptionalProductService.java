@@ -15,16 +15,31 @@ public class OptionalProductService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
-    public List<OptionalProduct> getOptionalProductsByPackage(ServicePackage servicePackage){
-        List<OptionalProduct> optionalProducts = null;
+    public OptionalProduct getOptionalProductById(int optionalProductId){
+        List<OptionalProduct> matchingOptionalProducts = null;
         try {
-            optionalProducts = em.createNamedQuery("OptionalProduct.getOptionalProductsByPackageId", OptionalProduct.class).
+            matchingOptionalProducts = em.createNamedQuery("OptionalProduct.getOptionalProductById", OptionalProduct.class).
+                    setParameter(1,optionalProductId).getResultList();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve product");
+        }
+        if(matchingOptionalProducts.isEmpty()){
+            return null;
+        }
+        return matchingOptionalProducts.get(0);
+    }
+
+    public List<OptionalProduct> getOptionalProductsByPackage(ServicePackage servicePackage){
+        List<OptionalProduct> matchingOptionalProducts = null;
+        try {
+            matchingOptionalProducts = em.createNamedQuery("OptionalProduct.getOptionalProductsByPackageId", OptionalProduct.class).
                     setParameter(1,servicePackage.getServicePackageId()).getResultList();
         }
         catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve products of a package");
         }
-        return optionalProducts;
+        return matchingOptionalProducts;
     }
 
     public List<OptionalProduct> getAllOptionalProducts() {

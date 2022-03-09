@@ -11,6 +11,7 @@ import java.util.Collection;
 @NamedQuery(name = "OptionalProduct.getOptionalProductsByPackageId",
         query = "SELECT o FROM OptionalProduct o, ServicePackage sp, ServicePackage.availableOptionalProducts spo WHERE " +
                 "o.optionalProductId = spo.optionalProductId AND sp.servicePackageId = ?1")
+@NamedQuery(name = "OptionalProduct.getOptionalProductById", query = "SELECT o FROM OptionalProduct o WHERE o.optionalProductId = ?1")
 public class OptionalProduct {
 
     @Id

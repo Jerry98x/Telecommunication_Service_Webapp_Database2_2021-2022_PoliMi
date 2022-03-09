@@ -1,6 +1,5 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -8,6 +7,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "validity_period", schema = "db2_project")
 @NamedQuery(name = "ValidityPeriod.getAllValidityPeriods", query = "SELECT v FROM ValidityPeriod v")
+@NamedQuery(name = "ValidityPeriod.getValidityPeriodById", query = "SELECT v FROM ValidityPeriod v WHERE v.validityPeriodId = ?1")
 public class ValidityPeriod {
 
     @Id
@@ -23,7 +23,7 @@ public class ValidityPeriod {
     @ManyToMany(mappedBy = "availableValidityPeriods")
     private Collection<ServicePackage> servicePackages;
 
-    @OneToMany(mappedBy = "validityPeriod")
+    @OneToMany(mappedBy = "chosenValidityPeriod")
     private Collection<Order> orders;
 
     public int getValidityPeriodId() {
