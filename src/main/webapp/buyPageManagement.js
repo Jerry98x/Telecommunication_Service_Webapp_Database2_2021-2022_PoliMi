@@ -35,7 +35,6 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     switch (req.status) {
                         case 200:
                             sptb = JSON.parse(message);
-                            sessionStorage.removeItem("servicePackageIdToBuy");
                             aops = sptb.availableOptionalProducts;
                             avps = sptb.availableValidityPeriods;
                             await (aops != null && avps != null);
@@ -155,8 +154,9 @@ function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, cho
         pendingOrder.userId = sessionStorage.getItem("loggedUser").userId;
         pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
         pendingOrder.chosenOptionalProducts = chosenOptionalProducts;
-        pendingOrder.chosenValidityPeriod = chosenValidityPeriod;
+        pendingOrder.chosenValidityPeriod = chosenValidityPeriod[0];
         sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
+        sessionStorage.removeItem("servicePackageIdToBuy");
         window.location.href = "ConfirmationPage.html";
     } else {
         document.getElementById("errormessage").innerHTML = "You have to choose validity period";

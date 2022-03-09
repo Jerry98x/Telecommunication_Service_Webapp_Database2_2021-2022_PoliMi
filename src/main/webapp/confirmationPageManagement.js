@@ -1,36 +1,6 @@
 /**
  *
  */
-function notLoggedRedirect(event){
-    event.preventDefault();
-    window.location.href = "LandingPage.html";
-}
-
-function sendPayment(event, isSuccessful) {
-    event.preventDefault();
-    let newOrderForm = document.getElementById("newOrderForm");
-    let newOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
-    newOrder.valid = isSuccessful;
-    //TODO dates
-    newOrderForm.appendChild(JSON.stringify(newOrder));
-    makeCall("POST", "CreateOrder", newOrderForm,
-        function (req) {
-            if (req.readyState === XMLHttpRequest.DONE) {
-                var message = req.responseText;
-                switch (req.status) {
-                    case 200:
-                        console.log(sessionStorage.getItem(JSON.parse("pendingOrder")));
-                        sessionStorage.removeItem("pendingOrder");
-                        sessionStorage.removeItem("servicePackageToBuy");
-                        window.location.href = "LandingPage.html";
-                        break;
-                    default:
-                        document.getElementById("errormessage").textContent += message;
-                        break;
-                }
-            }
-        });
-}
 
 (function () {
     if(sessionStorage.getItem("rejectedOrderId") != null){
@@ -84,7 +54,9 @@ function sendPayment(event, isSuccessful) {
                 document.getElementById("optionalProductsDiv").hidden = false;
                 cops.forEach(cop => showOptionalProduct(cop));
             }
-            document.getElementById("validityPeriodDiv").innerHTML = cvp.monthsOfValidity + " months at " + cvp.monthlyFee_euro + "€/month";
+            let mov = cvp.monthsOfValidity;
+            let mfe = cvp.monthlyFee_euro;
+            document.getElementById("validityPeriodDiv").innerHTML = mov + " months at " + mfe + "€/month";
             document.getElementById("totalCost").innerHTML = tot;
 
 
@@ -94,6 +66,11 @@ function sendPayment(event, isSuccessful) {
     }
 
 })();
+
+function notLoggedRedirect(event){
+    event.preventDefault();
+    window.location.href = "LandingPage.html";
+}
 
 function showServiceDescription(serviceDescription){
     let service = document.createElement("p");
@@ -109,4 +86,30 @@ function showOptionalProduct(optionalProduct){
         singleProductDiv.appendChild(opLabel);
         document.getElementById("optionalProductsDiv").appendChild(singleProductDiv);
     }
+}
+
+function sendPayment(event, isSuccessful) {
+    event.preventDefault();
+    let newOrderForm = document.getElementById("newOrderForm");
+    let newOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
+    newOrder.valid = isSuccessful;
+    //TODO dates
+    newOrderForm.appendChild(JSON.stringify(newOrder));
+    makeCall("POST", "CreateOrder", newOrderForm,
+        function (req) {
+            if (req.readyState === XMLHttpRequest.DONE) {
+                var message = req.responseText;
+                switch (req.status) {
+                    case 200:
+                        console.log(sessionStorage.getItem(JSON.parse("pendingOrder")));
+                        sessionStorage.removeItem("pendingOrder");
+                        sessionStorage.removeItem("servicePackageToBuy");
+                        window.location.href = "LandingPage.html";
+                        break;
+                    default:
+                        document.getElementById("errormessage").textContent += message;
+                        break;
+                }
+            }
+        });
 }
