@@ -148,9 +148,9 @@ function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, cho
     if(chosenValidityPeriod[0] != null){
         sessionStorage.setItem("servicePackageToBuy", JSON.stringify(servicePackageToBuy));
         let pendingOrder = {};
-        //TODO dates
         pendingOrder.totalCost = parseFloat(document.getElementById("totalCost").innerHTML);
-        pendingOrder.valid = 0; //placeholder
+        pendingOrder.startDate = null;
+        pendingOrder.valid = null;
         pendingOrder.userId = sessionStorage.getItem("loggedUser").userId;
         pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
         pendingOrder.chosenValidityPeriod = chosenValidityPeriod[0];

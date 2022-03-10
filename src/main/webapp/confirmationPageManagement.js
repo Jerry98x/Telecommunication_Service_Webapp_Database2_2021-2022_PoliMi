@@ -3,6 +3,9 @@
  */
 
 (function () {
+    let today = Date.now();
+    document.getElementById("startDate").min = today;
+    //document.getElementById("startDate").max = today.setYear(today.getYear() + 1);
     if(sessionStorage.getItem("rejectedOrderId") != null){
         window.addEventListener("load", () => {
             let rejectedIdForm = document.createElement("form");
@@ -91,6 +94,7 @@ function sendPayment(event, isSuccessful) {
     let newOrderForm = document.getElementById("newOrderForm");
     let newOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
     newOrder.valid = isSuccessful ? 1 : 0;
+    newOrder.startDate = JSON.stringify(document.getElementById("startDate").value);
     //TODO dates
     newOrderForm.appendChild(JSON.stringify(newOrder));
     makeCall("POST", "CreateOrder", newOrderForm,
