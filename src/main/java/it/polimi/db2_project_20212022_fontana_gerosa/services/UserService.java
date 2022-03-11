@@ -28,7 +28,6 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
-    //TODO return list or list(0)? choose standard to adopt
     public User findUserById(int userId){
         List<User> matchingUsers = null;
         try {

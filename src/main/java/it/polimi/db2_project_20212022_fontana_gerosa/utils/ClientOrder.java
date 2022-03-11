@@ -1,9 +1,7 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.utils;
 
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
-//TODO fix Date management
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -26,6 +24,7 @@ public class ClientOrder {
         this.valid = order.getValid();
         this.userId = order.getUser().getUserId();
         this.servicePackageId = order.getServicePackage().getServicePackageId();
+        this.servicePackageName = order.getServicePackage().getName();
         this.servicesDescriptions = new ArrayList<>();
         order.getServicePackage().getServices().forEach(telcoService -> this.servicesDescriptions.add(telcoService.getDescription()));
         this.chosenValidityPeriod = new ClientValidityPeriod(order.getChosenValidityPeriod());

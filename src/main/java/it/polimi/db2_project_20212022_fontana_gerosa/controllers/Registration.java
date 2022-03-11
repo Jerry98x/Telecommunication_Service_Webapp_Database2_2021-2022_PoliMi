@@ -106,7 +106,6 @@ public class Registration extends HttpServlet {
             User userToRegister = userService.registerUser(email, username, password);
             response.setStatus(HttpServletResponse.SC_OK);
 
-            //TODO purpose??
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().println("Welcome, " + userToRegister.getUsername() + "!\nPlease, login.");
