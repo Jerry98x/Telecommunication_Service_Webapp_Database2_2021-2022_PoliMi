@@ -154,7 +154,21 @@ function confirmRejectedOrder(event, rejectedOrderId){
                 var message = req.responseText;
                 switch (req.status) {
                     case 200:
-                        //TODO move returned rejected order values into "pendingOrder" and redirect to ConfirmationPage.html
+                        let rejectedOrder = JSON.parse(message)[1];
+                        let pendingOrder = {};
+                        pendingOrder.orderId = rejectedOrder.orderId;
+                        pendingOrder.totalCost = rejectedOrder.totalCost_euro;
+                        pendingOrder.startDate = rejectedOrder.startDate;
+                        pendingOrder.valid = rejectedOrder.valid;
+                        pendingOrder.userId = rejectedOrder.userId;
+                        pendingOrder.servicePackageId = rejectedOrder.servicePackageId;
+                        pendingOrder.servicePackageName = rejectedOrder.servicePackageName;
+                        pendingOrder.servicesDescriptions = rejectedOrder.servicesDescriptions;
+                        pendingOrder.chosenValidityPeriod = rejectedOrder.chosenValidityPeriod;
+                        pendingOrder.chosenOptionalProducts = rejectedOrder.chosenOptionalProducts;
+                        sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
+                        await (sessionStorage.getItem("pendingOrder") != null);
+                        window.location.href = "ConfirmationPage.html";
                         break;
                     default:
                         document.getElementById("errormessage").textContent = message;

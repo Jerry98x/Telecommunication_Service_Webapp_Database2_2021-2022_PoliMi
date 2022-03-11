@@ -9,25 +9,25 @@ import java.util.Collection;
 
 public class ClientOrder {
     private int orderId;
-    private LocalDate confirmationDate;
-    private LocalTime confirmationHour;
     private float totalCost_euro;
     private LocalDate startDate;
-    private Boolean valid;
+    private int valid;
     private int userId;
     private int servicePackageId;
+    private String servicePackageName;
+    private Collection<String> servicesDescriptions;
     private Collection<ClientOptionalProduct> chosenOptionalProducts;
     private ClientValidityPeriod chosenValidityPeriod;
 
     public ClientOrder(Order order){
         this.orderId = order.getOrderId();
-        this.confirmationDate = order.getConfirmationDate();
-        this.confirmationHour = order.getConfirmationHour();
         this.totalCost_euro = order.getTotalCost_euro();
         this.startDate = order.getStartDate();
-        this.valid = order.getValid() == 1;
+        this.valid = order.getValid();
         this.userId = order.getUser().getUserId();
         this.servicePackageId = order.getServicePackage().getServicePackageId();
+        this.servicesDescriptions = new ArrayList<>();
+        order.getServicePackage().getServices().forEach(telcoService -> this.servicesDescriptions.add(telcoService.getDescription()));
         this.chosenValidityPeriod = new ClientValidityPeriod(order.getChosenValidityPeriod());
         if(order.getChosenOptionalProducts() != null){
             this.chosenOptionalProducts = new ArrayList<>();

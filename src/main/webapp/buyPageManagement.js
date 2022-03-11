@@ -146,13 +146,14 @@ function updateTotalCost(adding, quantity){
 function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, chosenValidityPeriod){
     event.preventDefault();
     if(chosenValidityPeriod[0] != null){
-        sessionStorage.setItem("servicePackageToBuy", JSON.stringify(servicePackageToBuy));
         let pendingOrder = {};
+        pendingOrder.orderId = null;
         pendingOrder.totalCost = parseFloat(document.getElementById("totalCost").innerHTML);
         pendingOrder.startDate = null;
         pendingOrder.valid = null;
         pendingOrder.userId = sessionStorage.getItem("loggedUser").userId;
         pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
+        pendingOrder.servicesDescriptions = servicePackageToBuy.servicesDescriptions;
         pendingOrder.chosenValidityPeriod = chosenValidityPeriod[0];
         pendingOrder.chosenOptionalProducts = chosenOptionalProducts;
         sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
