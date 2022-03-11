@@ -3,9 +3,16 @@
  */
 
 (function () {
-    let today = Date.now();
-    document.getElementById("startDate").min = today;
-    //document.getElementById("startDate").max = today.setYear(today.getYear() + 1);
+    var today = new Date(Date());
+    document.getElementById("startDate").min = today.toISOString().split('T')[0];
+    var maxDate = new Date();
+    maxDate.setFullYear(today.getFullYear()+1);
+    document.getElementById("startDate").max = maxDate.toISOString().split('T')[0];
+    document.getElementById("startDate").addEventListener("change", (event => {
+        event.preventDefault();
+        document.getElementById("successfulPaymentBtn").disabled = false;
+        document.getElementById("failingPaymentBtn").disabled = false;
+    }))
     if(sessionStorage.getItem("rejectedOrderId") != null){
         window.addEventListener("load", () => {
             let rejectedIdForm = document.createElement("form");

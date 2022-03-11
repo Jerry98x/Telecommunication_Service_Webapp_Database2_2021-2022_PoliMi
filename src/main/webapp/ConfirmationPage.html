@@ -25,18 +25,14 @@
     <div id="servicesDiv">Offered services</div>
     <div id="optionalProductsDiv" hidden>Chosen optional products</div>
     <div id="validityPeriodDiv">Chosen validity period</div>
-    <ul class="list-inline">
-        <li>Total cost: </li>
-        <li id="totalCost"></li>
-        <li>€/month</li>
-    </ul>
+
+    <div class="d-inline">Total cost: </div>
+    <div class="d-inline" id="totalCost"></div>
+    <div class="d-inline">€/month</div>
+    <br>
     <input type="date" id="startDate" name="startDate" required>
-    <div class="d-grid">
-        <button id="successfulPaymentBtn" class="btn btn-primary btn-md" type="button"><b>Successful payment</b></button>
-    </div>
-    <div class="d-grid">
-        <button id="failingPaymentBtn" class="btn btn-primary btn-md" type="button"><b>Failing payment</b></button>
-    </div>
+    <button id="successfulPaymentBtn" class="btn btn-default" type="submit" disabled><b>Successful payment</b></button>
+    <button id="failingPaymentBtn" class="btn btn-default" type="submit" disabled><b>Failing payment</b></button>
 </div>
 <div id="errormessage"></div>
 </body>
