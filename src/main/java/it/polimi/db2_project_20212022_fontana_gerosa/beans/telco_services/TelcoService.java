@@ -19,5 +19,9 @@ abstract public class TelcoService {
     @ManyToMany(mappedBy = "services")
     private Collection<ServicePackage> servicePackages;
 
+    public int getServiceId() {
+        return serviceId;
+    }
+
     public abstract String getDescription();
 }

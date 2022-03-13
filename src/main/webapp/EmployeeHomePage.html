@@ -46,42 +46,76 @@
             <div class="col-md-2"></div>
         </div>
         <br>
-        <div class="row my-custom-row justify-content-around align-items-center">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 d-grid gap-2">
-                <h4>Service Package</h4>
+
+        <div id="outerDiv">
+            <div id="sp" hidden>
+
+                <div class="row my-custom-row justify-content-around align-items-center">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 d-grid gap-2">
+                        <h4>Service Package</h4>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row my-custom-row justify-content-around align-items-center">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+
+                        <form class="border border-3" id="spCreationForm">
+
+                            <div class="form-group-create">
+                                <label for="sp_name"><b>Name</b></label>
+                                <input type="text" class="form-control" id="sp_name" name="sp_name" placeholder="Name" required>
+                            </div>
+                            <br>
+
+                        </form>
+
+                    </div>
+                    <div class="col-md-2"></div>
+
+                </div>
+
             </div>
-            <div class="col-md-2"></div>
-        </div>
-        <div class="row my-custom-row justify-content-around align-items-center">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-<!--                name of service package-->
-                <form class="border border-3">
-                    <div class="form-group-create">
-                        <label for="sp_name">Name</label>
-                        <input type="text" class="form-control" id="sp_name" name="sp_name" placeholder="Name" required>
-                    </div>
-<!--                    checkbox with all services-->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="def1">
-                        <label class="form-check-label" for="def1">
 
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="def2">
-                        <label class="form-check-label" for="def2">
+            <div id="op" hidden>
 
-                        </label>
+                <div class="row my-custom-row justify-content-around align-items-center">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 d-grid gap-2">
+                        <h4>Optional products</h4>
                     </div>
-                </form>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row my-custom-row justify-content-around align-items-center">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 d-grid gap-2">
+                        <form class="border border-3" id="opCreationForm">
+                            <div class="form-group-create">
+                                <label for="op_name"><b>Name</b></label>
+                                <input type="text" class="form-control" id="op_name" name="op_name" placeholder="Name" required>
+                            </div>
+                            <br>
+                            <div class="form-group-create">
+                                <label for="op_fee"><b>Monthly fee (€/month)</b></label>
+                                <input type="number" class="form-control" id="op_fee" name="op_fee" placeholder="Fee" required>
+                            </div>
+                            <br>
+                            <div class="d-grid gap-2">
+                                <button id="but_op" class="btn btn-primary btn-lg" type="button"><b>CREATE</b></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+
             </div>
-            <div class="col-md-2"></div>
-
         </div>
 
     </div>
+    <br>
+    <br>
 
+    <div id="errormessage"></div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.TelcoServiceService;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientTelcoService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -40,19 +41,19 @@ public class GetServices extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer requestingEmployeeId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("employeeId")));
-        if (!requestingEmployeeId.equals(request.getSession().getAttribute("employeeId"))) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().println("The requesting employee is not the logged one");
-            return;
-        }
+//        Integer requestingEmployeeId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("employeeId")));;
+//        if (!requestingEmployeeId.equals(request.getSession().getAttribute("employeeId"))) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().println("The requesting employee is not the logged one");
+//            return;
+//        }
 
         List<TelcoService> services;
-        List<String> serviceDescriptions = new ArrayList<>();
+        List<ClientTelcoService> clientTelcoServices = new ArrayList<>();
 
         try {
             services = serviceService.getAllServices();
-            services.forEach(telcoService -> serviceDescriptions.add(telcoService.getDescription()));
+            services.forEach(telcoService -> clientTelcoServices.add(new ClientTelcoService(telcoService)));
         } catch (PersistenceException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -61,7 +62,7 @@ public class GetServices extends HttpServlet {
         }
 
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(serviceDescriptions);
+        String json = gson.toJson(clientTelcoServices);
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");

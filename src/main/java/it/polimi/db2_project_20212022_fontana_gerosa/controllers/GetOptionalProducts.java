@@ -40,12 +40,12 @@ public class GetOptionalProducts extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer requestingEmployeeId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("employeeId")));
-        if (!requestingEmployeeId.equals(request.getSession().getAttribute("employeeId"))) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().println("The requesting employee is not the logged one");
-            return;
-        }
+//        Integer requestingEmployeeId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("employeeId")));
+//        if (!requestingEmployeeId.equals(request.getSession().getAttribute("employeeId"))) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().println("The requesting employee is not the logged one");
+//            return;
+//        }
 
         List<OptionalProduct> optionalProducts;
 
