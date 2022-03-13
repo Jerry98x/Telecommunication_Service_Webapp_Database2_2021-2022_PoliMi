@@ -40,18 +40,7 @@
                         switch (req.status) {
                             case 200:
                                 let rejectedOrder = JSON.parse(message);
-                                let pendingOrder = {};
-                                pendingOrder.orderId = rejectedOrder.orderId;
-                                pendingOrder.totalCost = rejectedOrder.totalCost_euro;
-                                pendingOrder.startDate = rejectedOrder.startDate;
-                                pendingOrder.valid = rejectedOrder.valid;
-                                pendingOrder.userId = rejectedOrder.userId;
-                                pendingOrder.servicePackageId = rejectedOrder.servicePackageId;
-                                pendingOrder.servicePackageName = rejectedOrder.servicePackageName;
-                                pendingOrder.servicesDescriptions = rejectedOrder.servicesDescriptions;
-                                pendingOrder.chosenValidityPeriod = rejectedOrder.chosenValidityPeriod;
-                                pendingOrder.chosenOptionalProducts = rejectedOrder.chosenOptionalProducts;
-                                sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
+                                sessionStorage.setItem("pendingOrder",JSON.stringify(rejectedOrder));
                                 await (sessionStorage.getItem("pendingOrder") != null);
                                 break;
                             default:
@@ -110,24 +99,20 @@ function showOptionalProduct(optionalProduct){
 function sendPayment(event, isSuccessful) {
     event.preventDefault();
     let newOrderForm = document.createElement("form");
-    let input = document.createElement("input");
     let newOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
     newOrder.valid = isSuccessful ? 1 : 0;
-    newOrder.startDate = JSON.stringify(document.getElementById("startDate").value);
-    input.name = "confirmedOrder";
-    input.value = JSON.stringify(newOrder);
-    newOrderForm.appendChild(input);
-    console.log(JSON.parse(sessionStorage.getItem("pendingOrder")));
-    console.log(newOrder);
+    if(newOrder.startDate == null) {
+        newOrder.startDate = document.getElementById("startDate").value;
+    }
+    buildInputOrder(newOrderForm, newOrder);
     makeCall("POST", "CreateOrder", newOrderForm,
         function (req) {
             if (req.readyState === XMLHttpRequest.DONE) {
                 var message = req.responseText;
                 switch (req.status) {
                     case 200:
-                        console.log(JSON.parse(sessionStorage.getItem("pendingOrder")));
                         sessionStorage.removeItem("pendingOrder");
-                        window.location.href = "LandingPage.html";
+                        window.location.href = "HomePage.html";
                         break;
                     default:
                         document.getElementById("errormessage").textContent += message;
@@ -135,4 +120,56 @@ function sendPayment(event, isSuccessful) {
                 }
             }
         });
+}
+
+function buildInputOrder(form, order){
+    //orderId
+    let orderId = document.createElement("input");
+    orderId.name = "orderId";
+    if(order.orderId != null) {
+        orderId.value = order.orderId;
+    } else {
+        orderId.value = -1;
+    }
+    form.appendChild(orderId);
+    //tot
+    let tot = document.createElement("input");
+    tot.name = "totalCost";
+    tot.value = order.totalCost;
+    form.appendChild(tot);
+    //startDate
+    let startDate = document.createElement("input");
+    startDate.name = "startDate";
+    startDate.value = order.startDate;
+    form.appendChild(startDate);
+    //valid
+    let valid = document.createElement("input");
+    valid.name = "valid";
+    valid.value = order.valid;
+    form.appendChild(valid);
+    //userId
+    let userId = document.createElement("input");
+    userId.name = "userId";
+    userId.value = order.userId;
+    form.appendChild(userId);
+    //spId
+    let spId = document.createElement("input");
+    spId.name = "servicePackageId";
+    spId.value = order.servicePackageId;
+    form.appendChild(spId);
+    //[]chosenOPIds
+    let opIds = document.createElement("input");
+    opIds.name = "chosenOptionalProductsIds";
+    opIds.value = "";
+    order.chosenOptionalProducts.forEach(op => {
+        if(op != null) {
+            opIds.value += op.optionalProductId + "$";
+        }
+    })
+    form.appendChild(opIds);
+    //chosenVPId
+    let vpId = document.createElement("input");
+    vpId.name = "chosenValidityPeriodId";
+    vpId.value = order.chosenValidityPeriod.validityPeriodId;
+    form.appendChild(vpId);
 }

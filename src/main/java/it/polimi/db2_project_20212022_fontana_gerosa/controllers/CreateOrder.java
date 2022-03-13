@@ -1,13 +1,12 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.*;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.*;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
-import jakarta.json.Json;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -20,11 +19,11 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.StringTokenizer;
 
 @WebServlet("/CreateOrder")
 @MultipartConfig
@@ -56,40 +55,151 @@ public class CreateOrder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Order order = null;
+        int orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("orderId")));
+        String startDateString = StringEscapeUtils.escapeJava(request.getParameter("startDate"));
+        int valid = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("valid")));
+        if(orderId == -1) {
+            order = new Order();
+            //parse request
+            float totalCost = Float.parseFloat(StringEscapeUtils.escapeJava(request.getParameter("totalCost")));
+            int userId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("userId")));
+            int servicePackageId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("servicePackageId")));
+            String chosenOptionalProductsIdsString = StringEscapeUtils.escapeJava(request.getParameter("chosenOptionalProductsIds"));
+            StringTokenizer stringTokenizer = new StringTokenizer(chosenOptionalProductsIdsString, "$");
+            Collection<Integer> chosenOptionalProductsIds = new ArrayList<>();
+            while (stringTokenizer.hasMoreTokens()) {
+                chosenOptionalProductsIds.add(Integer.parseInt(stringTokenizer.nextToken()));
+            }
+            int chosenValidityPeriodId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("chosenValidityPeriodId")));
+            //set attributes
+            float tot = 0;
+
+            //user
+            User user = null;
+            try {
+                user = userService.findUserById(userId);
+            } catch (PersistenceException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
+            if(user != null) {
+                order.setUser(user);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("");
+                return;
+            }
+            //service package
+            ServicePackage servicePackage = null;
+            try {
+                servicePackage = servicePackageService.getServicePackageById(servicePackageId);
+            } catch (PersistenceException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
+            if(servicePackage != null) {
+                order.setServicePackage(servicePackage);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("The requested service package doesn't exist");
+                return;
+            }
+            //validity period
+            ValidityPeriod chosenValidityPeriod = null;
+            try {
+                chosenValidityPeriod = validityPeriodService.getValidityPeriodById(chosenValidityPeriodId);
+            } catch (PersistenceException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
+            ValidityPeriod finalChosenValidityPeriod = chosenValidityPeriod;
+            if(chosenValidityPeriod != null && servicePackage.getAvailableValidityPeriods().stream().
+                    anyMatch(validityPeriod -> validityPeriod.getValidityPeriodId() == finalChosenValidityPeriod.getValidityPeriodId())) {
+                order.setChosenValidityPeriod(chosenValidityPeriod);
+                tot += chosenValidityPeriod.getMonthlyFee_euro();
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("The requested validity period doesn't exist among the available ones");
+                return;
+            }
+            //optional products
+            if(!chosenOptionalProductsIds.isEmpty()) {
+                Collection<OptionalProduct> chosenOptionalProducts = new ArrayList<>();
+                try {
+                    chosenOptionalProductsIds.forEach(copId -> chosenOptionalProducts.add(optionalProductService.getOptionalProductById(copId)));
+                } catch (PersistenceException e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.getWriter().println("Internal server error, retry later");
+                    return;
+                }
+                ServicePackage finalServicePackage = servicePackage;
+                if (!chosenOptionalProducts.isEmpty() &&
+                        chosenOptionalProducts.stream().allMatch(chosenOptionalProduct -> finalServicePackage.getAvailableOptionalProducts().stream().
+                                anyMatch(optionalProduct -> optionalProduct.getOptionalProductId() == chosenOptionalProduct.getOptionalProductId()))){
+                    order.setChosenOptionalProducts(chosenOptionalProducts);
+                    tot += chosenOptionalProducts.stream().mapToDouble(OptionalProduct::getMonthlyFee_euro).sum();
+                } else {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().println("One of the requested products doesn't exist among the available ones");
+                    return;
+                }
+            }
+            //total cost
+            if(tot == totalCost) {
+                order.setTotalCost_euro(totalCost);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("Total cost is not right");
+                return;
+            }
+            //creation date
+            order.setCreationDate(LocalDate.now());
+            //creation time
+            order.setCreationHour(LocalTime.now());
+        } else {
+            try {
+                order = orderService.getRejectedOrderById(orderId);
+            } catch (PersistenceException e){
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
+            if(order == null){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("The requested order doesn't exists or it is already completed");
+                return;
+            }
+        }
+        LocalDate startDate = LocalDate.parse(startDateString);
+        if(startDate.isBefore(LocalDate.now())){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("The start date is passed");
+            return;
+        } else {
+            order.setStartDate(startDate);
+        }
+        if(valid == 0 || valid == 1){
+            order.setValid(valid);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("The valid parameter is wrong");
+            return;
+        }
+        System.out.println(order);
         /*
-        int userId = ;
-        Instant confirmationDateInst = ;
-        Instant confirmationHourInst = ;
-        float totalCost = ;
-        Instant startDateInst = ;
-        int valid = ;
-        int servicePackageId = ;
-        int chosenValidityPeriodId = ;
-        Collection<Integer> chosenOptionalProductsIds = ;
-        Order order = new Order();
-
-        User user = userService.findUserById(userId);
-        order.setUser(user);
-
-        LocalDate confirmationDate = LocalDate.ofInstant(confirmationDateInst);
-
-        order.setTotalCost_euro(totalCost);
-
-        order.setValid(valid);
-
-        ServicePackage servicePackage = servicePackageService.getServicePackageById(servicePackageId);
-        order.setServicePackage(servicePackage);
-
-        ValidityPeriod chosenValidityPeriod = validityPeriodService.getValidityPeriodById(chosenValidityPeriodId);
-        order.setChosenValidityPeriod(chosenValidityPeriod);
-
-        Collection<OptionalProduct> chosenOptionalProducts = new ArrayList<>();
-        chosenOptionalProductsIds.forEach(copId -> chosenOptionalProducts.add(optionalProductService.getOptionalProductById(copId)));
-        order.setChosenOptionalProducts(chosenOptionalProducts);
-
-        orderService.createNewOrder(order);
+        if(orderId == -1) {//TODO maybe one method is sufficient
+            orderService.createNewOrder(order);
+        } else {
+            //orderService.updateOrder(order);
+        }
 
          */
+
+
     }
 
     @Override

@@ -21,11 +21,11 @@ public class Order {
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date confirmationDate;
+    private Date creationDate;
 
     @Column(name = "hour", nullable = false)
     @Temporal(TemporalType.TIME)
-    private Time confirmationHour;
+    private Time creationHour;
 
     @Column(name = "totalCost(€)", nullable = false)
     private float totalCost_euro;
@@ -78,12 +78,12 @@ public class Order {
         return orderId;
     }
 
-    public LocalDate getConfirmationDate() {
-        return confirmationDate.toLocalDate();
+    public LocalDate getCreationDate() {
+        return creationDate.toLocalDate();
     }
 
-    public LocalTime getConfirmationHour() {
-        return confirmationHour.toLocalTime();
+    public LocalTime getCreationHour() {
+        return creationHour.toLocalTime();
     }
 
     public float getTotalCost_euro() {
@@ -110,20 +110,20 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public void setConfirmationDate(Date confirmationDate) {
-        this.confirmationDate = confirmationDate;
+    public void setCreationDate(LocalDate confirmationDate) {
+        this.creationDate = Date.valueOf(confirmationDate);
     }
 
-    public void setConfirmationHour(Time confirmationHour) {
-        this.confirmationHour = confirmationHour;
+    public void setCreationHour(LocalTime confirmationHour) {
+        this.creationHour = Time.valueOf(confirmationHour);
     }
 
     public void setTotalCost_euro(float totalCost_euro) {
         this.totalCost_euro = totalCost_euro;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = Date.valueOf(startDate);
     }
 
     public void setUser(User user) {

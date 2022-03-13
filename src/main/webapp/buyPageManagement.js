@@ -34,6 +34,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     var message = req.responseText;
                     switch (req.status) {
                         case 200:
+                            //TODO pass empty clientorder to be stored in sessionstorage with JSON parsing and then modified
                             sptb = JSON.parse(message);
                             aops = sptb.availableOptionalProducts;
                             avps = sptb.availableValidityPeriods;
@@ -151,7 +152,7 @@ function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, cho
         pendingOrder.totalCost = parseFloat(document.getElementById("totalCost").innerHTML);
         pendingOrder.startDate = null;
         pendingOrder.valid = null;
-        pendingOrder.userId = sessionStorage.getItem("loggedUser").userId;
+        pendingOrder.userId = JSON.parse(sessionStorage.getItem("loggedUser")).userId;
         pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
         pendingOrder.servicesDescriptions = servicePackageToBuy.servicesDescriptions;
         pendingOrder.chosenValidityPeriod = chosenValidityPeriod[0];
