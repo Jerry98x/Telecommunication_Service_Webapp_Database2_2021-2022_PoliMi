@@ -45,4 +45,9 @@ public class OrderService {
         em.persist(newOrder);
         em.flush();
     }
+
+    public void updateOrder(Order order){
+        em.merge(order);
+        em.flush();
+    }
 }

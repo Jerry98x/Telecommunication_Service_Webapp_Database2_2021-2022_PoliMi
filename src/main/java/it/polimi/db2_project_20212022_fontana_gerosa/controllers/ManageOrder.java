@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
-@WebServlet("/CreateOrder")
+@WebServlet("/ManageOrder")
 @MultipartConfig
-public class CreateOrder extends HttpServlet {
+public class ManageOrder extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
@@ -46,7 +46,7 @@ public class CreateOrder extends HttpServlet {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
-    public CreateOrder(){ super(); }
+    public ManageOrder(){ super(); }
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -189,15 +189,11 @@ public class CreateOrder extends HttpServlet {
             response.getWriter().println("The valid parameter is wrong");
             return;
         }
-        System.out.println(order);
-        /*
         if(orderId == -1) {//TODO maybe one method is sufficient
             orderService.createNewOrder(order);
         } else {
-            //orderService.updateOrder(order);
+            orderService.updateOrder(order);
         }
-
-         */
 
 
     }

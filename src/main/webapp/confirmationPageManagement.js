@@ -105,7 +105,7 @@ function sendPayment(event, isSuccessful) {
         newOrder.startDate = document.getElementById("startDate").value;
     }
     buildInputOrder(newOrderForm, newOrder);
-    makeCall("POST", "CreateOrder", newOrderForm,
+    makeCall("POST", "ManageOrder", newOrderForm,
         function (req) {
             if (req.readyState === XMLHttpRequest.DONE) {
                 var message = req.responseText;
