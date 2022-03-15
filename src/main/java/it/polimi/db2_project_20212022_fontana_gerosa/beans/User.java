@@ -27,8 +27,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "insolvent")
+    @Column(name = "insolvent", nullable = false)
     private int insolvent = 0;
+
+    @Column(name = "numOfFailedPayments", nullable = false)
+    private int numOfFailedPayments = 0;
 
     @OneToMany(mappedBy = "user")
     private Collection<Order> orders;
