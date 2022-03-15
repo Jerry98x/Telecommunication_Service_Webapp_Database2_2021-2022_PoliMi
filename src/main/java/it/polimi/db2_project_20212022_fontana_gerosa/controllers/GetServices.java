@@ -63,6 +63,7 @@ public class GetServices extends HttpServlet {
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(serviceDescriptions);
 
+        response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);

@@ -42,12 +42,20 @@ public class OrderService {
     }
 
     public void createNewOrder (Order newOrder){
-        em.persist(newOrder);
-        em.flush();
+        try {
+            em.persist(newOrder);
+            em.flush();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't add new order");
+        }
     }
 
     public void updateOrder(Order order){
-        em.merge(order);
-        em.flush();
+        try {
+            em.merge(order);
+            em.flush();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't update order");
+        }
     }
 }

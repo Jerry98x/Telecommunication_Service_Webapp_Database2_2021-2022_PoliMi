@@ -19,11 +19,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "creationDate", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    @Column(name = "hour", nullable = false)
+    @Column(name = "creationHour", nullable = false)
     @Temporal(TemporalType.TIME)
     private Time creationHour;
 

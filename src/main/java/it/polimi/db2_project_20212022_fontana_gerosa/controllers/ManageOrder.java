@@ -59,7 +59,7 @@ public class ManageOrder extends HttpServlet {
         int orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("orderId")));
         String startDateString = StringEscapeUtils.escapeJava(request.getParameter("startDate"));
         int valid = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("valid")));
-        if(orderId == -1) {
+        if(orderId == -1) {//create order
             order = new Order();
             //parse request
             float totalCost = Float.parseFloat(StringEscapeUtils.escapeJava(request.getParameter("totalCost")));
@@ -160,7 +160,7 @@ public class ManageOrder extends HttpServlet {
             order.setCreationDate(LocalDate.now());
             //creation time
             order.setCreationHour(LocalTime.now());
-        } else {
+        } else {//update order
             try {
                 order = orderService.getRejectedOrderById(orderId);
             } catch (PersistenceException e){
@@ -189,13 +189,26 @@ public class ManageOrder extends HttpServlet {
             response.getWriter().println("The valid parameter is wrong");
             return;
         }
-        if(orderId == -1) {//TODO maybe one method is sufficient
-            orderService.createNewOrder(order);
+        if(orderId == -1) {
+            try {
+                orderService.createNewOrder(order);
+            } catch (PersistenceException e){
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
         } else {
-            orderService.updateOrder(order);
+            try {
+                orderService.updateOrder(order);
+            } catch (PersistenceException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
         }
-
-
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
     }
 
     @Override
