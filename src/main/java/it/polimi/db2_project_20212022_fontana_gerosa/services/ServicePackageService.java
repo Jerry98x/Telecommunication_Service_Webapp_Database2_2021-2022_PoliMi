@@ -2,7 +2,9 @@ package it.polimi.db2_project_20212022_fontana_gerosa.services;
 
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.OptionalProduct;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
+import it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
+import it.polimi.db2_project_20212022_fontana_gerosa.controllers.CreateServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientServicePackage;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -45,11 +47,21 @@ public class ServicePackageService {
             matchingServicePackages = em.createNamedQuery("ServicePackage.getServicePackageById", ServicePackage.class).
                     setParameter(1, id).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("couldn't retrieve matching package");
+            throw new PersistenceException("Couldn't retrieve matching package");
         }
         if (matchingServicePackages.isEmpty()) {
             return null;
         }
         return matchingServicePackages.get(0);
+    }
+
+    public void insertServicePackage(ServicePackage servicePackage) {
+        try {
+            em.persist(servicePackage);
+        }
+        catch (PersistenceException e) {
+            throw new PersistenceException("Couldn't create package");
+        }
+
     }
 }

@@ -19,6 +19,16 @@ function makeCall(method, url, formElement, cback, reset = true) {
 }
 
 (function () {
+    if(sessionStorage.getItem("loggedEmployee") != null) {
+        let employee = JSON.parse(sessionStorage.getItem("loggedEmployee"));
+        let employeeInfo = document.createElement("h6");
+        employeeInfo.innerHTML = "Logged in as <b>" + employee.employeeId + "</b>";
+        document.getElementById("employee_login").appendChild(employeeInfo);
+    }
+
+    document.getElementById("sp").hidden = true;
+    document.getElementById("op").hidden = true;
+
     let spForm = document.getElementById("spCreationForm");
     //let opForm = document.getElementById("opCreationForm");
 
@@ -30,15 +40,16 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     switch (req.status) {
                         case 200:
                             let t_ser = JSON.parse(message);
+                            let formContainer_serv = document.getElementById("fc_serv");
 
                             let p = document.createElement("p");
                             let b = document.createElement("b");
                             p.textContent = "Available services:";
                             b.appendChild(p);
-                            spForm.appendChild(b);
+                            formContainer_serv.appendChild(b);
 
-                            t_ser.forEach(ts => buildForm_SP_services(spForm, ts));
-                            spForm.appendChild(document.createElement("br"));
+                            t_ser.forEach(ts => buildForm_SP_services(formContainer_serv, ts));
+                            formContainer_serv.appendChild(document.createElement("br"));
 
                             break;
                         default:
@@ -58,15 +69,16 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     switch (req.status) {
                         case 200:
                             let opt_prod = JSON.parse(message);
+                            let formContainer_optprod = document.getElementById("fc_optprod");
 
                             let p = document.createElement("p");
                             let b = document.createElement("b");
                             p.textContent = "Available optional products:";
                             b.appendChild(p);
-                            spForm.appendChild(b);
+                            formContainer_optprod.appendChild(b);
 
-                            opt_prod.forEach(op => buildForm_SP_optionalProducts(spForm, op));
-                            spForm.appendChild(document.createElement("br"));
+                            opt_prod.forEach(op => buildForm_SP_optionalProducts(formContainer_optprod, op));
+                            formContainer_optprod.appendChild(document.createElement("br"));
 
                             break;
                         default:
@@ -86,17 +98,19 @@ function makeCall(method, url, formElement, cback, reset = true) {
                     switch (req.status) {
                         case 200:
                             let val_per = JSON.parse(message);
+                            let formContainer_valper = document.getElementById("fc_valper");
+                            let formContainer_but = document.getElementById("fc_but");
 
                             let p = document.createElement("p");
                             let b = document.createElement("b");
                             p.textContent = "Available validity periods:";
                             b.appendChild(p);
-                            spForm.appendChild(b);
+                            formContainer_valper.appendChild(b);
 
-                            val_per.forEach(vp => buildForm_SP_validityPeriods(spForm, vp));
-                            spForm.appendChild(document.createElement("br"));
+                            val_per.forEach(vp => buildForm_SP_validityPeriods(formContainer_valper, vp));
+                            formContainer_but.appendChild(document.createElement("br"));
 
-                            buttonCreation(spForm);
+                            buttonCreation(formContainer_but);
 
                             break;
                         default:
@@ -109,19 +123,37 @@ function makeCall(method, url, formElement, cback, reset = true) {
     });
 
     document.getElementById("createSP").addEventListener("click", () => {
-        swapAndHide(document.getElementById("outerDiv").firstElementChild, document.getElementById("outerDiv").firstElementChild.nextElementSibling, 0);
+        hideForm(document.getElementById("outerDiv").firstElementChild, document.getElementById("outerDiv").firstElementChild.nextElementSibling, 0);
     })
 
     document.getElementById("createOP").addEventListener("click", () => {
-        swapAndHide(document.getElementById("outerDiv").firstElementChild, document.getElementById("outerDiv").firstElementChild.nextElementSibling, 1);
+        hideForm(document.getElementById("outerDiv").firstElementChild, document.getElementById("outerDiv").firstElementChild.nextElementSibling, 1);
     })
 
+
+    document.getElementById("but_sp").addEventListener("click", (e) => {
+        createSP(e);
+        let form = e.target.closest("form");
+        if (form.checkValidity()) {
+            makeCall("POST", "CreateOrder", e.target.closest("form"),
+                function (req) {
+                    if (req.readyState === XMLHttpRequest.DONE) {
+                        let message = req.responseText;
+                        alertCleaning(message);
+                    }
+                }
+            );
+        }
+        else {
+            form.reportValidity();
+        }
+    });
 
 
 })();
 
 
-function buildForm_SP_services(sp, ts) {
+function buildForm_SP_services(fc, ts) {
     let checkDiv = document.createElement("div");
     checkDiv.classList.add("form-check");
     let checkInput = document.createElement("input");
@@ -136,10 +168,10 @@ function buildForm_SP_services(sp, ts) {
 
     checkDiv.appendChild(checkInput);
     checkDiv.appendChild(checkLabel);
-    sp.appendChild(checkDiv);
+    fc.appendChild(checkDiv);
 }
 
-function buildForm_SP_optionalProducts(sp, op) {
+function buildForm_SP_optionalProducts(fc, op) {
     let checkDiv = document.createElement("div");
     checkDiv.classList.add("form-check");
     let checkInput = document.createElement("input");
@@ -154,10 +186,10 @@ function buildForm_SP_optionalProducts(sp, op) {
 
     checkDiv.appendChild(checkInput);
     checkDiv.appendChild(checkLabel);
-    sp.appendChild(checkDiv);
+    fc.appendChild(checkDiv);
 }
 
-function buildForm_SP_validityPeriods(sp, vp) {
+function buildForm_SP_validityPeriods(fc, vp) {
     let checkDiv = document.createElement("div");
     checkDiv.classList.add("form-check");
     let checkInput = document.createElement("input");
@@ -172,10 +204,10 @@ function buildForm_SP_validityPeriods(sp, vp) {
 
     checkDiv.appendChild(checkInput);
     checkDiv.appendChild(checkLabel);
-    sp.appendChild(checkDiv);
+    fc.appendChild(checkDiv);
 }
 
-function buttonCreation(form) {
+function buttonCreation(fc) {
     let but_class = document.createElement("div");
     but_class.classList.add("d-grid");
     but_class.classList.add("gap-2");
@@ -189,10 +221,10 @@ function buttonCreation(form) {
     b.innerHTML = "CREATE";
     but.appendChild(b);
     but_class.appendChild(but);
-    form.appendChild(but_class);
+    fc.appendChild(but_class);
 }
 
-function swapAndHide(obj1, obj2, n) {
+function hideForm(obj1, obj2, n) {
     if(n === 0) {
         obj1.hidden = false;
         obj2.hidden = true;
@@ -201,5 +233,30 @@ function swapAndHide(obj1, obj2, n) {
         obj1.hidden = true;
         obj2.hidden = false;
     }
+
+}
+
+function alertCleaning(message) {
+    let alert = document.getElementById("creation_alert");
+    alert.innerHTML = "";
+
+    if(alert.classList.contains("alert-success")) {
+        alert.classList.remove("alert-success");
+        alert.classList.add("alert-danger");
+    }
+    else if(alert.classList.contains("alert-danger")) {
+        alert.classList.remove("alert-danger");
+        alert.classList.add("alert-success");
+    }
+
+    let msg = document.createTextNode(message);
+    alert.appendChild(msg);
+    alert.style.visibility = "visible";
+}
+
+
+function createSP(event) {
+    event.preventDefault();
+
 
 }

@@ -3,6 +3,7 @@ package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
 import jakarta.persistence.*;
 
+
 import java.util.Collection;
 
 @Entity
