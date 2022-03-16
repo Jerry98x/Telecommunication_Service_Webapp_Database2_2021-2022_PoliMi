@@ -5,19 +5,22 @@
 //TODO impedire che un utente loggato possa tornare sulla LandingPage o che comunque
 //TODO un eventuale secondo login/registrazione diano problemi
 (function() { // avoid variables ending up in the global scope
-    //sessionStorage.setItem("logged_user", null);
+    // sessionStorage.removeItem("loggedUserId");
+    // sessionStorage.removeItem("loggedUser");
+    // sessionStorage.removeItem("rejectedOrders");
     document.getElementById("submitLogin").addEventListener("click", (e) => {
         let form = e.target.closest("form");
         if (form.checkValidity()) {
             makeCall("POST", "CheckLogin", e.target.closest("form"),
-                function(req) {
+                async function(req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
                         switch (req.status) {
                             case 200:
                                 if(JSON.parse(message)[1] === true) {
                                     let user = JSON.parse(message)[0];
-                                    sessionStorage.setItem("loggedUser", JSON.stringify(user));
+                                    sessionStorage.setItem("loggedUserId", user.userId);
+                                    await (sessionStorage.getItem("loggedUserId") != null);
                                     //No need of JSON.parse because just null check
                                     if(sessionStorage.getItem("pendingOrder") != null) {
                                         window.location.href = "ConfirmationPage.html";
@@ -62,6 +65,7 @@
     });
 
     document.getElementById("continueAsGuest").addEventListener("click", (e) => {
+        sessionStorage.removeItem("loggedUserId");
         sessionStorage.removeItem("loggedUser");
         sessionStorage.removeItem("rejectedOrders");
         window.location.href = "HomePage.html";

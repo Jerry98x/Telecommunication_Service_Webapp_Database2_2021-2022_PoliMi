@@ -18,42 +18,46 @@ function makeCall(method, url, formElement, cback, reset = true) {
 }
 
 (function (){
-    if(sessionStorage.getItem("loggedUser") != null) {
-        let user = JSON.parse(sessionStorage.getItem("loggedUser"));
-        let userInfo = document.createElement("h6");
-        userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
-        document.getElementById("user_login").appendChild(userInfo);
-
-        if(user.insolvent) {//TODO test
-            let userIdForm = document.createElement("form");
-            userIdForm.name = "userIdForm";
-            let input = document.createElement("input");
-            input.name = "userId"
-            input.value = user.userId;
-            userIdForm.appendChild(input);
-            window.addEventListener("load", () => {
-                makeCall("POST", "GetRejectedOrders", userIdForm,
-                    function (req) {
-                        if (req.readyState === XMLHttpRequest.DONE) {
-                            var message = req.responseText;
-                            switch (req.status) {
-                                case 200:
+    if(sessionStorage.getItem("loggedUserId") != null) {
+        let user;
+        let userIdForm = document.createElement("form");
+        userIdForm.name = "userIdForm";
+        let input = document.createElement("input");
+        input.name = "userId"
+        input.value = sessionStorage.getItem("loggedUserId");
+        userIdForm.appendChild(input);
+        window.addEventListener("load", () => {
+            makeCall("POST", "GetLoggedUserInfo", userIdForm,
+                async function (req) {
+                    if (req.readyState === XMLHttpRequest.DONE) {
+                        var message = req.responseText;
+                        switch (req.status) {
+                            case 200:
+                                user = JSON.parse(message)[0];
+                                let userInfo = document.createElement("h6");
+                                userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
+                                document.getElementById("user_login").appendChild(userInfo);
+                                sessionStorage.setItem("loggedUser", JSON.stringify(user));
+                                await (sessionStorage.getItem("loggedUser") != null);
+                                if(user.insolvent) {
                                     let anchor = document.createDocumentFragment();
-                                    let rejectedOrders = JSON.parse(message);
+                                    let rejectedOrders = JSON.parse(message)[1];
                                     let roText = document.createElement("h6");
                                     roText.innerHTML = "Rejected orders";
                                     anchor.appendChild(roText)
                                     rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
-                                    document.getElementById("sp_column").appendChild(anchor);
-                                    break;
-                                default:
-                                    document.getElementById("errormessage").textContent += message;
-                                    break;
-                            }
+                                    document.getElementById("rejected_orders").appendChild(anchor);
+                                }
+                                break;
+                            default:
+                                document.getElementById("errormessage").textContent += message;
+                                break;
                         }
-                    })
-            })
-        }
+                    }
+                }
+            );
+
+        })
     }
 
     window.addEventListener("load", () => {
@@ -78,6 +82,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
     })
 
 }) ();
+
 
 
 function servicePackageRedirect(event, spId){
@@ -136,7 +141,7 @@ function showRejectedOrder(rejectedOrder, anchor){
     let roLink = document.createElement("a");
     roLink.href = "#";
     roLink.innerHTML = "Order nr. " + rejectedOrder.orderId + " of cost " + rejectedOrder.totalCost_euro + "€/month";
-    roLink.addEventListener((event) => confirmRejectedOrder(event, rejectedOrder.orderId));
+    roLink.addEventListener("click", (event) => confirmRejectedOrder(event, rejectedOrder.orderId));
     anchor.appendChild(roLink);
 }
 

@@ -157,6 +157,7 @@ function confirmRedirect(event, servicePackageToBuy, chosenOptionalProducts, cho
             pendingOrder.userId = -1;
         }
         pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
+        pendingOrder.servicePackageName = servicePackageToBuy.name;
         pendingOrder.servicesDescriptions = servicePackageToBuy.servicesDescriptions;
         pendingOrder.chosenValidityPeriod = chosenValidityPeriod[0];
         pendingOrder.chosenOptionalProducts = chosenOptionalProducts;

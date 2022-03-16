@@ -8,7 +8,6 @@ import java.util.Collection;
 public class ClientOrder {
     private int orderId;
     private float totalCost_euro;
-    private LocalDate startDate;
     private int valid;
     private int userId;
     private int servicePackageId;
@@ -20,7 +19,6 @@ public class ClientOrder {
     public ClientOrder(Order order){
         this.orderId = order.getOrderId();
         this.totalCost_euro = order.getTotalCost_euro();
-        this.startDate = order.getStartDate();
         this.valid = order.getValid();
         this.userId = order.getUser().getUserId();
         this.servicePackageId = order.getServicePackage().getServicePackageId();

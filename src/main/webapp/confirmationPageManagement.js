@@ -10,8 +10,10 @@
     document.getElementById("startDate").max = maxDate.toISOString().split('T')[0];
     document.getElementById("startDate").addEventListener("change", (event => {
         event.preventDefault();
-        document.getElementById("successfulPaymentBtn").disabled = false;
-        document.getElementById("failingPaymentBtn").disabled = false;
+        if (sessionStorage.getItem("loggedUser") != null) {
+            document.getElementById("successfulPaymentBtn").disabled = false;
+            document.getElementById("failingPaymentBtn").disabled = false;
+        }
     }))
     if (sessionStorage.getItem("loggedUser") == null) {
         document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
@@ -31,7 +33,7 @@
             rejectedOrderForm.name = "roForm";
             let input = document.createElement("input");
             input.name = "rejectedOrderId";
-            input.value = rejectedOrderId;
+            input.value = sessionStorage.getItem("rejectedOrderId");
             rejectedOrderForm.appendChild(input);
             makeCall("POST", "GetRejectedOrderToComplete", rejectedOrderForm,
                 async function (req) {
@@ -42,6 +44,7 @@
                                 let rejectedOrder = JSON.parse(message);
                                 sessionStorage.setItem("pendingOrder",JSON.stringify(rejectedOrder));
                                 await (sessionStorage.getItem("pendingOrder") != null);
+                                sessionStorage.removeItem("rejectedOrderId");
                                 break;
                             default:
                                 document.getElementById("errormessage").textContent = message;
