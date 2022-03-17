@@ -13,6 +13,7 @@ import java.util.Collection;
 @Table(name = "order", schema = "db2_project")
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = 0")
 @NamedQuery(name = "Order.getRejectedOrderById", query = "SELECT o FROM Order o WHERE o.orderId = ?1 AND o.valid = 0")
+@NamedQuery(name = "Order.getOrdersByUserId", query = "SELECT o from Order o WHERE o.user.userId = ?1")
 public class Order {
 
     @Id
@@ -54,13 +55,6 @@ public class Order {
             joinColumns = @JoinColumn(name = "orderId", referencedColumnName = "orderId"),
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
     private Collection<OptionalProduct> chosenOptionalProducts;
-
-/*
-    @OneToOne(mappedBy = "lastRejectedOrder")
-    private Alert optionalAlert;
-
- */
-
 
 
     public User getUser() {

@@ -35,11 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Collection<Order> orders;
-/*
-    @OneToOne(mappedBy = "insolventUser")
-    private Alert alert;
 
-*/
 
     public User(){
     }
@@ -62,6 +58,10 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -74,4 +74,15 @@ public class User {
         return insolvent;
     }
 
+    public void setInsolvent(int insolvent) {
+        this.insolvent = insolvent;
+    }
+
+    public int getNumOfFailedPayments() {
+        return numOfFailedPayments;
+    }
+
+    public void setNumOfFailedPayments(int numOfFailedPayments) {
+        this.numOfFailedPayments = numOfFailedPayments;
+    }
 }
