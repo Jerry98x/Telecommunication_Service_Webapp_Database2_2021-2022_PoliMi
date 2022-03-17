@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
+import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -30,6 +32,9 @@ public class GetRejectedOrderToComplete extends HttpServlet {
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
     private OrderService orderService = new OrderService();
+
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
+    private ServicePackageService servicePackageService = new ServicePackageService();
 
     public GetRejectedOrderToComplete(){
         super();
@@ -59,17 +64,20 @@ public class GetRejectedOrderToComplete extends HttpServlet {
             int loggedUserId = (int) request.getSession().getAttribute("userId");
             if(rejectedOrder.getUser().getUserId() == loggedUserId) {
                 ClientOrder clientRejectedOrder = new ClientOrder(rejectedOrder);
+                ClientServicePackage clientServicePackage = new ClientServicePackage(rejectedOrder.getServicePackage());
                 Gson gson = new GsonBuilder().create();
                 String json;
 
-                json = gson.toJson(clientRejectedOrder);
+                String jsonOrder = gson.toJson(clientRejectedOrder);
+                String jsonPackage = gson.toJson(clientServicePackage);
+
+                json = "[" + jsonOrder + "," + jsonPackage + "]";
 
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(json);
             } else {
-
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().println("Requesting user is not the logged one");
             }

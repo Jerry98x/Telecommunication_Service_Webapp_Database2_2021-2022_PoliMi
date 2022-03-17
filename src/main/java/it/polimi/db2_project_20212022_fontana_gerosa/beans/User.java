@@ -70,7 +70,7 @@ public class User {
         this.password = password;
     }
 
-    public int isInsolvent() {
+    public int getInsolvent() {
         return insolvent;
     }
 

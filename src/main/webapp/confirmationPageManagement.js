@@ -2,7 +2,7 @@
  *
  */
 
-(function () {
+(async function () {
     var today = new Date(Date());
     document.getElementById("startDate").min = today.toISOString().split('T')[0];
     var maxDate = new Date();
@@ -41,10 +41,23 @@
                         var message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                let rejectedOrder = JSON.parse(message);
-                                sessionStorage.setItem("pendingOrder",JSON.stringify(rejectedOrder));
+                                let rejectedOrder = JSON.parse(message)[0];
+                                let servicePackageToBuy = JSON.parse(message)[1];
+                                let pendingOrder = {};
+                                pendingOrder.orderId = rejectedOrder.orderId;
+                                pendingOrder.totalCost = rejectedOrder.totalCost_euro;
+                                pendingOrder.startDate = null;
+                                pendingOrder.valid = rejectedOrder.valid;
+                                pendingOrder.userId = rejectedOrder.userId;
+                                pendingOrder.servicePackageId = servicePackageToBuy.servicePackageId;
+                                pendingOrder.servicePackageName = servicePackageToBuy.name;
+                                pendingOrder.servicesDescriptions = servicePackageToBuy.servicesDescriptions;
+                                pendingOrder.chosenValidityPeriod = rejectedOrder.chosenValidityPeriod;
+                                pendingOrder.chosenOptionalProducts = rejectedOrder.chosenOptionalProducts;
+                                sessionStorage.setItem("pendingOrder",JSON.stringify(pendingOrder));
                                 await (sessionStorage.getItem("pendingOrder") != null);
                                 sessionStorage.removeItem("rejectedOrderId");
+                                showOrder();
                                 break;
                             default:
                                 document.getElementById("errormessage").textContent = message;
@@ -53,9 +66,9 @@
                 }
             );
         })
+    } else if (sessionStorage.getItem("loggedUser") != null){
+        showOrder();
     }
-    showOrder();
-
 })();
 
 function notLoggedRedirect(event){

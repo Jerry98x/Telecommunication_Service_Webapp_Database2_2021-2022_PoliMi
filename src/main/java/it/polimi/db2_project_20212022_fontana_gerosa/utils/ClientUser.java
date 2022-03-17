@@ -11,7 +11,7 @@ public class ClientUser {
     public ClientUser(User user) {
         this.userId = user.getUserId();
         this.username = user.getUsername();
-        this.insolvent = user.isInsolvent() == 1;
+        this.insolvent = user.getInsolvent() == 1;
     }
 
 

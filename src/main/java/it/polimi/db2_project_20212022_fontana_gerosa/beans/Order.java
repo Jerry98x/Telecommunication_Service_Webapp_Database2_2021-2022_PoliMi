@@ -41,15 +41,15 @@ public class Order {
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "servicePackageId")
     private ServicePackage servicePackage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "validityPeriodId")
     private ValidityPeriod chosenValidityPeriod;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="order__optional_product",
             joinColumns = @JoinColumn(name = "orderId", referencedColumnName = "orderId"),
             inverseJoinColumns = @JoinColumn(name = "optionalProductId", referencedColumnName = "optionalProductId"))
