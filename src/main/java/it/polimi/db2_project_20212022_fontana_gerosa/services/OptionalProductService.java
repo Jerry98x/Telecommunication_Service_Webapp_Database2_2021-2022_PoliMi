@@ -53,4 +53,14 @@ public class OptionalProductService {
         }
         return allOptionalProducts;
     }
+
+    public void insertOptionalProduct(OptionalProduct optionalProduct) {
+        try {
+            em.persist(optionalProduct);
+        }
+        catch (PersistenceException e) {
+            throw new PersistenceException("Couldn't create optional product");
+        }
+
+    }
 }

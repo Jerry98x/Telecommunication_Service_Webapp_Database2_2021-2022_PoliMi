@@ -12,6 +12,7 @@ import java.util.Collection;
 @NamedQuery(name = "TelcoService.getServicesByPackageId",
         query = "SELECT s FROM TelcoService s, ServicePackage sp, ServicePackage.services sps WHERE " +
                 "s.serviceId = sps.serviceId AND sp.servicePackageId = ?1")
+@NamedQuery(name = "TelcoService.getServiceById", query = "SELECT s FROM TelcoService s WHERE s.serviceId = ?1")
 abstract public class TelcoService {
     @Id
     private int serviceId;

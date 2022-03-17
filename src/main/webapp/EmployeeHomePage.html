@@ -18,6 +18,23 @@
 
     <br>
 
+    <div id="myModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Success!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal_text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="formCleaning()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-sm-8"></div>
@@ -75,11 +92,13 @@
                                 <input type="text" class="form-control" id="sp_name" name="sp_name" placeholder="Name" required>
                             </div>
                             <br>
-                            <div id="fc_desc"></div>
+                            <div id="fc_desc"></div><!--TODO delete-->
                             <div id="fc_serv"></div>
                             <div id="fc_optprod"></div>
                             <div id="fc_valper"></div>
-                            <div id="fc_but"></div>
+                            <div class="d-grid gap-2">
+                                <button id="but_sp" class="btn btn-primary btn-lg" type="button"><b>CREATE</b></button>
+                            </div>
 
                         </form>
 
@@ -110,7 +129,7 @@
                             <br>
                             <div class="form-group-create">
                                 <label for="op_fee"><b>Monthly fee (€/month)</b></label>
-                                <input type="number" class="form-control" id="op_fee" name="op_fee" placeholder="Fee" required>
+                                <input type="number" step="0.01" min="0" class="form-control" id="op_fee" name="op_fee" placeholder="Fee" required>
                             </div>
                             <br>
                             <div class="d-grid gap-2">

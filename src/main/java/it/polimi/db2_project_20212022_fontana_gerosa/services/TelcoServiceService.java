@@ -18,7 +18,7 @@ public class TelcoServiceService {
         List<TelcoService> telcoServices = null;
         try {
             telcoServices = em.createNamedQuery("TelcoService.getServicesByPackageId", TelcoService.class).
-                    setParameter(1,servicePackage.getServicePackageId()).getResultList();
+                    setParameter(1, servicePackage.getServicePackageId()).getResultList();
         }
         catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve services of a package");
@@ -38,6 +38,19 @@ public class TelcoServiceService {
 
         return services;
     }
+
+    public TelcoService getServiceById(int serviceId) {
+        TelcoService telcoService = null;
+        try {
+            telcoService = em.createNamedQuery("TelcoService.getServiceById", TelcoService.class).
+                    setParameter(1, serviceId).getSingleResult();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve services");
+        }
+        return telcoService;
+    }
+
 }
 
 

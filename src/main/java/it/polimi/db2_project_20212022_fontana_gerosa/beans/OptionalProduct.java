@@ -41,4 +41,12 @@ public class OptionalProduct {
     public float getMonthlyFee_euro() {
         return monthlyFee_euro;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMonthlyFee_euro(float monthlyFee_euro) {
+        this.monthlyFee_euro = monthlyFee_euro;
+    }
 }

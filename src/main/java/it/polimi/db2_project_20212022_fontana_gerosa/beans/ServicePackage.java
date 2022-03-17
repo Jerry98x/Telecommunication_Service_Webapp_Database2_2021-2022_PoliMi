@@ -60,6 +60,14 @@ public class ServicePackage {
         this.services = services;
     }
 
+    public void setAvailableOptionalProducts(Collection<OptionalProduct> availableOptionalProducts) {
+        this.availableOptionalProducts = availableOptionalProducts;
+    }
+
+    public void setAvailableValidityPeriods(Collection<ValidityPeriod> availableValidityPeriods) {
+        this.availableValidityPeriods = availableValidityPeriods;
+    }
+
     public Collection<OptionalProduct> getAvailableOptionalProducts() {
         return availableOptionalProducts;
     }

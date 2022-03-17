@@ -60,7 +60,7 @@ public class ServicePackageService {
             em.persist(servicePackage);
         }
         catch (PersistenceException e) {
-            throw new PersistenceException("Couldn't create package");
+            throw new PersistenceException("Couldn't create service package");
         }
 
     }
