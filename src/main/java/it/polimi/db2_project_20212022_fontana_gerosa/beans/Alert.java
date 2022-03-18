@@ -24,8 +24,8 @@ public class Alert {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "totalAmount", nullable = false)
-    private float totalAmount;
+    @Column(name = "totalAmount_euro", nullable = false)
+    private float totalAmount_euro;
 
     @Column(name = "rejectionDate", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -39,7 +39,7 @@ public class Alert {
         this.userId = user.getUserId();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.totalAmount = order.getTotalCost_euro();
+        this.totalAmount_euro = order.getTotalCost_euro();
         this.rejectionDate = Date.valueOf(LocalDate.now());
         this.rejectionHour = Time.valueOf(LocalTime.now());
     }

@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 public class MobileInternet extends TelcoService {
     @Column(name = "GBs", nullable = false)
     private int GBs;
-    @Column(name = "extraGBFee(€)")
+    @Column(name = "extraGBFee_euro")
     private float extraGBFee_euro;
 
 

@@ -28,7 +28,7 @@ public class Order {
     @Temporal(TemporalType.TIME)
     private Time creationHour;
 
-    @Column(name = "totalCost(€)", nullable = false)
+    @Column(name = "totalCost_euro", nullable = false)
     private float totalCost_euro;
 
     @Column(name = "startDate", nullable = false)

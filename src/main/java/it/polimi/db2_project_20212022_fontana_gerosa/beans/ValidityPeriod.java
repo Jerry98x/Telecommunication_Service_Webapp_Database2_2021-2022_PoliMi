@@ -17,7 +17,7 @@ public class ValidityPeriod {
     @Column(name = "monthsOfValidity", nullable = false)
     private int monthsOfValidity;
 
-    @Column(name = "monthlyFee(€)", nullable = false)
+    @Column(name = "monthlyFee_euro", nullable = false)
     private float monthlyFee_euro;
 
     @ManyToMany(mappedBy = "availableValidityPeriods")

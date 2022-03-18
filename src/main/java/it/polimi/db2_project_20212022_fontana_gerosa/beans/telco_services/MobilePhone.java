@@ -10,9 +10,9 @@ public class MobilePhone extends TelcoService {
     private int minutes;
     @Column(name = "SMSs", nullable = false)
     private int SMSs;
-    @Column(name = "extraMinFee(€)")
+    @Column(name = "extraMinFee_euro")
     private float extraMinFee_euro;
-    @Column(name = "extraSMSFee(€)")
+    @Column(name = "extraSMSFee_euro")
     private float extraSMSFee_euro;
 
 
