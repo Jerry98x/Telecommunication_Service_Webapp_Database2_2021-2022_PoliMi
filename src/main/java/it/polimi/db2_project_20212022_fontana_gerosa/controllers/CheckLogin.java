@@ -105,7 +105,7 @@ public class CheckLogin extends HttpServlet {
             Gson gson = new GsonBuilder().create();
             String json;
 
-            if(user != null) {
+            if(user != null) {//TODO just id needed
                 ClientUser clientUser = new ClientUser(user);
                 String json1 = gson.toJson(clientUser);
                 String json2 = gson.toJson(true);

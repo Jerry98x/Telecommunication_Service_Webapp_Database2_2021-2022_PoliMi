@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 @WebServlet("/GetLoggedUserInfo")
 @MultipartConfig
@@ -90,8 +91,11 @@ public class GetLoggedUserInfo extends HttpServlet {
                         jsonOrders = gson.toJson(clientRejectedOrders);
                     }
                 }
-
-                json = "[" + jsonUser + "," + jsonOrders + "]";
+                if(!jsonOrders.equals("")) {
+                    json = "[" + jsonUser + "," + jsonOrders + "]";
+                } else {
+                    json = "[" + jsonUser + "]";
+                }
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
