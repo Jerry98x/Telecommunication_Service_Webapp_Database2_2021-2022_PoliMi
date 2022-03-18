@@ -66,11 +66,19 @@ public class OrderService {
         } catch (PersistenceException e){
             throw new PersistenceException("Couldn't find the related user");
         }
-        if(user != null && newOrder.getValid() == 0){//new failed payment
-            makeUserInsolvent(user, newOrder);
+        if(user != null){
+            if(newOrder.getValid() == 0) {//new failed payment
+                makeUserInsolvent(user, newOrder);
+            } else if (user.getInsolvent() == 1) {
+                Collection<Order> ordersOfUser;
+                ordersOfUser = this.getOrdersByUserId(user.getUserId());
+                if (ordersOfUser.stream().noneMatch(orderOfUser -> orderOfUser.getValid() == 0)) {//no more insolvent
+                    user.setInsolvent(0);
+                }
+            }
             try {
-                em.persist(user);
-            } catch (PersistenceException e){
+                em.merge(user);
+            } catch (PersistenceException e) {
                 throw new PersistenceException("Couldn't update user");
             }
         }
@@ -95,12 +103,12 @@ public class OrderService {
             } else if (user.getInsolvent() == 1) {
                 Collection<Order> ordersOfUser;
                 ordersOfUser = this.getOrdersByUserId(user.getUserId());
-                if (ordersOfUser.stream().noneMatch(orderOfUser -> orderOfUser.getValid() == 0)) {//no more insolvent
+                if (ordersOfUser.stream().noneMatch(orderOfUser -> orderOfUser.getValid() == 0 && orderOfUser.getOrderId() != order.getOrderId())) {//no more insolvent
                     user.setInsolvent(0);
                 }
             }
             try {
-                em.persist(user);
+                em.merge(user);
             } catch (PersistenceException e) {
                 throw new PersistenceException("Couldn't update user");
             }
