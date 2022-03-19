@@ -58,6 +58,7 @@ public class ServicePackageService {
     public void insertServicePackage(ServicePackage servicePackage) {
         try {
             em.persist(servicePackage);
+            em.flush();
         }
         catch (PersistenceException e) {
             throw new PersistenceException("Couldn't create service package");

@@ -38,6 +38,9 @@ public class Order {
     @Column(name = "valid", nullable = false)
     private int valid;
 
+    @Column(name = "amountOptionalProducts", nullable = false)
+    private int amountOptionalProducts;
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
@@ -126,6 +129,10 @@ public class Order {
 
     public void setValid(int valid) {
         this.valid = valid;
+    }
+
+    public void setAmountOptionalProducts(int amountOptionalProducts) {
+        this.amountOptionalProducts = amountOptionalProducts;
     }
 
     public void setChosenValidityPeriod(ValidityPeriod chosenValidityPeriod) {

@@ -141,12 +141,15 @@ public class ManageOrder extends HttpServlet {
                         chosenOptionalProducts.stream().allMatch(chosenOptionalProduct -> finalServicePackage.getAvailableOptionalProducts().stream().
                                 anyMatch(optionalProduct -> optionalProduct.getOptionalProductId() == chosenOptionalProduct.getOptionalProductId()))){
                     order.setChosenOptionalProducts(chosenOptionalProducts);
+                    order.setAmountOptionalProducts(chosenOptionalProducts.size());
                     tot += chosenOptionalProducts.stream().mapToDouble(OptionalProduct::getMonthlyFee_euro).sum();
                 } else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("One of the requested products doesn't exist among the available ones");
                     return;
                 }
+            } else {
+                order.setAmountOptionalProducts(0);
             }
             //total cost
             if(tot == totalCost) {
