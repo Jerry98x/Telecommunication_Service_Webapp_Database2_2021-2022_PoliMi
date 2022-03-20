@@ -59,6 +59,9 @@
                                 sessionStorage.removeItem("rejectedOrderId");
                                 showOrder();
                                 break;
+                            case 401:
+                                window.location.href = "LandingPage.html";
+                                break;
                             default:
                                 document.getElementById("errormessage").textContent = message;
                         }
@@ -129,6 +132,9 @@ function sendPayment(event, isSuccessful) {
                     case 200:
                         sessionStorage.removeItem("pendingOrder");
                         window.location.href = "HomePage.html";
+                        break;
+                    case 401:
+                        window.location.href = "LandingPage.html";
                         break;
                     default:
                         document.getElementById("errormessage").textContent += message;

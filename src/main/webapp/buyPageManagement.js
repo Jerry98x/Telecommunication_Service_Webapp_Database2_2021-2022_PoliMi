@@ -45,6 +45,7 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             break;
                         case 401: // unauthorized
                             document.getElementById("errormessage").textContent = message;
+                            window.location.href = "LandingPage.html";
                             break;
                         case 500: // server error
                             document.getElementById("errormessage").textContent = message;

@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
@@ -36,12 +37,20 @@ public class CreateOptionalProduct extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // If the employee is not logged in (not present in session) redirect to the login
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("employeeId") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println("User not allowed");
+            return;
+        }
+
         String optionalProductName = StringEscapeUtils.escapeJava(request.getParameter("op_name"));
         float optionalProductFee = Float.parseFloat(request.getParameter("op_fee"));
 
         OptionalProduct optionalProduct = new OptionalProduct();
 
-        if(optionalProductName != null && optionalProductFee != 0) {
+        if(optionalProductName != null && !optionalProductName.equals("") && optionalProductFee != 0) {
             try {
                 optionalProduct.setName(optionalProductName);
             }

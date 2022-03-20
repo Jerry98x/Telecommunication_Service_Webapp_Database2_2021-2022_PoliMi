@@ -17,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
@@ -55,6 +56,14 @@ public class CreateServicePackage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // If the employee is not logged in (not present in session) redirect to the login
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("employeeId") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println("User not allowed");
+            return;
+        }
+
         String servicePackageName = StringEscapeUtils.escapeJava(request.getParameter("sp_name"));
 
         String servicePackageServicesString = StringEscapeUtils.escapeJava(request.getParameter("inputServices"));
@@ -84,7 +93,7 @@ public class CreateServicePackage extends HttpServlet {
         Collection<OptionalProduct> actualOptionalProducts = new ArrayList<>();
         Collection<ValidityPeriod> actualValidityPeriods = new ArrayList<>();
 
-        if(servicePackageName!= null && !servicePackageServicesId.isEmpty() && !servicePackageValidityPeriodsId.isEmpty()) {
+        if(servicePackageName != null && !servicePackageName.equals("") && !servicePackageServicesId.isEmpty() && !servicePackageValidityPeriodsId.isEmpty()) {
             try {
                 servicePackage.setName(servicePackageName);
             }

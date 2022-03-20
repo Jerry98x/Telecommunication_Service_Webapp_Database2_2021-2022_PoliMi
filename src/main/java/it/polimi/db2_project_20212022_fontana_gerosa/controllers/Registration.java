@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 //import org.apache.commons.text.StringEscapeUtils;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -37,36 +38,19 @@ public class Registration extends HttpServlet {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
-//    /**
-//     * Method to check email validity
-//     * @param email email to check
-//     * @return true if it's valid, false otherwise
-//     */
-//    boolean isEmailValid(String email) {
-//        return email != null && EmailValidator.getInstance().isValid(email);
-//    }
-//
-//    /**
-//     * Method to check username validity
-//     * @param username username to check
-//     * @return true if it's valid, false otherwise
-//     */
-//    boolean isUsernameValid(String username) {
-//        return username != null && username.length()<32 && username.length() > 3;
-//    }
-//
-//    /**
-//     * Method to check username validity
-//     * @param password password to check
-//     * @return true if it's valid, false otherwise
-//     */
-//    boolean isPasswordValid(String password){
-//        return password != null && password.length()<32 && password.length() > 3;
-//    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // If the user is already logged in (present in session) alert
+        HttpSession session = request.getSession();
+        if (!session.isNew() || session.getAttribute("userId") != null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println("User already logged in. Logout to register a new user.");
+            return;
+        }
+
         // obtain and escape params
         String email = null;
         String username = null;

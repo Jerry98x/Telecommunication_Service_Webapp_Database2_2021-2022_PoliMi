@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
@@ -47,6 +48,15 @@ public class GetRejectedOrderToComplete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // If the user is not logged in (not present in session) redirect to the login
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("userId") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println("User not allowed");
+            return;
+        }
+
         // obtain and escape params
         Integer requestedUserId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("rejectedOrderId")));
         Order rejectedOrder = null;

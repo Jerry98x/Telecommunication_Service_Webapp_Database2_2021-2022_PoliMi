@@ -17,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.security.auth.login.CredentialException;
@@ -46,6 +47,15 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+//        // If the user is already logged in (present in session) redirect to the homepage
+//        HttpSession session = request.getSession();
+//        if (!session.isNew() || session.getAttribute("userId") != null || session.getAttribute("employeeId") != null) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().println("User already logged in");
+//            return;
+//        }
+
         // obtain and escape params
         String email = null;
         String password = null;

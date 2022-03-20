@@ -35,6 +35,9 @@
                                     window.location.href = "EmployeeHomePage.html";
                                 }
                                 break;
+                            // case 401:
+                            //     window.location.href = "HomePage.html"
+                            //     break;
                             default:
                                 alertCleaning(message);
                                 break;

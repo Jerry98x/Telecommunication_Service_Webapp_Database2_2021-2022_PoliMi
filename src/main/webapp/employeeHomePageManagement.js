@@ -56,6 +56,9 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             formContainer_serv.appendChild(document.createElement("br"));
 
                             break;
+                        case 401:
+                            window.location.href = "LandingPage.html";
+                            break;
                         default:
                             document.getElementById("errormessage").textContent += message;
                             break;
@@ -84,6 +87,9 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             opt_prod.forEach(op => buildForm_SP_optionalProducts(formContainer_optprod, op, OP_array));
                             formContainer_optprod.appendChild(document.createElement("br"));
 
+                            break;
+                        case 401:
+                            window.location.href = "LandingPage.html";
                             break;
                         default:
                             document.getElementById("errormessage").textContent += message;
@@ -115,6 +121,9 @@ function makeCall(method, url, formElement, cback, reset = true) {
 
                             // buttonCreation(formContainer_but);
 
+                            break;
+                        case 401:
+                            window.location.href = "LandingPage.html";
                             break;
                         default:
                             document.getElementById("errormessage").textContent += message;
@@ -150,6 +159,9 @@ function makeCall(method, url, formElement, cback, reset = true) {
                             case 200:
                                 modalSetting(message);
                                 break;
+                            case 401:
+                                window.location.href = "LandingPage.html";
+                                break;
                             default:
                                 alertClientsideErrorSetting(message);
                                 break;
@@ -179,6 +191,9 @@ function makeCall(method, url, formElement, cback, reset = true) {
                         switch (status) {
                             case 200:
                                 modalSetting(message);
+                                break;
+                            case 401:
+                                window.location.href = "LandingPage.html";
                                 break;
                             default:
                                 alertClientsideErrorSetting(message);
@@ -422,9 +437,6 @@ function formCleaning() {
     }
 
     document.getElementById("sp_name").value = "";
-    // document.getElementById("fc_serv").firstElementChild.innerHTML = "";
-    // document.getElementById("fc_optprod").firstElementChild.innerHTML = "";
-    // document.getElementById("fc_valper").firstElementChild.innerHTML = "";
     let sp = document.getElementById("sp");
     let op = document.getElementById("op");
     if(!sp.hidden) {

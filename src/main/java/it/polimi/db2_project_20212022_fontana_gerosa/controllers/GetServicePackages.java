@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -36,6 +37,16 @@ public class GetServicePackages extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
+//        // If the user is not logged in (not present in session) redirect to the login
+//        HttpSession session = request.getSession();
+//        if (session.isNew() || session.getAttribute("userId") == null) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().println("User not allowed");
+//            return;
+//        }
+
+
         List<ClientServicePackage> clientServicePackages;
 
         try {
