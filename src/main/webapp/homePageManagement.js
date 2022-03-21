@@ -15,13 +15,16 @@
             makeCall("POST", "GetLoggedUserInfo", userIdForm,
                 async function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
-                        var message = req.responseText;
+                        let message = req.responseText;
                         switch (req.status) {
                             case 200:
                                 user = JSON.parse(message)[0];
                                 let userInfo = document.createElement("h6");
                                 userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
                                 document.getElementById("user_login").appendChild(userInfo);
+
+                                document.getElementById("anchor_logout").hidden = false;
+
                                 sessionStorage.setItem("loggedUser", JSON.stringify(user));
                                 await (sessionStorage.getItem("loggedUser") != null);
                                 if(user.insolvent) {
@@ -45,11 +48,25 @@
         })
     }
 
+    document.getElementById("anchor_logout").addEventListener("click", () => {
+        makeCall("GET", "Logout", null,
+            function (req) {
+                if(req.readyState === XMLHttpRequest.DONE) {
+                    // let message = req.responseText;
+                    if(req.status === 200) {
+                        document.getElementById("anchor_logout").hidden = true;
+                        window.location.href = "LandingPage.html";
+                    }
+                }
+            }
+        );
+    });
+
     window.addEventListener("load", () => {
         makeCall("GET", "GetServicePackages", null,
             function (req) {
             if(req.readyState === XMLHttpRequest.DONE) {
-                var message = req.responseText;
+                let message = req.responseText;
                 switch (req.status) {
                     case 200:
                         let anchor = document.createDocumentFragment();
@@ -63,10 +80,10 @@
                         break;
                 }
             }
-            })
-    })
+            });
+    });
 
-}) ();
+})();
 
 
 

@@ -43,13 +43,13 @@ public class GetServicePackageToBuy extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("userId") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().println("User not allowed");
-            return;
-        }
+//        // If the user is not logged in (not present in session) redirect to the login
+//        HttpSession session = request.getSession();
+//        if (session.isNew() || session.getAttribute("userId") == null) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().println("User not allowed");
+//            return;
+//        }
 
         ServicePackage servicePackage;
         int servicePackageId = Integer.parseInt(request.getParameter("spIdToBuy"));

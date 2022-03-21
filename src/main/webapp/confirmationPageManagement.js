@@ -2,7 +2,19 @@
  *
  */
 
-(async function () {
+(function () {
+    window.addEventListener("load", () => {
+        if(sessionStorage.getItem("loggedUser") != null) {
+            let user = JSON.parse(sessionStorage.getItem("loggedUser"));
+            let userInfo = document.createElement("h6");
+            userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
+            document.getElementById("user_login").appendChild(userInfo);
+
+            document.getElementById("anchor_logout").hidden = false;
+        }
+    });
+
+
     var today = new Date(Date());
     document.getElementById("startDate").min = today.toISOString().split('T')[0];
     var maxDate = new Date();
@@ -69,9 +81,23 @@
                 }
             );
         })
-    } else if (sessionStorage.getItem("loggedUser") != null){
-        showOrder();
     }
+    showOrder();
+
+    document.getElementById("anchor_logout").addEventListener("click", () => {
+        makeCall("GET", "Logout", null,
+            function (req) {
+                if(req.readyState === XMLHttpRequest.DONE) {
+                    // let message = req.responseText;
+                    if(req.status === 200) {
+                        document.getElementById("anchor_logout").hidden = true;
+                        window.location.href = "LandingPage.html";
+                    }
+                }
+            }
+        );
+    });
+
 })();
 
 function notLoggedRedirect(event){

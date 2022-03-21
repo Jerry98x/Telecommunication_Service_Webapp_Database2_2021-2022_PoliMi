@@ -3,12 +3,17 @@
  */
 
 (function () {
-    if(sessionStorage.getItem("loggedEmployee") != null) {
-        let employee = JSON.parse(sessionStorage.getItem("loggedEmployee"));
-        let employeeInfo = document.createElement("h6");
-        employeeInfo.innerHTML = "Logged in as <b>" + employee.employeeId + "</b>";
-        document.getElementById("employee_login").appendChild(employeeInfo);
-    }
+    window.addEventListener("load", () => {
+        if(sessionStorage.getItem("loggedEmployee") != null) {
+            let employee = JSON.parse(sessionStorage.getItem("loggedEmployee"));
+            let employeeInfo = document.createElement("h6");
+            employeeInfo.innerHTML = "Logged in as <b>" + employee.employeeId + "</b>";
+            document.getElementById("employee_login").appendChild(employeeInfo);
+
+            document.getElementById("anchor_logout").hidden = false;
+        }
+
+    });
 
     document.getElementById("sp").hidden = true;
     document.getElementById("op").hidden = true;
@@ -112,6 +117,20 @@
                         default:
                             document.getElementById("errormessage").textContent += message;
                             break;
+                    }
+                }
+            }
+        );
+    });
+
+    document.getElementById("anchor_logout").addEventListener("click", () => {
+        makeCall("GET", "Logout", null,
+            function (req) {
+                if(req.readyState === XMLHttpRequest.DONE) {
+                    // let message = req.responseText;
+                    if(req.status === 200) {
+                        document.getElementById("anchor_logout").hidden = true;
+                        window.location.href = "LandingPage.html";
                     }
                 }
             }

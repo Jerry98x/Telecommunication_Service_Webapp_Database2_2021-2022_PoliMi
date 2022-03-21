@@ -15,18 +15,35 @@
     <link rel="stylesheet" href=my_style.css>
 </head>
 <body>
-<div class="form-group" id="buyForm">
-    <p id="packageName"></p>
-    <div id="servicesDiv">Offered services</div>
-    <div id="optionalProductsDiv">Available optional products</div>
-    <div id="validityPeriodsDiv">Available validity periods</div>
 
-    <div class="d-inline">Total cost: </div>
-    <div class="d-inline" id="totalCost"></div>
-    <div class="d-inline">€/month</div>
     <br>
-    <button type="submit" class="btn btn-default" id="confirmBtn" disabled>Confirm</button>
-</div>
-<div id="errormessage"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-2" id="user_login"></div>
+            <div class="col-sm-1" id="logout">
+                <a id="anchor_logout" href="LandingPage.html" hidden>Logout</a>
+            </div>
+        </div>
+
+        <div class="form-group" id="buyForm">
+            <p id="packageName"></p>
+            <div id="servicesDiv">Offered services</div>
+            <div id="optionalProductsDiv">Available optional products</div>
+            <div id="validityPeriodsDiv">Available validity periods</div>
+
+            <div class="d-inline">Total cost: </div>
+            <div class="d-inline" id="totalCost"></div>
+            <div class="d-inline">€/month</div>
+            <br>
+            <button type="submit" class="btn btn-default" id="confirmBtn" disabled>Confirm</button>
+        </div>
+    </div>
+    <div id="errormessage"></div>
+
+    <br>
+    <br>
+
 </body>
 </html>
