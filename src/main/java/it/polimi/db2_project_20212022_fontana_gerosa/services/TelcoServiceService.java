@@ -42,8 +42,7 @@ public class TelcoServiceService {
     public TelcoService getServiceById(int serviceId) {
         TelcoService telcoService = null;
         try {
-            telcoService = em.createNamedQuery("TelcoService.getServiceById", TelcoService.class).
-                    setParameter(1, serviceId).getSingleResult();
+            telcoService = em.find(TelcoService.class, serviceId);
         }
         catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve services");

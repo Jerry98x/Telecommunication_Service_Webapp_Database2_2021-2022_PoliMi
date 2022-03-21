@@ -16,18 +16,14 @@ public class OptionalProductService {
     private EntityManager em;
 
     public OptionalProduct getOptionalProductById(int optionalProductId){
-        List<OptionalProduct> matchingOptionalProducts = null;
+        OptionalProduct matchingOptionalProduct = null;
         try {
-            matchingOptionalProducts = em.createNamedQuery("OptionalProduct.getOptionalProductById", OptionalProduct.class).
-                    setParameter(1,optionalProductId).getResultList();
+            matchingOptionalProduct = em.find(OptionalProduct.class, optionalProductId);
         }
         catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve product");
         }
-        if(matchingOptionalProducts.isEmpty()){
-            return null;
-        }
-        return matchingOptionalProducts.get(0);
+        return matchingOptionalProduct;
     }
 
     public List<OptionalProduct> getOptionalProductsByPackage(ServicePackage servicePackage){

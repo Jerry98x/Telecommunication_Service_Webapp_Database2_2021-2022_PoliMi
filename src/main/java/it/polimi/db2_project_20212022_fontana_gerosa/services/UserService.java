@@ -29,16 +29,13 @@ public class UserService {
     }
 
     public User findUserById(int userId){
-        List<User> matchingUsers = null;
+        User matchingUser = null;
         try {
-            matchingUsers = em.createNamedQuery("User.findById", User.class).setParameter(1, userId).getResultList();
+            matchingUser = em.find(User.class, userId);
         } catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve user");
         }
-        if(matchingUsers.isEmpty()){
-            return null;
-        }
-        return matchingUsers.get(0);
+        return matchingUser;
     }
 
     public User findUserByEmail(String email) {

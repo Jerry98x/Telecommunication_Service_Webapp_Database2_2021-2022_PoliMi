@@ -7,7 +7,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "validity_period", schema = "db2_project")
 @NamedQuery(name = "ValidityPeriod.getAllValidityPeriods", query = "SELECT v FROM ValidityPeriod v")
-@NamedQuery(name = "ValidityPeriod.getValidityPeriodById", query = "SELECT v FROM ValidityPeriod v WHERE v.validityPeriodId = ?1")
 public class ValidityPeriod {
 
     @Id

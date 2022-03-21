@@ -8,7 +8,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "user", schema = "db2_project")
 @NamedQuery(name = "User.checkCredentials", query = "SELECT u from User u where u.email = ?1 and u.password = ?2")
-@NamedQuery(name = "User.findById", query = "SELECT u from User u where u.userId = ?1")
 @NamedQuery(name = "User.findByEmail", query = "SELECT u from User u where  u.email = ?1")
 @NamedQuery(name = "User.findByUsername", query = "SELECT u from User u where  u.username = ?1")
 public class User {

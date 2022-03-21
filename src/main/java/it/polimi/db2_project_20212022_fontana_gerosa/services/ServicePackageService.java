@@ -41,18 +41,14 @@ public class ServicePackageService {
         return clientServicePackages;
     }
 
-    public ServicePackage getServicePackageById(int id){
-        List<ServicePackage> matchingServicePackages;
+    public ServicePackage getServicePackageById(int servicePackageId){
+        ServicePackage matchingServicePackage;
         try{
-            matchingServicePackages = em.createNamedQuery("ServicePackage.getServicePackageById", ServicePackage.class).
-                    setParameter(1, id).getResultList();
+            matchingServicePackage = em.find(ServicePackage.class, servicePackageId);
         } catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve matching package");
         }
-        if (matchingServicePackages.isEmpty()) {
-            return null;
-        }
-        return matchingServicePackages.get(0);
+        return matchingServicePackage;
     }
 
     public void insertServicePackage(ServicePackage servicePackage) {

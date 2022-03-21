@@ -17,18 +17,14 @@ public class ValidityPeriodService {
     private EntityManager em;
 
     public ValidityPeriod getValidityPeriodById(int validityPeriodId){
-        List<ValidityPeriod> matchingValidityPeriods = null;
+        ValidityPeriod matchingValidityPeriod = null;
         try {
-            matchingValidityPeriods = em.createNamedQuery("ValidityPeriod.getValidityPeriodById", ValidityPeriod.class).
-                    setParameter(1,validityPeriodId).getResultList();
+            matchingValidityPeriod = em.find(ValidityPeriod.class, validityPeriodId);
         }
         catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve validity period");
         }
-        if(matchingValidityPeriods.isEmpty()){
-            return null;
-        }
-        return matchingValidityPeriods.get(0);
+        return matchingValidityPeriod;
     }
 
     public List<ValidityPeriod> getAllValidityPeriods() {
