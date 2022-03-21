@@ -55,6 +55,9 @@
                     // let message = req.responseText;
                     if(req.status === 200) {
                         document.getElementById("anchor_logout").hidden = true;
+                        sessionStorage.removeItem("loggedUserId");
+                        sessionStorage.removeItem("loggedUser");
+                        sessionStorage.removeItem("pendingOrder");
                         window.location.href = "LandingPage.html";
                     }
                 }

@@ -2,17 +2,45 @@
  *
  */
 
-(function () {
-    window.addEventListener("load", () => {
-        if(sessionStorage.getItem("loggedUser") != null) {
-            let user = JSON.parse(sessionStorage.getItem("loggedUser"));
-            let userInfo = document.createElement("h6");
-            userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
-            document.getElementById("user_login").appendChild(userInfo);
+(async function () {
+    if(sessionStorage.getItem("loggedUserId") != null) {
+        let user;
+        let userIdForm = document.createElement("form");
+        userIdForm.name = "userIdForm";
+        let input = document.createElement("input");
+        input.name = "userId"
+        input.value = sessionStorage.getItem("loggedUserId");
+        userIdForm.appendChild(input);
+        window.addEventListener("load", () => {
+            makeCall("POST", "GetLoggedUserInfo", userIdForm,
+                async function (req) {
+                    if (req.readyState === XMLHttpRequest.DONE) {
+                        var message = req.responseText;
+                        switch (req.status) {
+                            case 200:
+                                user = JSON.parse(message)[0];
+                                sessionStorage.setItem("loggedUser", JSON.stringify(user));
+                                document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
+                                document.getElementById("anchor_logout").hidden = false;
+                                await (sessionStorage.getItem("loggedUser") != null);
+                                sessionStorage.removeItem("loggedUserId");
+                                break;
+                            default:
+                                document.getElementById("errormessage").textContent += message;
+                                break;
+                        }
+                    }
+                }
+            );
 
-            document.getElementById("anchor_logout").hidden = false;
-        }
-    });
+        })
+    }
+    if(sessionStorage.getItem("loggedUser") != null) {
+        let user = JSON.parse(sessionStorage.getItem("loggedUser"));
+        document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
+        document.getElementById("anchor_logout").hidden = false;
+
+    }
 
 
     var today = new Date(Date());
@@ -27,7 +55,7 @@
             document.getElementById("failingPaymentBtn").disabled = false;
         }
     }))
-    if (sessionStorage.getItem("loggedUser") == null) {
+    if (sessionStorage.getItem("loggedUser") == null && sessionStorage.getItem("loggedUserId") == null) {
         document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
         //disable payment buttons
         document.getElementById("successfulPaymentBtn").disabled = true;
@@ -38,6 +66,8 @@
         //show login/signup buttons
         document.getElementById("loginBtn").hidden = false;
         document.getElementById("signUpBtn").hidden = false;
+    } else if (sessionStorage.getItem("loggedUser") == null){
+        await (sessionStorage.getItem("loggedUser") != null);
     }
     if (sessionStorage.getItem("rejectedOrderId") != null && sessionStorage.getItem("loggedUser") != null) {
         window.addEventListener("load", () => {
@@ -91,6 +121,9 @@
                     // let message = req.responseText;
                     if(req.status === 200) {
                         document.getElementById("anchor_logout").hidden = true;
+                        sessionStorage.removeItem("loggedUserId");
+                        sessionStorage.removeItem("loggedUser");
+                        sessionStorage.removeItem("pendingOrder");
                         window.location.href = "LandingPage.html";
                     }
                 }
