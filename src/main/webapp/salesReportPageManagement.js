@@ -1,4 +1,6 @@
-
+/**
+ *
+ */
 
 (function () {
     if(sessionStorage.getItem("loggedEmployee") != null) {
