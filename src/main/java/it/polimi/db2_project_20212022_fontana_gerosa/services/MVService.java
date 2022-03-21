@@ -18,7 +18,7 @@ public class MVService {
         try {
             mvResults = em.createNamedQuery("MVAvgAmountOpPerSp.getAllAvgAmountOpPerSp", MVAvgAmountOpPerSp.class).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve mv results");
+            throw new PersistenceException("Couldn't retrieve MVAvgAmountOpPerSp results");
         }
         return mvResults;
     }
@@ -28,7 +28,7 @@ public class MVService {
         try {
             mvResults = em.createNamedQuery("MVTotalPurchasesPerSp.getAllTotalPurchasesPerSp", MVTotalPurchasesPerSp.class).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve mv results");
+            throw new PersistenceException("Couldn't retrieve MVTotalPurchasesPerSp results");
         }
         return mvResults;
     }
@@ -38,7 +38,7 @@ public class MVService {
         try {
             mvResults = em.createNamedQuery("MVTotalPurchasesPerSpAndVp.getAllTotalPurchasesPerSpAndVp", MVTotalPurchasesPerSpAndVp.class).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve mv results");
+            throw new PersistenceException("Couldn't retrieve MVTotalPurchasesPerSpAndVp results");
         }
         return mvResults;
     }
@@ -48,7 +48,7 @@ public class MVService {
         try {
             mvResults = em.createNamedQuery("MVTotalValuePerSp.getAllTotalValuePerSp", MVTotalValuePerSp.class).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve mv results");
+            throw new PersistenceException("Couldn't retrieve MVTotalValuePerSp results");
         }
         return mvResults;
     }
@@ -58,7 +58,7 @@ public class MVService {
         try {
             mvResults = em.createNamedQuery("MVTotalValuePerSpWithOp.getAllTotalValuePerSpWithOp", MVTotalValuePerSpWithOp.class).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve mv results");
+            throw new PersistenceException("Couldn't retrieve MVTotalValuePerSpWithOp results");
         }
         return mvResults;
     }
@@ -68,7 +68,7 @@ public class MVService {
         try {
             mvResults = em.createNamedQuery("MVTotalPurchasesPerOp.getAllTotalPurchasesPerOp", MVTotalPurchasesPerOp.class).getResultList();
         } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve mv results");
+            throw new PersistenceException("Couldn't retrieve MVTotalPurchasesPerOp results");
         }
         return mvResults;
     }
