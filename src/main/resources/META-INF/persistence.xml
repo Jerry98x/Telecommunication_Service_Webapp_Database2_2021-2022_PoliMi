@@ -18,6 +18,12 @@
         <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage</class>
         <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.User</class>
         <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalPurchasesPerSp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVAvgAmountOpPerSp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalPurchasesPerOp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalPurchasesPerSpAndVp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalValuePerSp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalValuePerSpWithOp</class>
 
 
 

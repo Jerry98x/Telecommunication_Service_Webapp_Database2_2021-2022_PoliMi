@@ -16,7 +16,62 @@
     });
 
     window.addEventListener("load", () => {
-        makeCall("GET", "Get...", null,
+        makeCall("GET", "GetTotalPurchasesPerSp", null,
+            function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    let message = req.responseText;
+
+                }
+            }
+        );
+    });
+
+    window.addEventListener("load", () => {
+        makeCall("GET", "GetTotalPurchasesPerSpAndVp", null,
+            function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    let message = req.responseText;
+
+                }
+            }
+        );
+    });
+
+    window.addEventListener("load", () => {
+        makeCall("GET", "GetTotalValuePerSp", null,
+            function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    let message = req.responseText;
+
+                }
+            }
+        );
+    });
+
+    window.addEventListener("load", () => {
+        makeCall("GET", "GetTotalValuePerSpWithOp", null,
+            function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    let message = req.responseText;
+
+                }
+            }
+        );
+    });
+
+    window.addEventListener("load", () => {
+        makeCall("GET", "GetAvgAmountOpPerSp", null,
+            function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    let message = req.responseText;
+
+                }
+            }
+        );
+    });
+
+    window.addEventListener("load", () => {
+        makeCall("GET", "GetTotalPurchasesPerOp", null,
             function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {
                     let message = req.responseText;
