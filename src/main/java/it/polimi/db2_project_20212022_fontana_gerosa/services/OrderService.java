@@ -1,14 +1,13 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.services;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
+import it.polimi.db2_project_20212022_fontana_gerosa.beans.*;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +21,9 @@ public class OrderService {
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/AlertService")
     private AlertService alertService = new AlertService();
+
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
+    private ServicePackageService servicePackageService = new ServicePackageService();
 
     public List<Order> getRejectedOrders(int userId){
         List<Order> matchingOrders = null;
@@ -135,6 +137,43 @@ public class OrderService {
             } catch (PersistenceException e) {
                 throw new PersistenceException("Couldn't create alert");
             }
+        }
+    }
+
+    public Collection<String> getAllRejectedOrdersDescriptions(){
+        Collection<Order> orders = null;
+        Collection<String> descriptions = new ArrayList<>();
+        try {
+            orders = em.createNamedQuery("Order.getAllRejectedOrders", Order.class).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve MVTotalPurchasesPerOp results");
+        }
+        if(orders != null){
+            orders.forEach(order -> descriptions.add(getOrderDescription(order)));
+        }
+        return descriptions;
+    }
+
+    private String getOrderDescription(Order order){
+        User user = null;
+        ServicePackage servicePackage = null;
+        try {
+            user = userService.getUserByOrderId(order.getOrderId());
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Couldn't retrieve user");
+        }
+        try {
+            servicePackage = servicePackageService.getServicePackageByOrderId(order.getOrderId());
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Couldn't retrieve service package");
+        }
+
+        if (user != null && servicePackage != null) {
+            return "Order n." + order.getOrderId() + " of " + order.getTotalCost_euro() + " for service package " + servicePackage.getName() +
+                    " tried by user " + user.getUsername() + "(id: " + user.getUserId() + ") and rejected on " + order.getCreationDate().toString() +
+                    " at " + order.getCreationHour().toString();
+        } else {
+            return "";
         }
     }
 }

@@ -61,4 +61,18 @@ public class ServicePackageService {
         }
 
     }
+
+    public ServicePackage getServicePackageByOrderId(int orderId){
+        List<ServicePackage> servicePackages = null;
+        try{
+            servicePackages = em.createNamedQuery("ServicePackage.getServicePackageByOrderId", ServicePackage.class).
+            setParameter(1, orderId).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve matching package");
+        }
+        if(servicePackages.isEmpty()){
+            return null;
+        }
+        return servicePackages.get(0);
+    }
 }

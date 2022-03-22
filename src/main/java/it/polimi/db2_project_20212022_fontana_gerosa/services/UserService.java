@@ -1,5 +1,7 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.services;
 
+import it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert;
+import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -7,6 +9,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
 import javax.security.auth.login.CredentialException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Stateless
@@ -70,6 +74,34 @@ public class UserService {
         em.persist(userToRegister);
         em.flush();
         return userToRegister;
+    }
+
+    public Collection<String> getAllInsolventUsersDescriptions(){
+        Collection<User> users = null;
+        Collection<String> descriptions = new ArrayList<>();
+        try {
+            users = em.createNamedQuery("User.getAllInsolventUsers", User.class).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve MVTotalPurchasesPerOp results");
+        }
+        if(users != null){
+            users.forEach(user -> descriptions.add(user.getDescription()));
+        }
+        return descriptions;
+    }
+
+    public User getUserByOrderId(int orderId){
+        List<User> users = null;
+        try{
+            users = em.createNamedQuery("User.getUserByOrderId", User.class).
+                    setParameter(1, orderId).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve matching user");
+        }
+        if(users.isEmpty()){
+            return null;
+        }
+        return users.get(0);
     }
 
 }

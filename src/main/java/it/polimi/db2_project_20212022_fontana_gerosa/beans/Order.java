@@ -145,9 +145,4 @@ public class Order {
     public void setChosenOptionalProducts(Collection<OptionalProduct> chosenOptionalProducts) {
         this.chosenOptionalProducts = chosenOptionalProducts;
     }
-
-    public String getDescription(){
-        //TODO
-        return null;
-    }
 }
