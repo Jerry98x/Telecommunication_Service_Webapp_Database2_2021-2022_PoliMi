@@ -23,6 +23,9 @@
                                     await (sessionStorage.getItem("loggedUserId") != null);
                                     //No need of JSON.parse because just null check
                                     if(sessionStorage.getItem("pendingOrder") != null) {
+                                        let pendingOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
+                                        pendingOrder.userId = sessionStorage.getItem("loggedUserId");
+                                        sessionStorage.setItem("pendingOrder", JSON.stringify(pendingOrder));
                                         window.location.href = "ConfirmationPage.html";
                                     }
                                     else {

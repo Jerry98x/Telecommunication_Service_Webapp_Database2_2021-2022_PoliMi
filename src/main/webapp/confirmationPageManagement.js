@@ -18,7 +18,7 @@
                         var message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                user = JSON.parse(message)[0];
+                                user = JSON.parse(message);
                                 sessionStorage.setItem("loggedUser", JSON.stringify(user));
                                 document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
                                 document.getElementById("anchor_logout").hidden = false;
@@ -189,6 +189,7 @@ function sendPayment(event, isSuccessful) {
                 var message = req.responseText;
                 switch (req.status) {
                     case 200:
+                        //TODO pending into rejected if !isSuccessful??
                         sessionStorage.removeItem("pendingOrder");
                         window.location.href = "HomePage.html";
                         break;

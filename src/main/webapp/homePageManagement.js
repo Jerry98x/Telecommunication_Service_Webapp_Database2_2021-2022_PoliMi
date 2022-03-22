@@ -3,14 +3,42 @@
  */
 
 (function (){
+    if(sessionStorage.getItem("loggedUser") != null) {
+        let user = JSON.parse(sessionStorage.getItem("loggedUser"));
+        document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
+        document.getElementById("anchor_logout").hidden = false;
+        if (user.insolvent && document.getElementById("rejected_orders").childElementCount === 0) {
+            let userIdForm = createUserIdForm(user.userId);
+            window.addEventListener("load", () => {
+                makeCall("POST", "GetRejectedOrders", userIdForm,
+                    async function (req) {
+                        if (req.readyState === XMLHttpRequest.DONE) {
+                            let message = req.responseText;
+                            switch (req.status) {
+                                case 200:
+                                    let anchor = document.createDocumentFragment();
+                                    let rejectedOrders = JSON.parse(message);
+                                    let roText = document.createElement("h6");
+                                    roText.innerHTML = "Rejected orders";
+                                    anchor.appendChild(roText)
+                                    rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
+                                    document.getElementById("rejected_orders").appendChild(anchor);
+                                    document.getElementById("rejected_orders").hidden = false;
+                                    break;
+                                default:
+                                    document.getElementById("errormessage").textContent += message;
+                                    break;
+                            }
+                        }
+                    }
+                );
+            });
+        }
+    }
+
     if(sessionStorage.getItem("loggedUserId") != null) {
         let user;
-        let userIdForm = document.createElement("form");
-        userIdForm.name = "userIdForm";
-        let input = document.createElement("input");
-        input.name = "userId"
-        input.value = sessionStorage.getItem("loggedUserId");
-        userIdForm.appendChild(input);
+        let userIdForm = createUserIdForm(sessionStorage.getItem("loggedUserId"));
         window.addEventListener("load", () => {
             makeCall("POST", "GetLoggedUserInfo", userIdForm,
                 async function (req) {
@@ -18,23 +46,37 @@
                         let message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                user = JSON.parse(message)[0];
-                                let userInfo = document.createElement("h6");
-                                userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
-                                document.getElementById("user_login").appendChild(userInfo);
-
+                                user = JSON.parse(message);
+                                document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
                                 document.getElementById("anchor_logout").hidden = false;
 
                                 sessionStorage.setItem("loggedUser", JSON.stringify(user));
+                                sessionStorage.removeItem("loggedUserId");
                                 await (sessionStorage.getItem("loggedUser") != null);
-                                if(user.insolvent) {
-                                    let anchor = document.createDocumentFragment();
-                                    let rejectedOrders = JSON.parse(message)[1];
-                                    let roText = document.createElement("h6");
-                                    roText.innerHTML = "Rejected orders";
-                                    anchor.appendChild(roText)
-                                    rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
-                                    document.getElementById("rejected_orders").appendChild(anchor);
+                                if (user.insolvent && document.getElementById("rejected_orders").childElementCount === 0) {
+                                    let userIdForm = createUserIdForm(user.userId);
+                                    makeCall("POST", "GetRejectedOrders", userIdForm,
+                                        async function (req) {
+                                            if (req.readyState === XMLHttpRequest.DONE) {
+                                                let message = req.responseText;
+                                                switch (req.status) {
+                                                    case 200:
+                                                        let anchor = document.createDocumentFragment();
+                                                        let rejectedOrders = JSON.parse(message);
+                                                        let roText = document.createElement("h6");
+                                                        roText.innerHTML = "Rejected orders";
+                                                        anchor.appendChild(roText)
+                                                        rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
+                                                        document.getElementById("rejected_orders").appendChild(anchor);
+                                                        document.getElementById("rejected_orders").hidden = false;
+                                                        break;
+                                                    default:
+                                                        document.getElementById("errormessage").textContent += message;
+                                                        break;
+                                                }
+                                            }
+                                        }
+                                    );
                                 }
                                 break;
                             default:
@@ -47,6 +89,7 @@
 
         })
     }
+
 
     document.getElementById("anchor_logout").addEventListener("click", () => {
         makeCall("GET", "Logout", null,
@@ -88,7 +131,15 @@
 
 })();
 
-
+function createUserIdForm(userId){
+    let userIdForm = document.createElement("form");
+    userIdForm.name = "userIdForm";
+    let input = document.createElement("input");
+    input.name = "userId"
+    input.value = userId;
+    userIdForm.appendChild(input);
+    return userIdForm;
+}
 
 function servicePackageRedirect(event, spId){
     event.preventDefault();
@@ -145,9 +196,10 @@ function showOptionalProductDescription(availableOptionalProduct, availableOptio
 function showRejectedOrder(rejectedOrder, anchor){
     let roLink = document.createElement("a");
     roLink.href = "#";
-    roLink.innerHTML = "Order nr. " + rejectedOrder.orderId + " of cost " + rejectedOrder.totalCost_euro + "€/month";
+    roLink.innerHTML = "Order nr. " + rejectedOrder.orderId + " of cost " + rejectedOrder.totalCost_euro + "€/month\n";
     roLink.addEventListener("click", (event) => confirmRejectedOrder(event, rejectedOrder.orderId));
     anchor.appendChild(roLink);
+    anchor.appendChild(document.createElement("br"));
 }
 
 function confirmRejectedOrder(event, rejectedOrderId){

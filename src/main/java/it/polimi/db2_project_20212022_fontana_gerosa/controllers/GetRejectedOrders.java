@@ -1,11 +1,11 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
@@ -24,23 +24,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
-@WebServlet("/GetLoggedUserInfo")
+@WebServlet("/GetRejectedOrders")
 @MultipartConfig
-public class GetLoggedUserInfo extends HttpServlet {
+public class GetRejectedOrders extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
-    private UserService userService = new UserService();
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
     private OrderService orderService = new OrderService();
 
-    public GetLoggedUserInfo(){
-        super();
-    }
+    public GetRejectedOrders(){super();}
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -59,21 +54,11 @@ public class GetLoggedUserInfo extends HttpServlet {
         }
 
         // obtain and escape params
-        if(request.getParameter("userId") != null) {
+        if (request.getParameter("userId") != null) {
             Integer userId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("userId")));
             if (!userId.equals(request.getSession().getAttribute("userId"))) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().println("The requesting user is not the logged one.");
-                return;
-            }
-
-            User user = null;
-            try {
-                user = userService.findUserById(userId);
-            } catch (PersistenceException e) {
-                e.printStackTrace();
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Not possible to recover user");
                 return;
             }
 
@@ -85,9 +70,14 @@ public class GetLoggedUserInfo extends HttpServlet {
                 response.getWriter().println("Internal server error, retry later");
                 return;
             }
-            if(user != null){
-                Gson gson = new GsonBuilder().create();
-                String json = gson.toJson(user);
+
+            Gson gson = new GsonBuilder().create();
+            String json;
+
+            if (rejectedOrders != null) {
+                Collection<ClientOrder> clientRejectedOrders = new ArrayList<>();
+                rejectedOrders.forEach(order -> clientRejectedOrders.add(new ClientOrder(order)));
+                json = gson.toJson(clientRejectedOrders);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -96,7 +86,6 @@ public class GetLoggedUserInfo extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");
             }
-
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Null userId");
