@@ -9,6 +9,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "alert", schema = "db2_project")
+@NamedQuery(name = "Alert.getAllAlerts", query = "SELECT a FROM Alert a")
 public class Alert {
 
     @Id
@@ -45,5 +46,10 @@ public class Alert {
     }
 
     public Alert() {
+    }
+
+    public String getDescription(){
+        return "Alert n." + alertId + ": user " + username + " (id: " + userId + ", mail: " + email + ") of " +
+                totalAmount_euro + "€, rejected on " + rejectionDate.toString() + " at " + rejectionHour.toString();
     }
 }

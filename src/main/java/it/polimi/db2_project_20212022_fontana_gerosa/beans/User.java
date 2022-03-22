@@ -10,6 +10,7 @@ import java.util.Collection;
 @NamedQuery(name = "User.checkCredentials", query = "SELECT u from User u where u.email = ?1 and u.password = ?2")
 @NamedQuery(name = "User.findByEmail", query = "SELECT u from User u where  u.email = ?1")
 @NamedQuery(name = "User.findByUsername", query = "SELECT u from User u where  u.username = ?1")
+@NamedQuery(name = "User.getAllInsolventUsers", query = "SELECT u FROM User u WHERE u.insolvent = 1")
 public class User {
 
     @Id
@@ -83,5 +84,9 @@ public class User {
 
     public void setNumOfFailedPayments(int numOfFailedPayments) {
         this.numOfFailedPayments = numOfFailedPayments;
+    }
+
+    public String getDescription(){
+        return "User " + username + "(id:" + userId + "), with mail " + email + " and " + numOfFailedPayments + " failed payments";
     }
 }
