@@ -19,8 +19,15 @@ public class OrderService {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
     private UserService userService = new UserService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/AlertService")
-    private AlertService alertService = new AlertService();
+    public List<Order> getAllRejectedOrders(){
+        List<Order> matchingOrders = null;
+        try {
+            matchingOrders = em.createNamedQuery("Order.getAllRejectedOrders", Order.class).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve rejected orders");
+        }
+        return matchingOrders;
+    }
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();

@@ -69,6 +69,16 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
+    public List<User> findInsolventUsers(){
+        List<User> matchingUser = null;
+        try {
+            matchingUser = em.createNamedQuery("User.findInsolventUsers", User.class).getResultList();
+        } catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve user");
+        }
+        return matchingUser;
+    }
+
     public User registerUser(String email, String username, String password){
         User userToRegister = new User(email, username, password);
         em.persist(userToRegister);
