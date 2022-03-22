@@ -11,6 +11,7 @@ import java.util.Collection;
 @NamedQuery(name = "User.findByEmail", query = "SELECT u from User u where  u.email = ?1")
 @NamedQuery(name = "User.findByUsername", query = "SELECT u from User u where  u.username = ?1")
 @NamedQuery(name = "User.getAllInsolventUsers", query = "SELECT u FROM User u WHERE u.insolvent = 1")
+@NamedQuery(name = "User.getUserByOrderId", query = "SELECT u FROM User u, Order o WHERE u.userId = o.user.userId AND o.orderId = ?1")
 public class User {
 
     @Id

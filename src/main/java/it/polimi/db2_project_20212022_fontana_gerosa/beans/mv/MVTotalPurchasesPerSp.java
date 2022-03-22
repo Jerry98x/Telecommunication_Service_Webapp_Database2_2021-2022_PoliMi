@@ -10,9 +10,6 @@ import jakarta.persistence.*;
 @NamedQuery(name = "MVTotalPurchasesPerSp.getAllTotalPurchasesPerSp", query = "SELECT mv FROM MVTotalPurchasesPerSp mv")
 public class MVTotalPurchasesPerSp {
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
-    private ServicePackageService servicePackageService;
-
     @Id
     private int servicePackageId;
     @Column(name = "totalPurchases")
@@ -24,11 +21,5 @@ public class MVTotalPurchasesPerSp {
 
     public int getTotalPurchases() {
         return totalPurchases;
-    }
-
-    public String getDescription(){
-        servicePackageService = new ServicePackageService();
-        ServicePackage servicePackage = servicePackageService.getServicePackageById(servicePackageId);
-        return "Service package " + servicePackage.getName() + "(id:" + servicePackageId + ") has been sold " + totalPurchases + "times";
     }
 }

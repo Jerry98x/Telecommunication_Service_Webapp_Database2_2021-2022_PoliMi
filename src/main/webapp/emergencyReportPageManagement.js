@@ -40,8 +40,8 @@ function expandData(div, arrayToExpand){
     arrayToExpand.forEach(row => showRow(div, row));
 }
 
-function showRow(row){
-    let rowElem = document.createElement("h4");
+function showRow(div, row){
+    let rowElem = document.createElement("h6");
     rowElem.innerHTML = row;
     div.appendChild(rowElem);
 }

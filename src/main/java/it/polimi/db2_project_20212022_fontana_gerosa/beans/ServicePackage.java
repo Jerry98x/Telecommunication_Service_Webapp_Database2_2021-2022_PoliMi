@@ -9,6 +9,8 @@ import java.util.Collection;
 @Entity
 @Table(name = "service_package", schema = "db2_project")
 @NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT sp from ServicePackage sp")
+@NamedQuery(name = "ServicePackage.getServicePackageByOrderId", query = "SELECT s FROM ServicePackage s, Order o" +
+        " WHERE s.servicePackageId = o.servicePackage.servicePackageId AND o.orderId = ?1")
 public class ServicePackage {
 
     @Id

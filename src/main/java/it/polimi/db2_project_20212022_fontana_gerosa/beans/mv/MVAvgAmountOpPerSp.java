@@ -10,9 +10,6 @@ import jakarta.persistence.*;
 @NamedQuery(name = "MVAvgAmountOpPerSp.getAllAvgAmountOpPerSp", query = "SELECT mv FROM MVAvgAmountOpPerSp mv")
 public class MVAvgAmountOpPerSp {
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
-    private ServicePackageService servicePackageService;
-
     @Id
     private int servicePackageId;
     @Column(name = "avgAmountOptionalProducts")
@@ -24,11 +21,5 @@ public class MVAvgAmountOpPerSp {
 
     public float getAvgAmountOptionalProducts() {
         return avgAmountOptionalProducts;
-    }
-
-    public String getDescription(){
-        servicePackageService = new ServicePackageService();
-        ServicePackage servicePackage = servicePackageService.getServicePackageById(servicePackageId);
-        return "Service package " + servicePackage.getName() + "(id:" + servicePackageId + ") sold with " + avgAmountOptionalProducts;
     }
 }

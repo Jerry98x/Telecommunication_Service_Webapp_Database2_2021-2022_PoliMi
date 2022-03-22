@@ -14,9 +14,6 @@ import jakarta.persistence.*;
 @NamedQuery(name = "MVTotalValuePerSpWithOp.getAllTotalValuePerSpWithOp", query = "SELECT mv FROM MVTotalValuePerSpWithOp mv")
 public class MVTotalValuePerSpWithOp {
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
-    private ServicePackageService servicePackageService;
-
     @Id
     private int servicePackageId;
     @Column(name = "totalValue_euro")
@@ -28,13 +25,6 @@ public class MVTotalValuePerSpWithOp {
 
     public float getTotalValue_euro() {
         return totalValue_euro;
-    }
-
-    public String getDescription(){
-        servicePackageService = new ServicePackageService();
-        ServicePackage servicePackage = servicePackageService.getServicePackageById(servicePackageId);
-        return "Service package " + servicePackage.getName() + "(id:" + servicePackageId + ") has produced " + totalValue_euro +
-                "€ of value in sales, including the optional products sold with it";
     }
 }
 

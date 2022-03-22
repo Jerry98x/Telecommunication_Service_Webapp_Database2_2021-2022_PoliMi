@@ -11,9 +11,6 @@ import jakarta.persistence.*;
         "WHERE mv.totalPurchases = (SELECT max(mv1.totalPurchases) FROM MVTotalPurchasesPerOp mv1)")
 public class MVTotalPurchasesPerOp {
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OptionalProductService")
-    private OptionalProductService optionalProductService;
-
     @Id
     private int optionalProductId;
     @Column(name = "totalPurchases")
@@ -27,9 +24,4 @@ public class MVTotalPurchasesPerOp {
         return totalPurchases;
     }
 
-    public String getDescription(){
-        optionalProductService = new OptionalProductService();
-        OptionalProduct optionalProduct = optionalProductService.getOptionalProductById(optionalProductId);
-        return "Optional product " + optionalProduct.getName() + "(id:" + optionalProductId + ") is the best seller";
-    }
 }
