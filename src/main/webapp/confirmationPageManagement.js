@@ -189,7 +189,6 @@ function sendPayment(event, isSuccessful) {
                 var message = req.responseText;
                 switch (req.status) {
                     case 200:
-                        //TODO pending into rejected if !isSuccessful??
                         sessionStorage.removeItem("pendingOrder");
                         window.location.href = "HomePage.html";
                         break;

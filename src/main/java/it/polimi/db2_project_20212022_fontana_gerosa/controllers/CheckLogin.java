@@ -81,7 +81,6 @@ public class CheckLogin extends HttpServlet {
             return;
         }
         catch (CredentialException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -100,7 +99,6 @@ public class CheckLogin extends HttpServlet {
             return;
         }
         catch (CredentialException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -115,7 +113,7 @@ public class CheckLogin extends HttpServlet {
             Gson gson = new GsonBuilder().create();
             String json;
 
-            if(user != null) {//TODO just id needed
+            if(user != null) {
                 ClientUser clientUser = new ClientUser(user);
                 String json1 = gson.toJson(clientUser);
                 String json2 = gson.toJson(true);

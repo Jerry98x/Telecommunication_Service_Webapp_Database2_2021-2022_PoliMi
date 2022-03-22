@@ -12,7 +12,7 @@ import java.util.List;
 
 @Stateless
 public class EmployeeService {
-    @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa") //TODO maybe another persitence context
+    @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
     public Employee checkEmployeeCredentials(String email, String password) throws CredentialException {
