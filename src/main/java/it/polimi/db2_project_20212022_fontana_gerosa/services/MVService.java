@@ -63,13 +63,16 @@ public class MVService {
         return mvResults;
     }
 
-    public List<MVTotalPurchasesPerOp> getAllTotalPurchasesPerOp(){
+    public MVTotalPurchasesPerOp getAllTotalPurchasesPerOp(){
         List<MVTotalPurchasesPerOp> mvResults = null;
         try {
-            mvResults = em.createNamedQuery("MVTotalPurchasesPerOp.getAllTotalPurchasesPerOp", MVTotalPurchasesPerOp.class).getResultList();
+            mvResults = em.createNamedQuery("MVTotalPurchasesPerOp.getBestSellerOp", MVTotalPurchasesPerOp.class).getResultList();
         } catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve MVTotalPurchasesPerOp results");
         }
-        return mvResults;
+        if(mvResults.isEmpty()){
+            return null;
+        }
+        return mvResults.get(0);
     }
 }

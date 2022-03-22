@@ -1,5 +1,7 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.beans;
 
+import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
+import jakarta.ejb.EJB;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -14,6 +16,7 @@ import java.util.Collection;
 @NamedQuery(name = "Order.getRejectedOrders", query = "SELECT o FROM Order o WHERE o.user.userId = ?1 AND o.valid = 0")
 @NamedQuery(name = "Order.getRejectedOrderById", query = "SELECT o FROM Order o WHERE o.orderId = ?1 AND o.valid = 0")
 @NamedQuery(name = "Order.getOrdersByUserId", query = "SELECT o from Order o WHERE o.user.userId = ?1")
+@NamedQuery(name = "Order.getAllRejectedOrders", query = "SELECT o FROM Order o WHERE o.valid = 0")
 public class Order {
 
     @Id
@@ -141,5 +144,10 @@ public class Order {
 
     public void setChosenOptionalProducts(Collection<OptionalProduct> chosenOptionalProducts) {
         this.chosenOptionalProducts = chosenOptionalProducts;
+    }
+
+    public String getDescription(){
+        //TODO
+        return null;
     }
 }
