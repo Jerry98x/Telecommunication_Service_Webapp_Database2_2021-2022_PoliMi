@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "mv_total_purchases_per_sp_and_vp", schema = "db2_project")
+@IdClass(SpVpKey.class)
 @NamedQuery(name = "MVTotalPurchasesPerSpAndVp.getAllTotalPurchasesPerSpAndVp", query = "SELECT mv FROM MVTotalPurchasesPerSpAndVp mv")
 public class MVTotalPurchasesPerSpAndVp {
 
-    @Id//TODO composite key
+    @Id
     private int servicePackageId;
+    @Id
     private int validityPeriodId;
     @Column(name = "totalPurchases")
     private int totalPurchases;
