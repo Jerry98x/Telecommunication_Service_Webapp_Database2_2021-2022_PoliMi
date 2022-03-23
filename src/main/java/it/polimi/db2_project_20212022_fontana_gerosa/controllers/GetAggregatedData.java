@@ -2,15 +2,12 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.*;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.AlertService;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.MVService;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
-import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.*;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
@@ -24,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet("/GetAggregatedData")
@@ -126,9 +124,9 @@ public class GetAggregatedData extends HttpServlet {
         }
 
 
-        List<User> insolventUsers;
+        List<ClientUser> clientInsolventUsers;
         try {
-            insolventUsers = userService.findInsolventUsers();
+            clientInsolventUsers = userService.findClientInsolventUsers();
         }
         catch (PersistenceException e){
             e.printStackTrace();
@@ -137,9 +135,9 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
-        List<Order> allRejectedOrders;
+        List<ThinnerClientOrder> allThinnerClientRejectedOrders;
         try {
-            allRejectedOrders = orderService.getAllRejectedOrders();
+            allThinnerClientRejectedOrders = orderService.getAllThinnerClientRejectedOrders();
         }
         catch (PersistenceException e){
             e.printStackTrace();
@@ -148,9 +146,9 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
-        List<Alert> alerts;
+        List<ClientAlert> clientAlerts;
         try {
-            alerts = alertService.getAllAlerts();
+            clientAlerts = alertService.getAllClientAlerts();
         }
         catch (PersistenceException e){
             e.printStackTrace();
@@ -172,9 +170,9 @@ public class GetAggregatedData extends HttpServlet {
         String jsonSalesData;
         jsonSalesData = "["+json1+","+json2+","+json3+","+json4+","+json5+","+json6+"]";
 
-        String json7 = gson.toJson(insolventUsers);
-        String json8 = gson.toJson(allRejectedOrders);
-        String json9 = gson.toJson(alerts);
+        String json7 = gson.toJson(clientInsolventUsers);
+        String json8 = gson.toJson(allThinnerClientRejectedOrders);
+        String json9 = gson.toJson(clientAlerts);
 
         String jsonUOA;
         jsonUOA = "["+json7+","+json8+","+json9+"]";

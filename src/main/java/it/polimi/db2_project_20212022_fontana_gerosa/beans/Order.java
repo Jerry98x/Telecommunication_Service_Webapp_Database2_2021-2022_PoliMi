@@ -83,8 +83,16 @@ public class Order {
         return creationDate.toLocalDate();
     }
 
+    public Date getCreationDate2() {
+        return creationDate;
+    }
+
     public LocalTime getCreationHour() {
         return creationHour.toLocalTime();
+    }
+
+    public Time getCreationHour2() {
+        return creationHour;
     }
 
     public float getTotalCost_euro() {
