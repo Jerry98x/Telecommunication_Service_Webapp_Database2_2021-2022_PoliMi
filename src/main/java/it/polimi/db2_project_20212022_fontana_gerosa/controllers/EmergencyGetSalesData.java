@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -50,6 +51,13 @@ public class EmergencyGetSalesData extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("employeeId") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println("User not allowed");
+            return;
+        }
+
         Collection<Collection<String>> collectionOfData;
         collectionOfData = new ArrayList<>();
 
@@ -133,6 +141,22 @@ public class EmergencyGetSalesData extends HttpServlet {
             return;
         }
 
+        Collection<String> mvBestSellerOpStrings = null;
+        try{
+            mvBestSellerOpStrings = mvService.getBestSellerOpDescription();
+        } catch (PersistenceException e){
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvBestSellerOpStrings != null){
+            collectionOfData.add(mvBestSellerOpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+
         Collection<String> insolventUsers = null;
         try{
             insolventUsers = userService.getAllInsolventUsersDescriptions();
@@ -175,22 +199,6 @@ public class EmergencyGetSalesData extends HttpServlet {
         }
         if(alerts != null){
             collectionOfData.add(alerts);
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error, retry later");
-            return;
-        }
-
-        Collection<String> mvBestSellerOpStrings = null;
-        try{
-            mvBestSellerOpStrings = mvService.getBestSellerOpDescription();
-        } catch (PersistenceException e){
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error, retry later");
-            return;
-        }
-        if(mvBestSellerOpStrings != null){
-            collectionOfData.add(mvBestSellerOpStrings);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Internal server error, retry later");
