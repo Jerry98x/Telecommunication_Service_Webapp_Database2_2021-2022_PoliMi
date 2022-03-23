@@ -14,7 +14,7 @@
             makeCall("POST", "CheckLogin", e.target.closest("form"),
                 async function(req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
-                        var message = req.responseText;
+                        let message = req.responseText;
                         switch (req.status) {
                             case 200:
                                 if(JSON.parse(message)[1] === true) {
@@ -71,6 +71,7 @@
     });
 
     document.getElementById("continueAsGuest").addEventListener("click", (e) => {
+        e.preventDefault();
         sessionStorage.removeItem("loggedUserId");
         sessionStorage.removeItem("loggedUser");
         sessionStorage.removeItem("rejectedOrders");

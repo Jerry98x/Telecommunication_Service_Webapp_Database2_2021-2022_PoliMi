@@ -52,4 +52,32 @@ public class Alert {
         return "Alert n." + alertId + ": user " + username + " (id: " + userId + ", mail: " + email + ") of " +
                 totalAmount_euro + "€, rejected on " + rejectionDate.toString() + " at " + rejectionHour.toString();
     }
+
+    public int getAlertId() {
+        return alertId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public float getTotalAmount_euro() {
+        return totalAmount_euro;
+    }
+
+    public Date getRejectionDate() {
+        return rejectionDate;
+    }
+
+    public Time getRejectionHour() {
+        return rejectionHour;
+    }
 }

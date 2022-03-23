@@ -3,38 +3,7 @@
  */
 
 (function (){
-    if(sessionStorage.getItem("loggedUser") != null) {
-        let user = JSON.parse(sessionStorage.getItem("loggedUser"));
-        document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
-        document.getElementById("anchor_logout").hidden = false;
-        if (user.insolvent && document.getElementById("rejected_orders").childElementCount === 0) {
-            let userIdForm = createUserIdForm(user.userId);
-            window.addEventListener("load", () => {
-                makeCall("POST", "GetRejectedOrders", userIdForm,
-                    async function (req) {
-                        if (req.readyState === XMLHttpRequest.DONE) {
-                            let message = req.responseText;
-                            switch (req.status) {
-                                case 200:
-                                    let anchor = document.createDocumentFragment();
-                                    let rejectedOrders = JSON.parse(message);
-                                    let roText = document.createElement("h6");
-                                    roText.innerHTML = "Rejected orders";
-                                    anchor.appendChild(roText)
-                                    rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
-                                    document.getElementById("rejected_orders").appendChild(anchor);
-                                    document.getElementById("rejected_orders").hidden = false;
-                                    break;
-                                default:
-                                    document.getElementById("errormessage").textContent += message;
-                                    break;
-                            }
-                        }
-                    }
-                );
-            });
-        }
-    }
+    document.getElementById("rejected_orders").hidden = true;
 
     if(sessionStorage.getItem("loggedUserId") != null) {
         let user;
@@ -51,7 +20,6 @@
                                 document.getElementById("anchor_logout").hidden = false;
 
                                 sessionStorage.setItem("loggedUser", JSON.stringify(user));
-                                sessionStorage.removeItem("loggedUserId");
                                 await (sessionStorage.getItem("loggedUser") != null);
                                 if (user.insolvent && document.getElementById("rejected_orders").childElementCount === 0) {
                                     let userIdForm = createUserIdForm(user.userId);
@@ -87,11 +55,12 @@
                 }
             );
 
-        })
+        });
     }
 
 
-    document.getElementById("anchor_logout").addEventListener("click", () => {
+    document.getElementById("anchor_logout").addEventListener("click", (e) => {
+        e.preventDefault();
         makeCall("GET", "Logout", null,
             function (req) {
                 if(req.readyState === XMLHttpRequest.DONE) {

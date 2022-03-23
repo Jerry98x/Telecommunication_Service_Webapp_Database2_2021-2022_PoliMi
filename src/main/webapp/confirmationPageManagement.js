@@ -3,7 +3,7 @@
  */
 
 (async function () {
-    if(sessionStorage.getItem("loggedUserId") != null) {
+    if(sessionStorage.getItem("loggedUserId") != null && sessionStorage.getItem("loggedUser") == null) {
         let user;
         let userIdForm = document.createElement("form");
         userIdForm.name = "userIdForm";
@@ -15,7 +15,7 @@
             makeCall("POST", "GetLoggedUserInfo", userIdForm,
                 async function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
-                        var message = req.responseText;
+                        let message = req.responseText;
                         switch (req.status) {
                             case 200:
                                 user = JSON.parse(message);
@@ -23,7 +23,6 @@
                                 document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
                                 document.getElementById("anchor_logout").hidden = false;
                                 await (sessionStorage.getItem("loggedUser") != null);
-                                sessionStorage.removeItem("loggedUserId");
                                 break;
                             default:
                                 document.getElementById("errormessage").textContent += message;
@@ -33,8 +32,9 @@
                 }
             );
 
-        })
+        });
     }
+
     if(sessionStorage.getItem("loggedUser") != null) {
         let user = JSON.parse(sessionStorage.getItem("loggedUser"));
         document.getElementById("user_info").innerHTML = "Logged in as <b>" + user.username + "</b>";
@@ -43,9 +43,9 @@
     }
 
 
-    var today = new Date(Date());
+    let today = new Date(Date());
     document.getElementById("startDate").min = today.toISOString().split('T')[0];
-    var maxDate = new Date();
+    let maxDate = new Date();
     maxDate.setFullYear(today.getFullYear() + 1);
     document.getElementById("startDate").max = maxDate.toISOString().split('T')[0];
     document.getElementById("startDate").addEventListener("change", (event => {
@@ -54,7 +54,8 @@
             document.getElementById("successfulPaymentBtn").disabled = false;
             document.getElementById("failingPaymentBtn").disabled = false;
         }
-    }))
+    }));
+
     if (sessionStorage.getItem("loggedUser") == null && sessionStorage.getItem("loggedUserId") == null) {
         document.getElementById("errormessage").innerHTML = "You need to be logged in to complete a payment";
         //disable payment buttons
@@ -66,9 +67,11 @@
         //show login/signup buttons
         document.getElementById("loginBtn").hidden = false;
         document.getElementById("signUpBtn").hidden = false;
-    } else if (sessionStorage.getItem("loggedUser") == null){
+    }
+    else if (sessionStorage.getItem("loggedUser") == null){
         await (sessionStorage.getItem("loggedUser") != null);
     }
+
     if (sessionStorage.getItem("rejectedOrderId") != null && sessionStorage.getItem("loggedUser") != null) {
         window.addEventListener("load", () => {
             let rejectedOrderForm = document.createElement("form");
@@ -80,7 +83,7 @@
             makeCall("POST", "GetRejectedOrderToComplete", rejectedOrderForm,
                 async function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
-                        var message = req.responseText;
+                        let message = req.responseText;
                         switch (req.status) {
                             case 200:
                                 let rejectedOrder = JSON.parse(message)[0];
@@ -114,7 +117,8 @@
     }
     showOrder();
 
-    document.getElementById("anchor_logout").addEventListener("click", () => {
+    document.getElementById("anchor_logout").addEventListener("click", (e) => {
+        e.preventDefault();
         makeCall("GET", "Logout", null,
             function (req) {
                 if(req.readyState === XMLHttpRequest.DONE) {
@@ -186,10 +190,11 @@ function sendPayment(event, isSuccessful) {
     makeCall("POST", "ManageOrder", newOrderForm,
         function (req) {
             if (req.readyState === XMLHttpRequest.DONE) {
-                var message = req.responseText;
+                let message = req.responseText;
                 switch (req.status) {
                     case 200:
                         sessionStorage.removeItem("pendingOrder");
+                        sessionStorage.setItem("loggedUserId", JSON.parse(sessionStorage.getItem("loggedUser")).userId);
                         window.location.href = "HomePage.html";
                         break;
                     case 401:
@@ -200,7 +205,8 @@ function sendPayment(event, isSuccessful) {
                         break;
                 }
             }
-        });
+        }
+    );
 }
 
 function buildInputOrder(form, order){

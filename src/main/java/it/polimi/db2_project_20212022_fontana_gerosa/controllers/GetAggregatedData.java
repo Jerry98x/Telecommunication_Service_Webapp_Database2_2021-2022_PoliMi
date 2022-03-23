@@ -2,12 +2,8 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.*;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.AlertService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.MVService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
-import it.polimi.db2_project_20212022_fontana_gerosa.utils.*;
+import it.polimi.db2_project_20212022_fontana_gerosa.services.*;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.ServletException;
@@ -21,8 +17,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @WebServlet("/GetAggregatedData")
 @MultipartConfig
@@ -32,24 +28,29 @@ public class GetAggregatedData extends HttpServlet {
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/MVService")
     private MVService mvService = new MVService();
+
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
     private UserService userService = new UserService();
+
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
     private OrderService orderService = new OrderService();
+
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/AlertService")
     private AlertService alertService = new AlertService();
 
-    public GetAggregatedData() { super(); }
+    public GetAggregatedData() {
+        super();
+    }
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("employeeId") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -57,138 +58,169 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
-        List<MVTotalPurchasesPerSp> mvTotalPurchasesPerSps;
-        try {
-            mvTotalPurchasesPerSps = mvService.getAllTotalPurchasesPerSp();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<Collection<String>> collectionOfData;
+        collectionOfData = new ArrayList<>();
+
+        Collection<String> mvTotalPurchasesPerSpStrings = null;
+        try{
+            mvTotalPurchasesPerSpStrings = mvService.getAllTotalPurchasesPerSpDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvTotalPurchasesPerSpStrings != null){
+            collectionOfData.add(mvTotalPurchasesPerSpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<MVTotalPurchasesPerSpAndVp> mvTotalPurchasesPerSpAndVps;
-        try {
-            mvTotalPurchasesPerSpAndVps = mvService.getAllTotalPurchasesPerSpAndVp();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> mvTotalPurchasesPerSpAndVpStrings = null;
+        try{
+            mvTotalPurchasesPerSpAndVpStrings = mvService.getAllTotalPurchasesPerSpAndVpDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvTotalPurchasesPerSpAndVpStrings != null){
+            collectionOfData.add(mvTotalPurchasesPerSpAndVpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<MVTotalValuePerSp> mvTotalValuePerSps;
-        try {
-            mvTotalValuePerSps = mvService.getAllTotalValuePerSp();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> mvTotalValuePerSpStrings = null;
+        try{
+            mvTotalValuePerSpStrings = mvService.getAllTotalValuePerSpDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvTotalValuePerSpStrings != null){
+            collectionOfData.add(mvTotalValuePerSpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<MVTotalValuePerSpWithOp> mvTotalValuePerSpWithOps;
-        try {
-            mvTotalValuePerSpWithOps = mvService.getAllTotalValuePerSpWithOp();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> mvTotalValuePerSpWithOpStrings = null;
+        try{
+            mvTotalValuePerSpWithOpStrings = mvService.getAllTotalValuePerSpWithOpDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvTotalValuePerSpWithOpStrings != null){
+            collectionOfData.add(mvTotalValuePerSpWithOpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<MVAvgAmountOpPerSp> mvAvgAmountOpPerSps;
-        try {
-            mvAvgAmountOpPerSps = mvService.getAllAvgAmountOpPerSp();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> mvAvgAmountOpPerSpStrings = null;
+        try{
+            mvAvgAmountOpPerSpStrings = mvService.getAllAvgAmountOpPerSpDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvAvgAmountOpPerSpStrings != null){
+            collectionOfData.add(mvAvgAmountOpPerSpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<MVTotalPurchasesPerOp> mvTotalPurchasesPerOps;
-        try {
-            mvTotalPurchasesPerOps = mvService.getAllTotalPurchasesPerOp();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> mvBestSellerOpStrings = null;
+        try{
+            mvBestSellerOpStrings = mvService.getBestSellerOpDescription();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(mvBestSellerOpStrings != null){
+            collectionOfData.add(mvBestSellerOpStrings);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-
-        List<ClientUser> clientInsolventUsers;
-        try {
-            clientInsolventUsers = userService.findClientInsolventUsers();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> insolventUsers = null;
+        try{
+            insolventUsers = userService.getAllInsolventUsersDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(insolventUsers != null){
+            collectionOfData.add(insolventUsers);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<ThinnerClientOrder> allThinnerClientRejectedOrders;
-        try {
-            allThinnerClientRejectedOrders = orderService.getAllThinnerClientRejectedOrders();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> rejectedOrders = null;
+        try{
+            rejectedOrders = orderService.getAllRejectedOrdersDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+        if(rejectedOrders != null){
+            collectionOfData.add(rejectedOrders);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
 
-        List<ClientAlert> clientAlerts;
-        try {
-            clientAlerts = alertService.getAllClientAlerts();
-        }
-        catch (PersistenceException e){
-            e.printStackTrace();
+        Collection<String> alerts = null;
+        try{
+            alerts = alertService.getAllAlertsDescriptions();
+        } catch (PersistenceException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover optional products");
+            response.getWriter().println("Internal server error, retry later");
             return;
         }
-
+        if(alerts != null){
+            collectionOfData.add(alerts);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
 
         Gson gson = new GsonBuilder().create();
-
-        String json1 = gson.toJson(mvTotalPurchasesPerSps);
-        String json2 = gson.toJson(mvTotalPurchasesPerSpAndVps);
-        String json3 = gson.toJson(mvTotalValuePerSps);
-        String json4 = gson.toJson(mvTotalValuePerSpWithOps);
-        String json5 = gson.toJson(mvAvgAmountOpPerSps);
-        String json6 = gson.toJson(mvTotalPurchasesPerOps);
-
-        String jsonSalesData;
-        jsonSalesData = "["+json1+","+json2+","+json3+","+json4+","+json5+","+json6+"]";
-
-        String json7 = gson.toJson(clientInsolventUsers);
-        String json8 = gson.toJson(allThinnerClientRejectedOrders);
-        String json9 = gson.toJson(clientAlerts);
-
-        String jsonUOA;
-        jsonUOA = "["+json7+","+json8+","+json9+"]";
-
-        String json = "["+jsonSalesData+","+jsonUOA+"]";
-
+        String json = gson.toJson(collectionOfData);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
+
     }
 
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+
+        doPost(request, response);
+
     }
 
     public void destroy() {

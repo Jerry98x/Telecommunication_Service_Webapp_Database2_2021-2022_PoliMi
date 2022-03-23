@@ -6,8 +6,9 @@
     let sptb;
     let aops;
     let avps;
+
     window.addEventListener("load", () => {
-        if(sessionStorage.getItem("loggedUser") != null) { // && sessionStorage.getItem("servicePackageIdToBuy") != null
+        if(sessionStorage.getItem("loggedUser") != null) {
             let user = JSON.parse(sessionStorage.getItem("loggedUser"));
             let userInfo = document.createElement("h6");
             userInfo.innerHTML = "Logged in as <b>" + user.username + "</b>";
@@ -25,7 +26,7 @@
         makeCall("POST", "GetServicePackageToBuy", servicePackageToBuyForm,
             async function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {
-                    var message = req.responseText;
+                    let message = req.responseText;
                     switch (req.status) {
                         case 200:
                             sptb = JSON.parse(message);
@@ -51,7 +52,8 @@
 
     })
 
-    document.getElementById("anchor_logout").addEventListener("click", () => {
+    document.getElementById("anchor_logout").addEventListener("click", (e) => {
+        e.preventDefault();
         makeCall("GET", "Logout", null,
             function (req) {
                 if(req.readyState === XMLHttpRequest.DONE) {
