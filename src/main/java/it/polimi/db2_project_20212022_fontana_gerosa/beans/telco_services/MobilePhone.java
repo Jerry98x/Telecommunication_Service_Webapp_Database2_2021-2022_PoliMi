@@ -21,10 +21,4 @@ public class MobilePhone extends TelcoService {
         String description = "You get " + minutes + " minutes and " + SMSs + " SMSs on your mobile device.";
         return description;
     }
-
-    public String getFullDescription(){
-        String description = "You get " + minutes + " minutes and " + SMSs + " SMSs on your mobile device.\n" +
-                "Each additional minute will cost " + extraMinFee_euro + "€ and each additional SMS will cost " + extraSMSFee_euro + "€.";
-        return description;
-    }
 }

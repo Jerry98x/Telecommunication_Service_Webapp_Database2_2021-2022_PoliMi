@@ -20,10 +20,4 @@ public class FixedInternet extends TelcoService {
         String description = "You get " + GBs + " GBs on your home connection.";
         return description;
     }
-
-    public String getFullDescription(){
-        String description = "You get " + GBs + " GBs on your home connection.\n" +
-                "Each additional GB will cost " + extraGBFee_euro + "€.";
-        return description;
-    }
 }
