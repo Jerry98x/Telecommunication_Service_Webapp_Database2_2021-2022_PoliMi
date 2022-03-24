@@ -49,8 +49,8 @@ public class Alert {
     }
 
     public String getDescription(){
-        return "Alert n." + alertId + ": user " + username + " (id: " + userId + ", mail: " + email + ") of " +
-                totalAmount_euro + "€, rejected on " + rejectionDate.toString() + " at " + rejectionHour.toString();
+        return "Alert n." + alertId + " for user " + username + " (id: " + userId + ", mail: " + email + ") of " +
+                totalAmount_euro + "€, raised on " + rejectionDate.toString() + " at " + rejectionHour.toString();
     }
 
     public int getAlertId() {

@@ -83,6 +83,7 @@ public class OrderService {
                 ordersOfUser = this.getOrdersByUserId(user.getUserId());
                 if (ordersOfUser.stream().noneMatch(orderOfUser -> orderOfUser.getValid() == 0)) {//no more insolvent
                     user.setInsolvent(0);
+                    user.setNumOfFailedPayments(user.getNumOfFailedPayments()%3);
                 }
             }
             try {
@@ -114,6 +115,7 @@ public class OrderService {
                 ordersOfUser = this.getOrdersByUserId(user.getUserId());
                 if (ordersOfUser.stream().noneMatch(orderOfUser -> orderOfUser.getValid() == 0 && orderOfUser.getOrderId() != order.getOrderId())) {//no more insolvent
                     user.setInsolvent(0);
+                    user.setNumOfFailedPayments(user.getNumOfFailedPayments()%3);
                 }
             }
             try {
@@ -137,7 +139,7 @@ public class OrderService {
     }
 
     private void checkAlert(User user, Order order){
-        if (user.getNumOfFailedPayments() >= 3) {//over 3 failed payments
+        if (user.getNumOfFailedPayments()%3 == 0) {//over 3 failed payments
             Alert alert = new Alert(user, order);
             try {
                 em.persist(alert);
