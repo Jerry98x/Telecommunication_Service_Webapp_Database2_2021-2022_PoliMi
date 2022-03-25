@@ -16,23 +16,21 @@ import jakarta.servlet.http.HttpServletResponse;
 //import org.apache.commons.text.StringEscapeUtils;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
-@WebServlet("/Registration")
+@WebServlet("/RegisterUser")
 @MultipartConfig
-public class Registration extends HttpServlet {
+public class RegisterUser extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
     private UserService userService = new UserService();
 
-    public Registration() { super();}
+    public RegisterUser() { super();}
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -45,7 +43,7 @@ public class Registration extends HttpServlet {
 
         // If the user is already logged in (present in session) alert
         HttpSession session = request.getSession();
-        if (!session.isNew() || session.getAttribute("userId") != null) {
+        if (!session.isNew() && session.getAttribute("userId") != null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("User already logged in. Logout to register a new user.");
             return;
@@ -87,12 +85,20 @@ public class Registration extends HttpServlet {
         // If the user doesn't exist
         // return an error status code and message
         if (byEmail == null && byUsername == null && password.equals(repeatedPassword)) {
-            User userToRegister = userService.registerUser(email, username, password);
+            try {
+                User userToRegister = userService.registerUser(email, username, password);
+            } catch (PersistenceException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
+            
             response.setStatus(HttpServletResponse.SC_OK);
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().println("Welcome, " + userToRegister.getUsername() + "!\nPlease, login.");
+//            response.getWriter().println("Welcome, " + userToRegister.getUsername() + "!\nPlease, login.");
+            response.getWriter().println("Registration succesfully completed!");
         } else if (byEmail != null) {
             response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             response.getWriter().println("Email already in use");
@@ -105,6 +111,7 @@ public class Registration extends HttpServlet {
         }
 
     }
+
 
     public void destroy() {
         try {

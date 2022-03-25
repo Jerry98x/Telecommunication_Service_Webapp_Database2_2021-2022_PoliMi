@@ -38,11 +38,8 @@
                                     window.location.href = "EmployeeHomePage.html";
                                 }
                                 break;
-                            // case 401:
-                            //     window.location.href = "HomePage.html"
-                            //     break;
                             default:
-                                alertCleaning(message);
+                                alertCleaning(message, 1);
                                 break;
                         }
                     }
@@ -57,15 +54,23 @@
     document.getElementById("submitSignUp").addEventListener("click", (e) => {
         let form = e.target.closest("form");
         if (form.checkValidity()) {
-            makeCall("POST", "Registration", e.target.closest("form"),
+            makeCall("POST", "RegisterUser", e.target.closest("form"),
                 function(req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         let message = req.responseText;
-                        alertCleaning(message);
+                        switch(req.status) {
+                            case 200:
+                                alertCleaning(message, 0);
+                                break;
+                            default:
+                                alertCleaning(message, 1);
+                                break;
+                        }
                     }
                 }
             );
-        } else {
+        }
+        else {
             form.reportValidity();
         }
     });
@@ -79,15 +84,15 @@
     });
 })();
 
-function alertCleaning(message) {
+function alertCleaning(message, type) {
     let alert = document.getElementById("registration_alert");
     alert.innerHTML = "";
 
-    if(alert.classList.contains("alert-success")) {
+    if(alert.classList.contains("alert-success") && type === 1) {
         alert.classList.remove("alert-success");
         alert.classList.add("alert-danger");
     }
-    else if(alert.classList.contains("alert-danger")) {
+    else if(alert.classList.contains("alert-danger") && type === 0) {
         alert.classList.remove("alert-danger");
         alert.classList.add("alert-success");
     }
