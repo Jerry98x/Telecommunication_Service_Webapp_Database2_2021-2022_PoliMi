@@ -4,7 +4,6 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
@@ -64,7 +63,7 @@ public class GetRejectedOrders extends HttpServlet {
 
             Collection<Order> rejectedOrders = null;
             try {
-                rejectedOrders = orderService.getRejectedOrders(userId);
+                rejectedOrders = orderService.getRejectedOrdersByUserId(userId);
             } catch (PersistenceException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");

@@ -6,7 +6,6 @@ import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
 import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
-import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -22,9 +21,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 @WebServlet("/GetLoggedUserInfo")
 @MultipartConfig
@@ -79,7 +76,7 @@ public class GetLoggedUserInfo extends HttpServlet {
 
             Collection<Order> rejectedOrders = null;
             try {
-                rejectedOrders = orderService.getRejectedOrders(userId);
+                rejectedOrders = orderService.getRejectedOrdersByUserId(userId);
             } catch (PersistenceException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");

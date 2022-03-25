@@ -32,7 +32,7 @@ public class OrderService {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
-    public List<Order> getRejectedOrders(int userId){
+    public List<Order> getRejectedOrdersByUserId(int userId){
         List<Order> matchingOrders = null;
         try {
             matchingOrders = em.createNamedQuery("Order.getRejectedOrders", Order.class)
