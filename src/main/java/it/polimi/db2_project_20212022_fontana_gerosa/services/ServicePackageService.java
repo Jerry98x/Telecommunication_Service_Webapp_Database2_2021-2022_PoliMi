@@ -25,7 +25,7 @@ public class ServicePackageService {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OptionalProductService")
     private OptionalProductService optionalProductService = new OptionalProductService();
 
-    public List<ClientServicePackage> getAllClientServicePackages(){
+    public List<ClientServicePackage> getAllClientServicePackages() {
         List<ClientServicePackage> clientServicePackages = null;
         List<ServicePackage> servicePackages = null;
         try {
@@ -41,7 +41,7 @@ public class ServicePackageService {
         return clientServicePackages;
     }
 
-    public ServicePackage getServicePackageById(int servicePackageId){
+    public ServicePackage getServicePackageById(int servicePackageId) {
         ServicePackage matchingServicePackage;
         try{
             matchingServicePackage = em.find(ServicePackage.class, servicePackageId);

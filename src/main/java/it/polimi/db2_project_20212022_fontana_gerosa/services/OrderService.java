@@ -19,7 +19,7 @@ public class OrderService {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
     private UserService userService = new UserService();
 
-    public List<Order> getAllRejectedOrders(){
+    public List<Order> getAllRejectedOrders() {
         List<Order> matchingOrders = null;
         try {
             matchingOrders = em.createNamedQuery("Order.getAllRejectedOrders", Order.class).getResultList();
@@ -32,7 +32,7 @@ public class OrderService {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
-    public List<Order> getRejectedOrdersByUserId(int userId){
+    public List<Order> getRejectedOrdersByUserId(int userId) {
         List<Order> matchingOrders = null;
         try {
             matchingOrders = em.createNamedQuery("Order.getRejectedOrders", Order.class)

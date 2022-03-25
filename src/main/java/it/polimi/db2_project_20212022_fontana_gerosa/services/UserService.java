@@ -1,7 +1,5 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.services;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -32,7 +30,7 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
-    public User findUserById(int userId){
+    public User findUserById(int userId) {
         User matchingUser = null;
         try {
             matchingUser = em.find(User.class, userId);
@@ -69,10 +67,10 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
-    public List<User> findInsolventUsers(){
+    public List<User> getAllInsolventUsers() {
         List<User> matchingUser = null;
         try {
-            matchingUser = em.createNamedQuery("User.findInsolventUsers", User.class).getResultList();
+            matchingUser = em.createNamedQuery("User.getAllInsolventUsers", User.class).getResultList();
         } catch (PersistenceException e){
             throw new PersistenceException("Couldn't retrieve user");
         }
