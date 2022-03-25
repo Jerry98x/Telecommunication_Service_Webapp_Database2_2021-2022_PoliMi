@@ -1,10 +1,7 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.*;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.*;
-import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.*;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.*;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -32,19 +29,19 @@ public class ManageOrder extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OrderService")
     private OrderService orderService = new OrderService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/UserService")
     private UserService userService = new UserService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ValidityPeriodService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ValidityPeriodService")
     private ValidityPeriodService validityPeriodService = new ValidityPeriodService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OptionalProductService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OptionalProductService")
     private OptionalProductService optionalProductService = new OptionalProductService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
     public ManageOrder(){ super(); }

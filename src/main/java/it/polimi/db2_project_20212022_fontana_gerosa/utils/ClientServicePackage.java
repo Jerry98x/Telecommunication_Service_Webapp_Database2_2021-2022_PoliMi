@@ -1,6 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.utils;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.ServicePackage;
 
 import java.util.ArrayList;
 import java.util.Collection;

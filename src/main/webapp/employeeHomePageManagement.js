@@ -37,7 +37,7 @@
 
                             let p = document.createElement("p");
                             let b = document.createElement("b");
-                            p.textContent = "Available services:";
+                            p.textContent = "Available ejbs:";
                             b.appendChild(p);
                             formContainer_serv.appendChild(b);
 

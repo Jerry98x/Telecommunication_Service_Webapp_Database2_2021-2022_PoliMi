@@ -1,6 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.utils;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.ValidityPeriod;
 
 public class ClientValidityPeriod {
     private int validityPeriodId;

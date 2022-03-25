@@ -3,8 +3,8 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.Order;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.OrderService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
@@ -31,7 +31,7 @@ public class GetRejectedOrders extends HttpServlet {
     private Connection connection = null;
 
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OrderService")
     private OrderService orderService = new OrderService();
 
     public GetRejectedOrders(){super();}

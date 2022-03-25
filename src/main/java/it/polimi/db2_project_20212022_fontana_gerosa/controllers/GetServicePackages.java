@@ -1,6 +1,6 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.ServicePackageService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientServicePackage;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,7 +24,7 @@ import java.util.List;
 @MultipartConfig
 public class GetServicePackages extends HttpServlet {
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
     private Connection connection = null;

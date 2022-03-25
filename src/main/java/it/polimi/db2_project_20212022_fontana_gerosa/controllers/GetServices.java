@@ -2,8 +2,8 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.TelcoServiceService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.TelcoService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.TelcoServiceService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientTelcoService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,7 +28,7 @@ public class GetServices extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/TelcoServiceService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/TelcoServiceService")
     private TelcoServiceService serviceService = new TelcoServiceService();
 
     public GetServices() { super(); }
@@ -59,7 +58,7 @@ public class GetServices extends HttpServlet {
         } catch (PersistenceException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover services");
+            response.getWriter().println("Not possible to recover ejbs");
             return;
         }
 

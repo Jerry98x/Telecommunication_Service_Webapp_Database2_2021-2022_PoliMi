@@ -1,8 +1,8 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.User;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.DataValidator;
 import jakarta.ejb.EJB;
@@ -27,7 +27,7 @@ public class RegisterUser extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/UserService")
     private UserService userService = new UserService();
 
     public RegisterUser() { super();}

@@ -6,24 +6,24 @@
     <persistence-unit name="DB2_Project_2021-2022_Fontana_Gerosa" transaction-type="JTA">
         <jta-data-source>db2_project</jta-data-source>
 
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.FixedInternet</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.FixedPhone</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.MobileInternet</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.MobilePhone</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.Employee</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.OptionalProduct</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.Order</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.User</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalPurchasesPerSp</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVAvgAmountOpPerSp</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalPurchasesPerOp</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalPurchasesPerSpAndVp</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalValuePerSp</class>
-        <class>it.polimi.db2_project_20212022_fontana_gerosa.beans.mv.MVTotalValuePerSpWithOp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.TelcoService</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.FixedInternet</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.FixedPhone</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.MobileInternet</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.MobilePhone</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.Alert</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.Employee</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.OptionalProduct</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.Order</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.ServicePackage</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.User</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.ValidityPeriod</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalPurchasesPerSp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVAvgAmountOpPerSp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalPurchasesPerOp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalPurchasesPerSpAndVp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalValuePerSp</class>
+        <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalValuePerSpWithOp</class>
 
 
 

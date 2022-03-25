@@ -2,8 +2,8 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.ValidityPeriodService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.ValidityPeriod;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.ValidityPeriodService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,7 +26,7 @@ public class GetValidityPeriods extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ValidityPeriodService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ValidityPeriodService")
     private ValidityPeriodService validityPeriodService = new ValidityPeriodService();
 
     public GetValidityPeriods() { super(); }

@@ -1,13 +1,13 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.OptionalProduct;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.ServicePackage;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.ValidityPeriod;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.telco_services.TelcoService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.OptionalProductService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.ServicePackageService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.TelcoServiceService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.ValidityPeriodService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.OptionalProduct;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.ServicePackage;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.ValidityPeriod;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.TelcoService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.OptionalProductService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.ServicePackageService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.TelcoServiceService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.ValidityPeriodService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -33,16 +33,16 @@ public class CreateServicePackage extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ServicePackageService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ServicePackageService")
     private ServicePackageService servicePackageService = new ServicePackageService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/TelcoServiceService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/TelcoServiceService")
     private TelcoServiceService serviceService = new TelcoServiceService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OptionalProductService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OptionalProductService")
     private OptionalProductService optionalProductService = new OptionalProductService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/ValidityPeriodService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ValidityPeriodService")
     private ValidityPeriodService validityPeriodService = new ValidityPeriodService();
 
 

@@ -1,0 +1,55 @@
+package it.polimi.db2_project_20212022_fontana_gerosa.ejbs;
+
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.ServicePackage;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.TelcoService;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
+
+import java.util.List;
+
+@Stateless
+public class TelcoServiceService {
+    @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
+    private EntityManager em;
+
+    public List<TelcoService> getServicesByPackage(ServicePackage servicePackage) {
+        List<TelcoService> telcoServices = null;
+        try {
+            telcoServices = em.createNamedQuery("TelcoService.getServicesByPackageId", TelcoService.class).
+                    setParameter(1, servicePackage.getServicePackageId()).getResultList();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve ejbs of a package");
+        }
+        return telcoServices;
+    }
+
+    public List<TelcoService> getAllServices() {
+        List<TelcoService> services = null;
+
+        try {
+            services = em.createNamedQuery("TelcoService.getAllServices", TelcoService.class).getResultList();
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve ejbs");
+        }
+
+        return services;
+    }
+
+    public TelcoService getServiceById(int serviceId) {
+        TelcoService telcoService = null;
+        try {
+            telcoService = em.find(TelcoService.class, serviceId);
+        }
+        catch (PersistenceException e){
+            throw new PersistenceException("Couldn't retrieve ejbs");
+        }
+        return telcoService;
+    }
+
+}
+
+

@@ -2,10 +2,10 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Employee;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.EmployeeService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.Employee;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.User;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.EmployeeService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientEmployee;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientUser;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
@@ -17,7 +17,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.security.auth.login.CredentialException;
@@ -31,9 +30,9 @@ public class CheckLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/UserService")
     private UserService userService = new UserService();
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/EmployeeService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/EmployeeService")
     private EmployeeService employeeService = new EmployeeService();
 
     public CheckLogin() {

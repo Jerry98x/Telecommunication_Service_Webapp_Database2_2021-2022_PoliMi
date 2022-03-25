@@ -2,10 +2,10 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Order;
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.User;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.OrderService;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.UserService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.Order;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.User;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.OrderService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.UserService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -29,10 +29,10 @@ public class GetLoggedUserInfo extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/UserService")
     private UserService userService = new UserService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OrderService")
     private OrderService orderService = new OrderService();
 
     public GetLoggedUserInfo(){

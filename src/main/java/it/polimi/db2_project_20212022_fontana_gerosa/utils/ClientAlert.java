@@ -1,11 +1,9 @@
 package it.polimi.db2_project_20212022_fontana_gerosa.utils;
 
-import it.polimi.db2_project_20212022_fontana_gerosa.beans.Alert;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.Alert;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class ClientAlert {
     private int alertId;

@@ -2,7 +2,7 @@ package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.services.*;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.*;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -26,16 +26,16 @@ public class GetAggregatedData extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/MVService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/MVService")
     private MVService mvService = new MVService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/UserService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/UserService")
     private UserService userService = new UserService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/OrderService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OrderService")
     private OrderService orderService = new OrderService();
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.services/AlertService")
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/AlertService")
     private AlertService alertService = new AlertService();
 
     public GetAggregatedData() {
