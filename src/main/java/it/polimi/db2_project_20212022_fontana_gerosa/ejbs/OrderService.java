@@ -91,13 +91,18 @@ public class OrderService {
             } catch (PersistenceException e) {
                 throw new PersistenceException("Couldn't update user");
             }
+
+            try {
+                em.persist(newOrder);
+                em.flush();
+            } catch (PersistenceException e){
+                throw new PersistenceException("Couldn't add new order");
+            }
         }
-        try {
-            em.persist(newOrder);
-            em.flush();
-        } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't add new order");
+        else {
+            throw new PersistenceException("Couldn't find the related user");
         }
+
     }
 
     public void updateOrder(Order order) {
@@ -123,12 +128,15 @@ public class OrderService {
             } catch (PersistenceException e) {
                 throw new PersistenceException("Couldn't update user");
             }
+            try {
+                em.merge(order);
+                em.flush();
+            } catch (PersistenceException e) {
+                throw new PersistenceException("Couldn't update order");
+            }
         }
-        try {
-            em.merge(order);
-            em.flush();
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Couldn't update order");
+        else {
+            throw new PersistenceException("Couldn't find the related user");
         }
     }
 
