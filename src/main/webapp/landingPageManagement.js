@@ -17,7 +17,7 @@
                         let message = req.responseText;
                         switch (req.status) {
                             case 200:
-                                if(JSON.parse(message)[1] === true) {
+                                if(JSON.parse(message)[1] === false) {
                                     let user = JSON.parse(message)[0];
                                     sessionStorage.setItem("loggedUserId", user.userId);
                                     await (sessionStorage.getItem("loggedUserId") != null);

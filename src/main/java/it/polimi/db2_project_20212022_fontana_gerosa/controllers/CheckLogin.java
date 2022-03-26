@@ -115,13 +115,13 @@ public class CheckLogin extends HttpServlet {
             if(user != null) {
                 ClientUser clientUser = new ClientUser(user);
                 String json1 = gson.toJson(clientUser);
-                String json2 = gson.toJson(true);
+                String json2 = gson.toJson(false);
                 json = "["+json1+","+json2+"]";
             }
             else {
                 ClientEmployee clientEmployee = new ClientEmployee(employee);
                 String json1 = gson.toJson(clientEmployee);
-                String json2 = gson.toJson(false);
+                String json2 = gson.toJson(true);
                 json = "["+json1+","+json2+"]";
             }
 
