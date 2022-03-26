@@ -142,7 +142,15 @@ public class CreateServicePackage extends HttpServlet {
         servicePackage.setAvailableOptionalProducts(actualOptionalProducts);
         servicePackage.setAvailableValidityPeriods(actualValidityPeriods);
 
-        servicePackageService.insertServicePackage(servicePackage);
+        try {
+            servicePackageService.insertServicePackage(servicePackage);
+        }
+        catch (PersistenceException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Internal server error, retry later");
+            return;
+        }
+
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println("Service package " + "\"" + servicePackage.getName() + "\"" + " has been correctly created.");
