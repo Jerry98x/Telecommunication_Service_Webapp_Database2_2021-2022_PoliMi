@@ -9,11 +9,18 @@ import jakarta.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * EJB to manage alert entities
+ */
 @Stateless
 public class AlertService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
+    /**
+     * Gives all alerts as String
+     * @return a collection of Strings containing the descriptions of each Alert
+     */
     public Collection<String> getAllAlertsDescriptions(){
         Collection<Alert> alerts = null;
         Collection<String> descriptions = new ArrayList<>();

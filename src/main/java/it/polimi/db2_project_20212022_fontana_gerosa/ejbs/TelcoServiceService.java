@@ -14,18 +14,10 @@ public class TelcoServiceService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
-    public List<TelcoService> getServicesByPackage(ServicePackage servicePackage) {
-        List<TelcoService> telcoServices = null;
-        try {
-            telcoServices = em.createNamedQuery("TelcoService.getServicesByPackageId", TelcoService.class).
-                    setParameter(1, servicePackage.getServicePackageId()).getResultList();
-        }
-        catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve ejbs of a package");
-        }
-        return telcoServices;
-    }
-
+    /**
+     * Gives all TelcoServices present in the DB
+     * @return a collection containing all the TelcoServices
+     */
     public List<TelcoService> getAllServices() {
         List<TelcoService> services = null;
 
@@ -39,6 +31,11 @@ public class TelcoServiceService {
         return services;
     }
 
+    /**
+     * Gives a TelcoService given its id
+     * @param serviceId id of the TelcoService to be searched
+     * @return the TelcoService found
+     */
     public TelcoService getServiceById(int serviceId) {
         TelcoService telcoService = null;
         try {

@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * EJB to manage all the materialized view entities
+ */
 @Stateless
 public class MVService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
@@ -28,6 +31,10 @@ public class MVService {
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OptionalProductService")
     private OptionalProductService optionalProductService = new OptionalProductService();
 
+    /**
+     * Gives the descriptions of each row of the corresponding materialized view
+     * @return a collection of Strings containing the descriptions of each row
+     */
     public List<String> getAllAvgAmountOpPerSpDescriptions(){
         List<MVAvgAmountOpPerSp> mvResults = null;
         List<String> descriptions = new ArrayList<>();
@@ -42,6 +49,11 @@ public class MVService {
         return descriptions;
     }
 
+    /**
+     * Gives the String containing the description given the entity mapping the row of the materialized view
+     * @param mv entity representing a single row
+     * @return a String containing the textual description of the row
+     */
     private String getAvgAmountOpPerSpDescription(MVAvgAmountOpPerSp mv) {
         ServicePackage servicePackage = null;
         try {
@@ -56,6 +68,10 @@ public class MVService {
         }
     }
 
+    /**
+     * Gives the descriptions of each row of the corresponding materialized view
+     * @return a collection of Strings containing the descriptions of each row
+     */
     public List<String> getAllTotalPurchasesPerSpDescriptions(){
         List<MVTotalPurchasesPerSp> mvResults = null;
         List<String> descriptions = new ArrayList<>();
@@ -70,6 +86,11 @@ public class MVService {
         return descriptions;
     }
 
+    /**
+     * Gives the String containing the description given the entity mapping the row of the materialized view
+     * @param mv entity representing a single row
+     * @return a String containing the textual description of the row
+     */
     private String getTotalPurchasesPerSpDescription(MVTotalPurchasesPerSp mv){
         ServicePackage servicePackage = null;
         try {
@@ -85,6 +106,10 @@ public class MVService {
         }
     }
 
+    /**
+     * Gives the descriptions of each row of the corresponding materialized view
+     * @return a collection of Strings containing the descriptions of each row
+     */
     public List<String> getAllTotalPurchasesPerSpAndVpDescriptions(){
         List<MVTotalPurchasesPerSpAndVp> mvResults = null;
         List<String> descriptions = new ArrayList<>();
@@ -99,6 +124,11 @@ public class MVService {
         return descriptions;
     }
 
+    /**
+     * Gives the String containing the description given the entity mapping the row of the materialized view
+     * @param mv entity representing a single row
+     * @return a String containing the textual description of the row
+     */
     private String getTotalPurchasesPerSpAndVpDescription(MVTotalPurchasesPerSpAndVp mv){
         ServicePackage servicePackage = null;
         ValidityPeriod validityPeriod = null;
@@ -122,6 +152,10 @@ public class MVService {
         }
     }
 
+    /**
+     * Gives the descriptions of each row of the corresponding materialized view
+     * @return a collection of Strings containing the descriptions of each row
+     */
     public List<String> getAllTotalValuePerSpDescriptions(){
         List<MVTotalValuePerSp> mvResults = null;
         List<String> descriptions = new ArrayList<>();
@@ -136,6 +170,11 @@ public class MVService {
         return descriptions;
     }
 
+    /**
+     * Gives the String containing the description given the entity mapping the row of the materialized view
+     * @param mv entity representing a single row
+     * @return a String containing the textual description of the row
+     */
     private String getTotalValuePerSpDescription(MVTotalValuePerSp mv){
         ServicePackage servicePackage = null;
         try {
@@ -151,6 +190,10 @@ public class MVService {
         }
     }
 
+    /**
+     * Gives the descriptions of each row of the corresponding materialized view
+     * @return a collection of Strings containing the descriptions of each row
+     */
     public List<String> getAllTotalValuePerSpWithOpDescriptions(){
         List<MVTotalValuePerSpWithOp> mvResults = null;
         List<String> descriptions = new ArrayList<>();
@@ -165,6 +208,11 @@ public class MVService {
         return descriptions;
     }
 
+    /**
+     * Gives the String containing the description given the entity mapping the row of the materialized view
+     * @param mv entity representing a single row
+     * @return a String containing the textual description of the row
+     */
     private String getTotalValuePerSpWithOpDescription(MVTotalValuePerSpWithOp mv){
         ServicePackage servicePackage = null;
         try {
@@ -181,6 +229,10 @@ public class MVService {
         }
     }
 
+    /**
+     * Gives the description of the first row of the corresponding materialized view
+     * @return a collection of Strings containing the description of the first row
+     */
     public Collection<String> getBestSellerOpDescription(){
         List<MVTotalPurchasesPerOp> mvResult = null;
         List<String> descriptions = new ArrayList<>();
@@ -198,6 +250,11 @@ public class MVService {
 
     }
 
+    /**
+     * Gives the String containing the description given the entity mapping the row of the materialized view
+     * @param mv entity representing a single row
+     * @return a String containing the textual description of the row
+     */
     private String getBestSellerOpDescription(MVTotalPurchasesPerOp mv){
         OptionalProduct optionalProduct = null;
         try {

@@ -9,11 +9,21 @@ import jakarta.persistence.PersistenceException;
 import javax.security.auth.login.CredentialException;
 import java.util.List;
 
+/**
+ * EJB to manage employee entities
+ */
 @Stateless
 public class EmployeeService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
+    /**
+     * Checks if the Employee trying to log in is present into the DB
+     * @param email to identify the Employee
+     * @param password to authenticate the Employee
+     * @return the Employee if found in the DB, null otherwise
+     * @throws CredentialException if the credentials couldn't be verified
+     */
     public Employee checkEmployeeCredentials(String email, String password) throws CredentialException {
         List<Employee> matchingEmployees;
         try {

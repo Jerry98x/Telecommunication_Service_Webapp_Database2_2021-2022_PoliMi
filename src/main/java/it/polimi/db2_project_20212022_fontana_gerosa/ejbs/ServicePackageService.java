@@ -11,15 +11,18 @@ import jakarta.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * EJB to manage service package entities
+ */
 @Stateless
 public class ServicePackageService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/TelcoServiceService")
-    private TelcoServiceService telcoServiceService = new TelcoServiceService();
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OptionalProductService")
-    private OptionalProductService optionalProductService = new OptionalProductService();
 
+    /**
+     * Gives a collection of ClientServicePackage containing only the info useful to the client for all ServicePackages in the DB
+     * @return a collection of ClientServicePackage of all ServicePackages in the DB
+     */
     public List<ClientServicePackage> getAllClientServicePackages() {
         List<ClientServicePackage> clientServicePackages = null;
         List<ServicePackage> servicePackages = null;
@@ -36,6 +39,11 @@ public class ServicePackageService {
         return clientServicePackages;
     }
 
+    /**
+     * Gives a ServicePackage given its id
+     * @param servicePackageId id of the ServicePackage to be searched
+     * @return the ServicePackage found
+     */
     public ServicePackage getServicePackageById(int servicePackageId) {
         ServicePackage matchingServicePackage;
         try{
@@ -46,6 +54,10 @@ public class ServicePackageService {
         return matchingServicePackage;
     }
 
+    /**
+     * Create a new ServicePackage in the DB
+     * @param servicePackage the ServicePackage to be added to the DB
+     */
     public void insertServicePackage(ServicePackage servicePackage) {
         try {
             em.persist(servicePackage);
@@ -57,6 +69,11 @@ public class ServicePackageService {
 
     }
 
+    /**
+     * Gives a ServicePackage associated to an Order given the id of this last one
+     * @param orderId id of the Order to be searched
+     * @return the ServicePackage found
+     */
     public ServicePackage getServicePackageByOrderId(int orderId){
         List<ServicePackage> servicePackages = null;
         try{

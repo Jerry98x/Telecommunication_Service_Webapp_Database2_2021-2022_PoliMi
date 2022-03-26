@@ -16,6 +16,13 @@ public class UserService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
+    /**
+     * Checks if the User trying to log in is present into the DB
+     * @param email to identify the User
+     * @param password to authenticate the User
+     * @return the User if found in the DB, null otherwise
+     * @throws CredentialException if the credentials couldn't be verified
+     */
     public User checkCredentials(String email, String password) throws CredentialException {
         List<User> matchingUsers;
         try {
@@ -30,6 +37,11 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
+    /**
+     * Gives a User given their id
+     * @param userId id of the User to be searched
+     * @return the User found
+     */
     public User findUserById(int userId) {
         User matchingUser = null;
         try {
@@ -40,6 +52,11 @@ public class UserService {
         return matchingUser;
     }
 
+    /**
+     * Gives a User given their email
+     * @param email email address of the User to be searched
+     * @return the User found
+     */
     public User findUserByEmail(String email) {
         List<User> matchingUsers = null;
         try {
@@ -53,6 +70,11 @@ public class UserService {
         }
         return matchingUsers.get(0);    }
 
+    /**
+     * Gives a user given their username
+     * @param username username of the User to be searched
+     * @return the User found
+     */
     public User findUserByUsername(String username) {
         List<User> matchingUsers = null;
         try {
@@ -67,16 +89,13 @@ public class UserService {
         return matchingUsers.get(0);
     }
 
-    public List<User> getAllInsolventUsers() {
-        List<User> matchingUser = null;
-        try {
-            matchingUser = em.createNamedQuery("User.getAllInsolventUsers", User.class).getResultList();
-        } catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve user");
-        }
-        return matchingUser;
-    }
-
+    /**
+     * Create a new User in the DB
+     * @param email mail of the User to be added
+     * @param username username of the User to be added
+     * @param password password of the User to be added
+     * @return the User just added
+     */
     public User registerUser(String email, String username, String password){
         User userToRegister = new User(email, username, password);
         em.persist(userToRegister);
@@ -84,6 +103,10 @@ public class UserService {
         return userToRegister;
     }
 
+    /**
+     * Gives a collection of Strings containing the description of all insolvent Users in the DB
+     * @return a collection of String containing the textual descriptions
+     */
     public Collection<String> getAllInsolventUsersDescriptions(){
         Collection<User> users = null;
         Collection<String> descriptions = new ArrayList<>();
@@ -98,6 +121,11 @@ public class UserService {
         return descriptions;
     }
 
+    /**
+     * Gives a User given the id of an Order made by them
+     * @param orderId id of the Order made by the User to be searched
+     * @return the User found
+     */
     public User getUserByOrderId(int orderId){
         List<User> users = null;
         try{

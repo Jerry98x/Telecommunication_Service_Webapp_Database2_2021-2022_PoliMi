@@ -9,11 +9,19 @@ import jakarta.persistence.PersistenceException;
 
 import java.util.List;
 
+/**
+ * EJB to manage optional product entities
+ */
 @Stateless
 public class OptionalProductService {
     @PersistenceContext(unitName = "DB2_Project_2021-2022_Fontana_Gerosa")
     private EntityManager em;
 
+    /**
+     * Gives an OptionalProduct given its id
+     * @param optionalProductId id used to search for the OptionalProduct
+     * @return OptionalProduct corresponding to the id
+     */
     public OptionalProduct getOptionalProductById(int optionalProductId){
         OptionalProduct matchingOptionalProduct = null;
         try {
@@ -25,18 +33,10 @@ public class OptionalProductService {
         return matchingOptionalProduct;
     }
 
-    public List<OptionalProduct> getOptionalProductsByPackage(ServicePackage servicePackage){
-        List<OptionalProduct> matchingOptionalProducts = null;
-        try {
-            matchingOptionalProducts = em.createNamedQuery("OptionalProduct.getOptionalProductsByPackageId", OptionalProduct.class).
-                    setParameter(1,servicePackage.getServicePackageId()).getResultList();
-        }
-        catch (PersistenceException e){
-            throw new PersistenceException("Couldn't retrieve products of a package");
-        }
-        return matchingOptionalProducts;
-    }
-
+    /**
+     * Gives a collection of all possible OptionalProducts
+     * @return collection of all OptionalProducts found in the DB
+     */
     public List<OptionalProduct> getAllOptionalProducts() {
         List<OptionalProduct> allOptionalProducts = null;
         try {
@@ -49,9 +49,14 @@ public class OptionalProductService {
         return allOptionalProducts;
     }
 
+    /**
+     * Creates a new OptionalProduct in the DB
+     * @param optionalProduct OptionalProduct to be added to the DB
+     */
     public void insertOptionalProduct(OptionalProduct optionalProduct) {
         try {
             em.persist(optionalProduct);
+            em.flush();
         }
         catch (PersistenceException e) {
             throw new PersistenceException("Couldn't create optional product");
