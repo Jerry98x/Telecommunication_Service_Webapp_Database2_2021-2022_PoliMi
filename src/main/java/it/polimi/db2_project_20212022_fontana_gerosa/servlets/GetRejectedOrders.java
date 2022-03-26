@@ -1,11 +1,11 @@
-package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
+package it.polimi.db2_project_20212022_fontana_gerosa.servlets;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.db2_project_20212022_fontana_gerosa.entities.Order;
-import it.polimi.db2_project_20212022_fontana_gerosa.entities.User;
 import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.OrderService;
-import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.UserService;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientOrder;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -21,26 +21,23 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Servlet to get all the necessary info about a user given their id
+ * Servlet to get all rejected orders of a user given their id
  */
-@WebServlet("/GetLoggedUserInfo")
+@WebServlet("/GetRejectedOrders")
 @MultipartConfig
-public class GetLoggedUserInfo extends HttpServlet {
+public class GetRejectedOrders extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/UserService")
-    private UserService userService = new UserService();
 
     @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/OrderService")
     private OrderService orderService = new OrderService();
 
-    public GetLoggedUserInfo(){
-        super();
-    }
+    public GetRejectedOrders(){super();}
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -59,7 +56,7 @@ public class GetLoggedUserInfo extends HttpServlet {
         }
 
         // obtain and escape params
-        if(request.getParameter("userId") != null) {
+        if (request.getParameter("userId") != null) {
             Integer userId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("userId")));
             if (!userId.equals(request.getSession().getAttribute("userId"))) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -67,19 +64,22 @@ public class GetLoggedUserInfo extends HttpServlet {
                 return;
             }
 
-            User user = null;
+            Collection<Order> rejectedOrders = null;
             try {
-                user = userService.findUserById(userId);
+                rejectedOrders = orderService.getRejectedOrdersByUserId(userId);
             } catch (PersistenceException e) {
-                e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Not possible to recover user");
+                response.getWriter().println("Internal server error, retry later");
                 return;
             }
 
-            if(user != null){
-                Gson gson = new GsonBuilder().create();
-                String json = gson.toJson(user);
+            Gson gson = new GsonBuilder().create();
+            String json;
+
+            if (rejectedOrders != null) {
+                Collection<ClientOrder> clientRejectedOrders = new ArrayList<>();
+                rejectedOrders.forEach(order -> clientRejectedOrders.add(new ClientOrder(order)));
+                json = gson.toJson(clientRejectedOrders);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -88,7 +88,6 @@ public class GetLoggedUserInfo extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");
             }
-
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Null userId");
@@ -98,7 +97,9 @@ public class GetLoggedUserInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         doPost(request, response);
+
     }
 
     public void destroy() {

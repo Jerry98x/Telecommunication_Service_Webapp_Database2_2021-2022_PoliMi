@@ -1,4 +1,4 @@
-//package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
+//package it.polimi.db2_project_20212022_fontana_gerosa.servlets;
 //
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;

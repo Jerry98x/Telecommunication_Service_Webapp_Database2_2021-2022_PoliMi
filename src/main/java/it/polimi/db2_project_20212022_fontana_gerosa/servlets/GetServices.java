@@ -1,9 +1,10 @@
-package it.polimi.db2_project_20212022_fontana_gerosa.controllers;
+package it.polimi.db2_project_20212022_fontana_gerosa.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.db2_project_20212022_fontana_gerosa.entities.ValidityPeriod;
-import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.ValidityPeriodService;
+import it.polimi.db2_project_20212022_fontana_gerosa.entities.telco_services.TelcoService;
+import it.polimi.db2_project_20212022_fontana_gerosa.ejbs.TelcoServiceService;
+import it.polimi.db2_project_20212022_fontana_gerosa.utils.ClientTelcoService;
 import it.polimi.db2_project_20212022_fontana_gerosa.utils.ConnectionHandler;
 import jakarta.ejb.EJB;
 import jakarta.persistence.PersistenceException;
@@ -18,21 +19,22 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servlet to get all the possible validity periods
+ * Servlet to get all the possible Telco services
  */
-@WebServlet("/GetValidityPeriods")
+@WebServlet("/GetServices")
 @MultipartConfig
-public class GetValidityPeriods extends HttpServlet {
+public class GetServices extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
-    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/ValidityPeriodService")
-    private ValidityPeriodService validityPeriodService = new ValidityPeriodService();
+    @EJB(name = "it.polimi.db2_project_20212022_fontana_gerosa.ejbs/TelcoServiceService")
+    private TelcoServiceService serviceService = new TelcoServiceService();
 
-    public GetValidityPeriods() { super(); }
+    public GetServices() { super(); }
 
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -50,20 +52,21 @@ public class GetValidityPeriods extends HttpServlet {
             return;
         }
 
-        List<ValidityPeriod> validityPeriods = null;
+        List<TelcoService> services;
+        List<ClientTelcoService> clientTelcoServices = new ArrayList<>();
 
         try {
-            validityPeriods = validityPeriodService.getAllValidityPeriods();
-        }
-        catch (PersistenceException e){
+            services = serviceService.getAllServices();
+            services.forEach(telcoService -> clientTelcoServices.add(new ClientTelcoService(telcoService)));
+        } catch (PersistenceException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover validity periods");
+            response.getWriter().println("Not possible to recover ejbs");
             return;
         }
 
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(validityPeriods);
+        String json = gson.toJson(clientTelcoServices);
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
@@ -71,6 +74,7 @@ public class GetValidityPeriods extends HttpServlet {
         response.getWriter().write(json);
 
     }
+
 
     public void destroy() {
         try {
