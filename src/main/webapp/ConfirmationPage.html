@@ -30,28 +30,49 @@
         </div>
 
         <div class="d-grid">
-            <button id="loginBtn" type="button" hidden><b>Login</b></button>
-        </div><div class="d-grid">
-        <button id="signUpBtn" type="button" hidden><b>Sign up</b></button>
-    </div>
-        <div class="form-group" id="newOrderForm">
-            <p id="packageName"></p>
-            <div id="servicesDiv">Offered services</div>
-            <div id="optionalProductsDiv" hidden>Chosen optional products</div>
-            <div id="validityPeriodDiv">Chosen validity period</div>
-
-            <div class="d-inline">Total cost: </div>
-            <div class="d-inline" id="totalCost"></div>
-            <div class="d-inline">€/month</div>
-            <br>
-            <input type="date" id="startDate" name="startDate" required>
-            <button id="successfulPaymentBtn" class="btn btn-default" type="submit" disabled><b>Successful payment</b></button>
-            <button id="failingPaymentBtn" class="btn btn-default" type="submit" disabled><b>Failing payment</b></button>
+            <button id="loginBtn" class="btn btn-secondary btn-md" type="button" hidden><b>Login</b></button>
         </div>
+        <br>
+        <div class="d-grid">
+            <button id="signUpBtn" class="btn btn-secondary btn-md" type="button" hidden><b>Sign up</b></button>
+        </div>
+        <br>
+
+        <div class="row my-custom-row justify-content-around align-items-center">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <form class="border border-3">
+                    <div class="form-group" id="newOrderForm">
+                        <br>
+                        <h4><b id="packageName"></b></h4>
+                        <br>
+                        <div id="servicesDiv">Offered services:</div>
+                        <div id="optionalProductsDiv" hidden>Chosen optional products:</div>
+                        <div id="validityPeriodDiv">Chosen validity period:</div>
+                        <br>
+                        <div>
+                            <div class="d-inline"><b>Total cost: </b></div>
+                            <div class="d-inline" id="totalCost"></div>
+                            <div class="d-inline">€/month</div>
+                        </div>
+                        <br>
+                        <label for="startDate"></label>
+                        <input type="date" id="startDate" name="startDate" required>
+                        <button id="successfulPaymentBtn" class="btn btn-primary" type="submit" disabled><b>Successful payment</b></button>
+                        <button id="failingPaymentBtn" class="btn btn-danger" type="submit" disabled><b>Failing payment</b></button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-sm-4"></div>
+
+
+        </div>
+
 
     </div>
     <br>
-    <div id="errormessage"></div>
+    <div id="errormessage" hidden></div>
 
     <br>
     <br>

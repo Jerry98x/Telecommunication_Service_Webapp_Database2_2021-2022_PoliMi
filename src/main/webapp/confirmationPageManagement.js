@@ -151,9 +151,11 @@ function showOrder(){
 
     document.getElementById("packageName").innerHTML = spName;
     sds.forEach(sd => showServiceDescription(sd));
+    document.getElementById("servicesDiv").appendChild(document.createElement("br"));
     if (cops != null && cops.length > 0) {
         document.getElementById("optionalProductsDiv").hidden = false;
         cops.forEach(cop => showOptionalProduct(cop));
+        document.getElementById("optionalProductsDiv").appendChild(document.createElement("br"));
     }
     document.getElementById("validityPeriodDiv").innerHTML = cvp.monthsOfValidity + " months at " + cvp.monthlyFee_euro + "€/month";
     document.getElementById("totalCost").innerHTML = tot;
@@ -163,7 +165,7 @@ function showOrder(){
 }
 
 function showServiceDescription(serviceDescription){
-    let service = document.createElement("p");
+    let service = document.createElement("div");
     service.innerHTML = serviceDescription;
     document.getElementById("servicesDiv").appendChild(service);
 }

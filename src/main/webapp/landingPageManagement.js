@@ -26,16 +26,16 @@
                                         let pendingOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
                                         pendingOrder.userId = sessionStorage.getItem("loggedUserId");
                                         sessionStorage.setItem("pendingOrder", JSON.stringify(pendingOrder));
-                                        window.location.href = "ConfirmationPage.html";
+                                        window.location.replace("ConfirmationPage.html");
                                     }
                                     else {
-                                        window.location.href = "HomePage.html";
+                                        window.location.replace("HomePage.html");
                                     }
                                 }
                                 else {
                                     let employee = JSON.parse(message)[0];
                                     sessionStorage.setItem("loggedEmployee", JSON.stringify(employee));
-                                    window.location.href = "EmployeeHomePage.html";
+                                    window.location.replace("EmployeeHomePage.html");
                                 }
                                 break;
                             default:

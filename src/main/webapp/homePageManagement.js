@@ -4,6 +4,7 @@
 
 (function (){
     document.getElementById("rejected_orders").hidden = true;
+    document.getElementById("avSpHeadingPadding").hidden = true;
 
     if(sessionStorage.getItem("loggedUserId") != null) {
         let user;
@@ -37,6 +38,7 @@
                                                         rejectedOrders.forEach(ro => showRejectedOrder(ro, anchor));
                                                         document.getElementById("rejected_orders").appendChild(anchor);
                                                         document.getElementById("rejected_orders").hidden = false;
+                                                        document.getElementById("avSpHeadingPadding").hidden = false;
                                                         break;
                                                     default:
                                                         document.getElementById("errormessage").textContent += message;
@@ -137,7 +139,7 @@ function showServicePackage(servicePackage, anchor) {
         let availableOptionalProductsDiv = document.createElement("div");
         availableOptionalProductsDiv.classList.add("border");
         let opText = document.createElement("h5");
-        opText.innerHTML = "Available optional products";
+        opText.innerHTML = "Available optional products:";
         availableOptionalProductsDiv.appendChild(opText);
         servicePackage.availableOptionalProducts.forEach(aop => showOptionalProductDescription(aop, availableOptionalProductsDiv));
         spDiv.appendChild(availableOptionalProductsDiv);

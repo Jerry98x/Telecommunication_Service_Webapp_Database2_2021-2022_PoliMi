@@ -74,13 +74,16 @@
 
 function buildPage(sptb, aops, avps){
     document.getElementById("totalCost").innerHTML = "0";
-    document.getElementById("packageName").innerHTML = "You chose the package: " + sptb.name;
+    document.getElementById("packageName").innerHTML = "You chose the package: <b>" + sptb.name +"</b>";
     sptb.servicesDescriptions.forEach(service => showService(service));
+    document.getElementById("servicesDiv").appendChild(document.createElement("br"));
     let chosenOptionalProducts = []
     aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
+    document.getElementById("optionalProductsDiv").appendChild(document.createElement("br"));
     let vpName = "validityPeriods";
     let chosenValidityPeriod = [];
     avps.forEach(vp => showValidityPeriod(vp, vpName, chosenValidityPeriod));
+    document.getElementById("validityPeriodsDiv").appendChild(document.createElement("br"));
 
     document.getElementById("confirmBtn").addEventListener("click",
         (event) => confirmRedirect(event, sptb, chosenOptionalProducts, chosenValidityPeriod));
@@ -89,9 +92,9 @@ function buildPage(sptb, aops, avps){
 
 
 function showService(service){
-    let serviceP = document.createElement("p");
-    serviceP.innerHTML = service;
-    document.getElementById("servicesDiv").appendChild(serviceP);
+    let serviceDiv = document.createElement("div");
+    serviceDiv.innerHTML = service;
+    document.getElementById("servicesDiv").appendChild(serviceDiv);
 }
 
 
