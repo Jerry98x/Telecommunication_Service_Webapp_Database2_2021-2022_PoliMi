@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet to manage the process of creation of a new optional product by an employee
+ */
 @WebServlet("/CreateOptionalProduct")
 @MultipartConfig
 public class CreateOptionalProduct extends HttpServlet {
@@ -45,12 +48,14 @@ public class CreateOptionalProduct extends HttpServlet {
             return;
         }
 
+        //escaping params
         String optionalProductName = StringEscapeUtils.escapeJava(request.getParameter("op_name"));
         float optionalProductFee = Float.parseFloat(request.getParameter("op_fee"));
 
         OptionalProduct optionalProduct = new OptionalProduct();
 
-        if(optionalProductName != null && !optionalProductName.equals("") && optionalProductFee != 0) {
+        //if params are correct entity is built
+        if(optionalProductName != null && !optionalProductName.equals("") && optionalProductFee >= 0) {
             try {
                 optionalProduct.setName(optionalProductName);
             }

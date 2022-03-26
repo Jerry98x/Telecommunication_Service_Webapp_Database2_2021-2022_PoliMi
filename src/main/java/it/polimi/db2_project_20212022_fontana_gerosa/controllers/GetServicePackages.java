@@ -20,6 +20,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Servlet to get all the possible service packages
+ */
 @WebServlet("/GetServicePackages")
 @MultipartConfig
 public class GetServicePackages extends HttpServlet {
@@ -37,15 +40,6 @@ public class GetServicePackages extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-//        // If the user is not logged in (not present in session) redirect to the login
-//        HttpSession session = request.getSession();
-//        if (session.isNew() || session.getAttribute("userId") == null) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.getWriter().println("User not allowed");
-//            return;
-//        }
-
-
         List<ClientServicePackage> clientServicePackages;
 
         try {
@@ -57,7 +51,6 @@ public class GetServicePackages extends HttpServlet {
             return;
         }
 
-        // Redirect to the Home page and add servicePackages to the parameters
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(clientServicePackages);
 

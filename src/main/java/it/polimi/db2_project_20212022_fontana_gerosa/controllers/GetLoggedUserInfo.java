@@ -23,6 +23,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 
+/**
+ * Servlet to get all the necessary info about a user given their id
+ */
 @WebServlet("/GetLoggedUserInfo")
 @MultipartConfig
 public class GetLoggedUserInfo extends HttpServlet {
@@ -74,14 +77,6 @@ public class GetLoggedUserInfo extends HttpServlet {
                 return;
             }
 
-            Collection<Order> rejectedOrders = null;
-            try {
-                rejectedOrders = orderService.getRejectedOrdersByUserId(userId);
-            } catch (PersistenceException e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Internal server error, retry later");
-                return;
-            }
             if(user != null){
                 Gson gson = new GsonBuilder().create();
                 String json = gson.toJson(user);
@@ -103,9 +98,7 @@ public class GetLoggedUserInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         doPost(request, response);
-
     }
 
     public void destroy() {

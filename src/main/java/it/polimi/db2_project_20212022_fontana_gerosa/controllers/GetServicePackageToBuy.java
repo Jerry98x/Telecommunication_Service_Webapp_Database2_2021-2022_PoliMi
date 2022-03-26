@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet to get all the necessary info about a service package given its id
+ */
 @WebServlet("/GetServicePackageToBuy")
 @MultipartConfig
 public class GetServicePackageToBuy extends HttpServlet{
@@ -40,35 +43,32 @@ public class GetServicePackageToBuy extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        // If the user is not logged in (not present in session) redirect to the login
-//        HttpSession session = request.getSession();
-//        if (session.isNew() || session.getAttribute("userId") == null) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.getWriter().println("User not allowed");
-//            return;
-//        }
-
         ServicePackage servicePackage;
-        int servicePackageId = Integer.parseInt(request.getParameter("spIdToBuy"));
+        if (request.getParameter("spIdToBuy") != null) {
+            int servicePackageId = Integer.parseInt(request.getParameter("spIdToBuy"));
 
-        try {
-            servicePackage = servicePackageService.getServicePackageById(servicePackageId);
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover service packages");
-            return;
+            try {
+                servicePackage = servicePackageService.getServicePackageById(servicePackageId);
+            } catch (PersistenceException e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Not possible to recover service packages");
+                return;
+            }
+
+            // Redirect to the Home page and add servicePackages to the parameters
+            ClientServicePackage clientServicePackage = new ClientServicePackage(servicePackage);
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(clientServicePackage);
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Null spIdToBuy");
         }
-
-        // Redirect to the Home page and add servicePackages to the parameters
-        ClientServicePackage clientServicePackage = new ClientServicePackage(servicePackage);
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(clientServicePackage);
-
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
     }
 
     public void destroy() {

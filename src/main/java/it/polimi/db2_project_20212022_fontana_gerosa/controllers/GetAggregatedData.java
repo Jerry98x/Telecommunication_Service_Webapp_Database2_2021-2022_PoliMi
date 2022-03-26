@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Servlet to get data to populate the sales report page
+ */
 @WebServlet("/GetAggregatedData")
 @MultipartConfig
 public class GetAggregatedData extends HttpServlet {
@@ -52,6 +55,8 @@ public class GetAggregatedData extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
+        // If the employee is not logged in (not present in session) redirect to the login
         if (session.isNew() || session.getAttribute("employeeId") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("User not allowed");
@@ -61,6 +66,7 @@ public class GetAggregatedData extends HttpServlet {
         Collection<Collection<String>> collectionOfData;
         collectionOfData = new ArrayList<>();
 
+        //total purchases per ServicePackage
         Collection<String> mvTotalPurchasesPerSpStrings = null;
         try{
             mvTotalPurchasesPerSpStrings = mvService.getAllTotalPurchasesPerSpDescriptions();
@@ -77,6 +83,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //total purchases per pair ServicePackage-ValidityPeriod
         Collection<String> mvTotalPurchasesPerSpAndVpStrings = null;
         try{
             mvTotalPurchasesPerSpAndVpStrings = mvService.getAllTotalPurchasesPerSpAndVpDescriptions();
@@ -93,6 +100,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //total value per ServicePackage
         Collection<String> mvTotalValuePerSpStrings = null;
         try{
             mvTotalValuePerSpStrings = mvService.getAllTotalValuePerSpDescriptions();
@@ -109,6 +117,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //total value per ServicePackage including OptionalProducts
         Collection<String> mvTotalValuePerSpWithOpStrings = null;
         try{
             mvTotalValuePerSpWithOpStrings = mvService.getAllTotalValuePerSpWithOpDescriptions();
@@ -125,6 +134,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //average amount of OptionalProducts per ServicePackage
         Collection<String> mvAvgAmountOpPerSpStrings = null;
         try{
             mvAvgAmountOpPerSpStrings = mvService.getAllAvgAmountOpPerSpDescriptions();
@@ -141,6 +151,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //best seller OptionalProduct
         Collection<String> mvBestSellerOpStrings = null;
         try{
             mvBestSellerOpStrings = mvService.getBestSellerOpDescription();
@@ -157,6 +168,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //insolvent Users
         Collection<String> insolventUsers = null;
         try{
             insolventUsers = userService.getAllInsolventUsersDescriptions();
@@ -173,6 +185,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //rejected Orders
         Collection<String> rejectedOrders = null;
         try{
             rejectedOrders = orderService.getAllRejectedOrdersDescriptions();
@@ -189,6 +202,7 @@ public class GetAggregatedData extends HttpServlet {
             return;
         }
 
+        //alerts
         Collection<String> alerts = null;
         try{
             alerts = alertService.getAllAlertsDescriptions();
@@ -218,9 +232,7 @@ public class GetAggregatedData extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         doPost(request, response);
-
     }
 
     public void destroy() {

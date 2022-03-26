@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet to get all the necessary info about a previously rejected order, now to be completed, given its id
+ */
 @WebServlet("/GetRejectedOrderToComplete")
 @MultipartConfig
 public class GetRejectedOrderToComplete extends HttpServlet {
@@ -56,48 +59,51 @@ public class GetRejectedOrderToComplete extends HttpServlet {
         }
 
         // obtain and escape params
-        Integer requestedUserId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("rejectedOrderId")));
-        Order rejectedOrder = null;
-        try {
-            rejectedOrder = orderService.getRejectedOrderById(requestedUserId);
-        } catch (PersistenceException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error, retry later");
-            return;
-        }
-        if (rejectedOrder == null) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error, retry later");
-        } else {
-            int loggedUserId = (int) request.getSession().getAttribute("userId");
-            if(rejectedOrder.getUser().getUserId() == loggedUserId) {
-                ClientOrder clientRejectedOrder = new ClientOrder(rejectedOrder);
-                ClientServicePackage clientServicePackage = new ClientServicePackage(rejectedOrder.getServicePackage());
-                Gson gson = new GsonBuilder().create();
-                String json;
-
-                String jsonOrder = gson.toJson(clientRejectedOrder);
-                String jsonPackage = gson.toJson(clientServicePackage);
-
-                json = "[" + jsonOrder + "," + jsonPackage + "]";
-
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().println("Requesting user is not the logged one");
+        if (request.getParameter("rejectedOrderId") != null) {
+            Integer requestedUserId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("rejectedOrderId")));
+            Order rejectedOrder = null;
+            try {
+                rejectedOrder = orderService.getRejectedOrderById(requestedUserId);
+            } catch (PersistenceException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
             }
+            if (rejectedOrder == null) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+            } else {
+                int loggedUserId = (int) request.getSession().getAttribute("userId");
+                if (rejectedOrder.getUser().getUserId() == loggedUserId) {
+                    ClientOrder clientRejectedOrder = new ClientOrder(rejectedOrder);
+                    ClientServicePackage clientServicePackage = new ClientServicePackage(rejectedOrder.getServicePackage());
+                    Gson gson = new GsonBuilder().create();
+                    String json;
+
+                    String jsonOrder = gson.toJson(clientRejectedOrder);
+                    String jsonPackage = gson.toJson(clientServicePackage);
+
+                    json = "[" + jsonOrder + "," + jsonPackage + "]";
+
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(json);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().println("Requesting user is not the logged one");
+                }
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Null rejectedOrderId");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         doPost(request, response);
-
     }
 
     public void destroy() {

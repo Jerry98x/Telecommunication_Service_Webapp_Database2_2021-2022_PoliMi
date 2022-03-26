@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet to manage the login procedure of both users and employees
+ */
 @WebServlet("/CheckLogin")
 @MultipartConfig
 public class CheckLogin extends HttpServlet {
@@ -46,14 +49,6 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-//        // If the user is already logged in (present in session) redirect to the homepage
-//        HttpSession session = request.getSession();
-//        if (!session.isNew() || session.getAttribute("userId") != null || session.getAttribute("employeeId") != null) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.getWriter().println("User already logged in");
-//            return;
-//        }
 
         // obtain and escape params
         String email = null;
@@ -136,9 +131,7 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         doPost(request, response);
-
     }
 
     public void destroy() {

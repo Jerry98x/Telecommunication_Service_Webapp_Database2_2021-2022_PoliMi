@@ -22,6 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servlet to get all the possible Telco services
+ */
 @WebServlet("/GetServices")
 @MultipartConfig
 public class GetServices extends HttpServlet {

@@ -20,6 +20,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Servlet to get all the possible optional products
+ */
 @WebServlet("/GetOptionalProducts")
 @MultipartConfig
 public class GetOptionalProducts extends HttpServlet {
@@ -39,7 +42,7 @@ public class GetOptionalProducts extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
+        // If the employee is not logged in (not present in session) redirect to the login
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("employeeId") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

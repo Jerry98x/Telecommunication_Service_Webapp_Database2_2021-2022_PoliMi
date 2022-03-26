@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet to manage the logout process also server side
+ */
 @WebServlet("/Logout")
 @MultipartConfig
 public class Logout extends HttpServlet {

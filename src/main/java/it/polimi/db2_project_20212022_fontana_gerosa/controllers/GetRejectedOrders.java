@@ -24,6 +24,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Servlet to get all rejected orders of a user given their id
+ */
 @WebServlet("/GetRejectedOrders")
 @MultipartConfig
 public class GetRejectedOrders extends HttpServlet {

@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet to manage the process of registering a new user
+ */
 @WebServlet("/RegisterUser")
 @MultipartConfig
 public class RegisterUser extends HttpServlet {
@@ -54,62 +57,66 @@ public class RegisterUser extends HttpServlet {
         String username = null;
         String password = null;
         String repeatedPassword = null;
-        username = StringEscapeUtils.escapeJava(request.getParameter("signup_username"));
-        email = StringEscapeUtils.escapeJava(request.getParameter("signup_email"));
-        password = StringEscapeUtils.escapeJava(request.getParameter("signup_password"));
-        repeatedPassword = StringEscapeUtils.escapeJava(request.getParameter("signup_repeated_password"));
+        if (request.getParameter("signup_username") != null && request.getParameter("signup_email") != null &&
+                request.getParameter("signup_password") != null && request.getParameter("signup_repeated_password") != null) {
+            username = StringEscapeUtils.escapeJava(request.getParameter("signup_username"));
+            email = StringEscapeUtils.escapeJava(request.getParameter("signup_email"));
+            password = StringEscapeUtils.escapeJava(request.getParameter("signup_password"));
+            repeatedPassword = StringEscapeUtils.escapeJava(request.getParameter("signup_repeated_password"));
 
-        if (email == null || username == null || password == null || repeatedPassword == null || email.isEmpty() || username.isEmpty() || password.isEmpty() || repeatedPassword.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Credentials must be not null");
-            return;
-        }
+            if (email.isEmpty() || username.isEmpty() || password.isEmpty() || repeatedPassword.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("Credentials must be not empty");
+                return;
+            }
 
-        if(!(DataValidator.isEmailValid(email) && DataValidator.isUsernameValid(username) && DataValidator.isPasswordValid(password))) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Invalid username, email or password");
-            return;
-        }
+            if (!(DataValidator.isEmailValid(email) && DataValidator.isUsernameValid(username) && DataValidator.isPasswordValid(password))) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("Invalid username, email or password");
+                return;
+            }
 
-        // query db to check existing user
-        User byEmail = null;
-        User byUsername = null;
-        try {
-            byEmail = userService.findUserByEmail(email);
-            byUsername = userService.findUserByUsername(username);
-        } catch (PersistenceException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error, retry later");
-            return;
-        }
-        // If the user doesn't exist
-        // return an error status code and message
-        if (byEmail == null && byUsername == null && password.equals(repeatedPassword)) {
+            // query db to check existing user
+            User byEmail = null;
+            User byUsername = null;
             try {
-                User userToRegister = userService.registerUser(email, username, password);
+                byEmail = userService.findUserByEmail(email);
+                byUsername = userService.findUserByUsername(username);
             } catch (PersistenceException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");
                 return;
             }
-            
-            response.setStatus(HttpServletResponse.SC_OK);
+            // If the user doesn't exist
+            // return an error status code and message
+            if (byEmail == null && byUsername == null && password.equals(repeatedPassword)) {
+                try {
+                    User userToRegister = userService.registerUser(email, username, password);
+                } catch (PersistenceException e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.getWriter().println("Internal server error, retry later");
+                    return;
+                }
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-//            response.getWriter().println("Welcome, " + userToRegister.getUsername() + "!\nPlease, login.");
-            response.getWriter().println("Registration succesfully completed!");
-        } else if (byEmail != null) {
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            response.getWriter().println("Email already in use");
-        } else if (byUsername != null) {
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            response.getWriter().println("Username already in use");
+                response.setStatus(HttpServletResponse.SC_OK);
+
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().println("Registration succesfully completed!");
+            } else if (byEmail != null) {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.getWriter().println("Email already in use");
+            } else if (byUsername != null) {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.getWriter().println("Username already in use");
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.getWriter().println("Passwords do not coincide");
+            }
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            response.getWriter().println("Passwords do not coincide");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("At least one passed param was null");
         }
-
     }
 
 

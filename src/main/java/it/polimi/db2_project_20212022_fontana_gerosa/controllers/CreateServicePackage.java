@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
+/**
+ * Servlet to manage the process of creation of a new service package by an employee
+ */
 @WebServlet("/CreateServicePackage")
 @MultipartConfig
 public class CreateServicePackage extends HttpServlet {
@@ -64,6 +67,7 @@ public class CreateServicePackage extends HttpServlet {
             return;
         }
 
+        //escaping params
         String servicePackageName = StringEscapeUtils.escapeJava(request.getParameter("sp_name"));
 
         String servicePackageServicesString = StringEscapeUtils.escapeJava(request.getParameter("inputServices"));
@@ -93,6 +97,7 @@ public class CreateServicePackage extends HttpServlet {
         Collection<OptionalProduct> actualOptionalProducts = new ArrayList<>();
         Collection<ValidityPeriod> actualValidityPeriods = new ArrayList<>();
 
+        //if params are correct entity is built
         if(servicePackageName != null && !servicePackageName.equals("") && !servicePackageServicesId.isEmpty() && !servicePackageValidityPeriodsId.isEmpty()) {
             try {
                 servicePackage.setName(servicePackageName);

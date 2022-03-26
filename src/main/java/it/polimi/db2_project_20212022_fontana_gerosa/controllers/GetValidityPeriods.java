@@ -20,6 +20,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Servlet to get all the possible validity periods
+ */
 @WebServlet("/GetValidityPeriods")
 @MultipartConfig
 public class GetValidityPeriods extends HttpServlet {
