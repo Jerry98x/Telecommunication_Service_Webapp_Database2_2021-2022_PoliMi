@@ -21,9 +21,9 @@
     //let spForm = document.getElementById("spCreationForm");
     //let opForm = document.getElementById("opCreationForm");
 
-    const S_array = [];
-    const OP_array = [];
-    const VP_array = [];
+    let S_array = [];
+    let OP_array = [];
+    let VP_array = [];
 
     window.addEventListener("load", () => {
         makeCall("GET", "GetServices", null,

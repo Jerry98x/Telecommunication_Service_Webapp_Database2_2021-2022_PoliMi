@@ -79,7 +79,7 @@ function buildPage(sptb, aops, avps) {
     sptb.servicesDescriptions.forEach(service => showService(service));
     document.getElementById("servicesDiv").appendChild(document.createElement("br"));
     let chosenOptionalProducts = []
-    if(aops.size > 0) {
+    if(aops.length > 0) {
         document.getElementById("optionalProductsDiv").hidden = false;
         aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
         document.getElementById("optionalProductsDiv").appendChild(document.createElement("br"));

@@ -45,9 +45,6 @@
 
     let today = new Date(Date());
     document.getElementById("startDate").min = today.toISOString().split('T')[0];
-    let maxDate = new Date();
-    maxDate.setFullYear(today.getFullYear() + 1);
-    document.getElementById("startDate").max = maxDate.toISOString().split('T')[0];
     document.getElementById("startDate").addEventListener("change", (event => {
         event.preventDefault();
         if (sessionStorage.getItem("loggedUser") != null) {
