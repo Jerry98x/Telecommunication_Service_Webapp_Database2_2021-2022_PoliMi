@@ -3,6 +3,7 @@
  */
 
 (function () {
+    document.getElementById("optionalProductsDiv").hidden = true;
     let sptb;
     let aops;
     let avps;
@@ -72,14 +73,17 @@
 
 })();
 
-function buildPage(sptb, aops, avps){
+function buildPage(sptb, aops, avps) {
     document.getElementById("totalCost").innerHTML = "0";
     document.getElementById("packageName").innerHTML = "You chose the package: <b>" + sptb.name +"</b>";
     sptb.servicesDescriptions.forEach(service => showService(service));
     document.getElementById("servicesDiv").appendChild(document.createElement("br"));
     let chosenOptionalProducts = []
-    aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
-    document.getElementById("optionalProductsDiv").appendChild(document.createElement("br"));
+    if(aops.size > 0) {
+        document.getElementById("optionalProductsDiv").hidden = false;
+        aops.forEach(op => showOptionalProduct(op, chosenOptionalProducts));
+        document.getElementById("optionalProductsDiv").appendChild(document.createElement("br"));
+    }
     let vpName = "validityPeriods";
     let chosenValidityPeriod = [];
     avps.forEach(vp => showValidityPeriod(vp, vpName, chosenValidityPeriod));
