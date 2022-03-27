@@ -77,7 +77,7 @@ public class ManageOrder extends HttpServlet {
             int orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("orderId")));
             String startDateString = StringEscapeUtils.escapeJava(request.getParameter("startDate"));
             int valid = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("valid")));
-            if (orderId == -1) {//create order
+            if (orderId == -1) { //create order
                 order = new Order();
                 //parse request
                 float totalCost = Float.parseFloat(StringEscapeUtils.escapeJava(request.getParameter("totalCost")));
@@ -97,14 +97,16 @@ public class ManageOrder extends HttpServlet {
                 User user = null;
                 try {
                     user = userService.findUserById(userId);
-                } catch (PersistenceException e) {
+                }
+                catch (PersistenceException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     response.getWriter().println("Internal server error, retry later");
                     return;
                 }
                 if (user != null) {
                     order.setUser(user);
-                } else {
+                }
+                else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("");
                     return;
@@ -113,14 +115,16 @@ public class ManageOrder extends HttpServlet {
                 ServicePackage servicePackage = null;
                 try {
                     servicePackage = servicePackageService.getServicePackageById(servicePackageId);
-                } catch (PersistenceException e) {
+                }
+                catch (PersistenceException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     response.getWriter().println("Internal server error, retry later");
                     return;
                 }
                 if (servicePackage != null) {
                     order.setServicePackage(servicePackage);
-                } else {
+                }
+                else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("The requested service package doesn't exist");
                     return;
@@ -129,7 +133,8 @@ public class ManageOrder extends HttpServlet {
                 ValidityPeriod chosenValidityPeriod = null;
                 try {
                     chosenValidityPeriod = validityPeriodService.getValidityPeriodById(chosenValidityPeriodId);
-                } catch (PersistenceException e) {
+                }
+                catch (PersistenceException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     response.getWriter().println("Internal server error, retry later");
                     return;
@@ -139,7 +144,8 @@ public class ManageOrder extends HttpServlet {
                         anyMatch(validityPeriod -> validityPeriod.getValidityPeriodId() == finalChosenValidityPeriod.getValidityPeriodId())) {
                     order.setChosenValidityPeriod(chosenValidityPeriod);
                     tot += chosenValidityPeriod.getMonthlyFee_euro();
-                } else {
+                }
+                else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("The requested validity period doesn't exist among the available ones");
                     return;
@@ -149,7 +155,8 @@ public class ManageOrder extends HttpServlet {
                     Collection<OptionalProduct> chosenOptionalProducts = new ArrayList<>();
                     try {
                         chosenOptionalProductsIds.forEach(copId -> chosenOptionalProducts.add(optionalProductService.getOptionalProductById(copId)));
-                    } catch (PersistenceException e) {
+                    }
+                    catch (PersistenceException e) {
                         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         response.getWriter().println("Internal server error, retry later");
                         return;
@@ -161,18 +168,21 @@ public class ManageOrder extends HttpServlet {
                         order.setChosenOptionalProducts(chosenOptionalProducts);
                         order.setAmountOptionalProducts(chosenOptionalProducts.size());
                         tot += chosenOptionalProducts.stream().mapToDouble(OptionalProduct::getMonthlyFee_euro).sum();
-                    } else {
+                    }
+                    else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         response.getWriter().println("One of the requested products doesn't exist among the available ones");
                         return;
                     }
-                } else {
+                }
+                else {
                     order.setAmountOptionalProducts(0);
                 }
                 //total cost
                 if (tot == totalCost) {
                     order.setTotalCost_euro(totalCost);
-                } else {
+                }
+                else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("Total cost is not right");
                     return;
@@ -181,10 +191,12 @@ public class ManageOrder extends HttpServlet {
                 order.setCreationDate(LocalDate.now());
                 //creation time
                 order.setCreationHour(LocalTime.now());
-            } else {//update order
+            }
+            else { //update order
                 try {
                     order = orderService.getRejectedOrderById(orderId);
-                } catch (PersistenceException e) {
+                }
+                catch (PersistenceException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     response.getWriter().println("Internal server error, retry later");
                     return;
@@ -200,12 +212,14 @@ public class ManageOrder extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("The start date is passed");
                 return;
-            } else {
+            }
+            else {
                 order.setStartDate(startDate);
             }
             if (valid == 0 || valid == 1) {
                 order.setValid(valid);
-            } else {
+            }
+            else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("The valid parameter is wrong");
                 return;
@@ -213,12 +227,14 @@ public class ManageOrder extends HttpServlet {
             if (orderId == -1) {
                 try {
                     orderService.createNewOrder(order);
-                } catch (PersistenceException e) {
+                }
+                catch (PersistenceException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     response.getWriter().println("Internal server error, retry later");
                     return;
                 }
-            } else {
+            }
+            else {
                 try {
                     orderService.updateOrder(order);
                 } catch (PersistenceException e) {

@@ -158,9 +158,9 @@ function updatePeriodChoice(event, validityPeriod, chosenValidityPeriod){
 function updateTotalCost(adding, quantity){
     let totCost = document.getElementById("totalCost");
     if(adding){
-        totCost.innerHTML = parseFloat(totCost.innerHTML) + quantity;
+        totCost.innerHTML = (parseFloat(totCost.innerHTML) + quantity).toFixed(2);
     } else {
-        totCost.innerHTML = parseFloat(totCost.innerHTML) - quantity;
+        totCost.innerHTML = (parseFloat(totCost.innerHTML) - quantity).toFixed(2);
     }
 }
 

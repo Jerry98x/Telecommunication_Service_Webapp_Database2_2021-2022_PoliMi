@@ -212,8 +212,8 @@ public class OrderService {
         }
 
         if (user != null && servicePackage != null) {
-            return "Order n." + order.getOrderId() + " of " + order.getTotalCost_euro() + " for service package " + servicePackage.getName() +
-                    " tried by user " + user.getUsername() + "(id: " + user.getUserId() + ") and rejected on " + order.getCreationDate().toString() +
+            return "Order n." + order.getOrderId() + " of " + order.getTotalCost_euro() + "€ for service package " + servicePackage.getName() +
+                    " tried by user " + user.getUsername() + " (id: " + user.getUserId() + ") and rejected on " + order.getCreationDate().toString() +
                     " at " + order.getCreationHour().toString();
         } else {
             return "";

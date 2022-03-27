@@ -25,13 +25,11 @@
         <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalValuePerSp</class>
         <class>it.polimi.db2_project_20212022_fontana_gerosa.entities.mvs.MVTotalValuePerSpWithOp</class>
 
-
-
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db_test?serverTimezone=UTC"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="password"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db_test?serverTimezone=UTC"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="password"/>
         </properties>
 
     </persistence-unit>

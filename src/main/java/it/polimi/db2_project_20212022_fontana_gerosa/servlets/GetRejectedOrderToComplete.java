@@ -72,7 +72,8 @@ public class GetRejectedOrderToComplete extends HttpServlet {
             if (rejectedOrder == null) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");
-            } else {
+            }
+            else {
                 int loggedUserId = (int) request.getSession().getAttribute("userId");
                 if (rejectedOrder.getUser().getUserId() == loggedUserId) {
                     ClientOrder clientRejectedOrder = new ClientOrder(rejectedOrder);

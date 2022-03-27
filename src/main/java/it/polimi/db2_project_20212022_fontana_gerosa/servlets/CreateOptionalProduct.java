@@ -48,44 +48,58 @@ public class CreateOptionalProduct extends HttpServlet {
             return;
         }
 
-        //escaping params
-        String optionalProductName = StringEscapeUtils.escapeJava(request.getParameter("op_name"));
-        float optionalProductFee = Float.parseFloat(request.getParameter("op_fee"));
+        if(request.getParameter("op_name") != null && request.getParameter("op_fee") != null) {
+            //escaping params
+            String optionalProductName = StringEscapeUtils.escapeJava(request.getParameter("op_name"));
+            float optionalProductFee = Float.parseFloat(request.getParameter("op_fee"));
 
-        OptionalProduct optionalProduct = new OptionalProduct();
+            OptionalProduct optionalProduct = new OptionalProduct();
 
-        //if params are correct entity is built
-        if(optionalProductName != null && !optionalProductName.equals("") && optionalProductFee >= 0) {
+            //if params are correct entity is built
+            if(optionalProductName != null && !optionalProductName.equals("") && optionalProductFee >= 0) {
+                try {
+                    optionalProduct.setName(optionalProductName);
+                }
+                catch (PersistenceException e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.getWriter().println("Internal server error, retry later");
+                    return;
+                }
+                try {
+                    optionalProduct.setMonthlyFee_euro(optionalProductFee);
+                }
+                catch (PersistenceException e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.getWriter().println("Internal server error, retry later");
+                    return;
+                }
+            }
+            else {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.getWriter().println("Fields must not be empty.");
+                return;
+            }
+
+            //optional product actual construction
             try {
-                optionalProduct.setName(optionalProductName);
+                optionalProductService.insertOptionalProduct(optionalProduct);
             }
             catch (PersistenceException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");
                 return;
             }
-            try {
-                optionalProduct.setMonthlyFee_euro(optionalProductFee);
-            }
-            catch (PersistenceException e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Internal server error, retry later");
-                return;
-            }
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println("Optional product " + "\"" + optionalProduct.getName() + "\"" + " has been correctly created.");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
         }
         else {
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            response.getWriter().println("Fields must not be empty.");
-            return;
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("At least one passed param was null");
         }
 
-        //optional product actual construction
-        optionalProductService.insertOptionalProduct(optionalProduct);
-
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("Optional product " + "\"" + optionalProduct.getName() + "\"" + " has been correctly created.");
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
     }
 
     @Override

@@ -96,9 +96,7 @@ public class CheckLogin extends HttpServlet {
             e.printStackTrace();
         }
 
-        // If the user exists, add info to the session and go to home page, otherwise
-        // check the same for the employee, otherwise
-        // return an error status code and message
+
         if (user == null && employee == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("Incorrect credentials");

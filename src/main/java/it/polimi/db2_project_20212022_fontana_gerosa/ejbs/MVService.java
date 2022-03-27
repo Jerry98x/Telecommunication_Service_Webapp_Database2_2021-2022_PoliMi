@@ -144,7 +144,7 @@ public class MVService {
         }
         if (servicePackage != null && validityPeriod != null) {
             return "Service package " + servicePackage.getName() + " (id: " + servicePackage.getServicePackageId() + ") has been sold with " +
-                    "validity period of " + validityPeriod.getMonthlyFee_euro() + "€/" + validityPeriod.getMonthsOfValidity() + "month (id: " +
+                    "validity period of " + validityPeriod.getMonthlyFee_euro() + "€/month for " + validityPeriod.getMonthsOfValidity() + " months (id: " +
                     validityPeriod.getValidityPeriodId() + ") "
                     + mv.getTotalPurchases() + " times";
         } else {

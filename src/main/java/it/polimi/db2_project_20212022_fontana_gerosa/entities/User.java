@@ -122,6 +122,6 @@ public class User {
      * @return a String containing the description
      */
     public String getDescription(){
-        return "User " + username + "(id:" + userId + "), with mail " + email + " and " + numOfFailedPayments + " failed payments";
+        return "User " + username + " (id: " + userId + "), with mail " + email + " and " + numOfFailedPayments + " failed payments";
     }
 }
