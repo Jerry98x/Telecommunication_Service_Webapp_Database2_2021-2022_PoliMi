@@ -100,11 +100,6 @@ public class OrderService {
             }
             try {
                 em.merge(user);
-            } catch (PersistenceException e) {
-                throw new PersistenceException("Couldn't update user");
-            }
-
-            try {
                 em.persist(newOrder);
                 em.flush();
             } catch (PersistenceException e){
@@ -141,10 +136,6 @@ public class OrderService {
             }
             try {
                 em.merge(user);
-            } catch (PersistenceException e) {
-                throw new PersistenceException("Couldn't update user");
-            }
-            try {
                 em.merge(order);
                 em.flush();
             } catch (PersistenceException e) {

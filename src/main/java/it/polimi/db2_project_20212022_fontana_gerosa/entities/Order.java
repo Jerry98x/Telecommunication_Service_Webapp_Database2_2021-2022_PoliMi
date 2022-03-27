@@ -84,14 +84,14 @@ public class Order {
     private ServicePackage servicePackage;
 
     /**
-     * ValidityPeriod chosen by the User to made the payments
+     * ValidityPeriod chosen by the User who made the payment
      */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "validityPeriodId")
     private ValidityPeriod chosenValidityPeriod;
 
     /**
-     * All OptionalProducts chosen by the User tobe bought with the ServicePackage
+     * All OptionalProducts chosen by the User to be bought with the ServicePackage
      */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="order__optional_product",
