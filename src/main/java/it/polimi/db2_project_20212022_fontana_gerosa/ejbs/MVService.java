@@ -263,7 +263,7 @@ public class MVService {
             throw new PersistenceException("Couldn't retrieve optional product");
         }
         if (optionalProduct != null) {
-            return "Optional product " + optionalProduct.getName() + " (id: " + optionalProduct.getOptionalProductId() + ") is the best seller";
+            return "Optional product " + optionalProduct.getName() + " (id: " + optionalProduct.getOptionalProductId() + ") is the best seller with " + mv.getTotalPurchases() + " purchases";
 
         } else {
             return "";
